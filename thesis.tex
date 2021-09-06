@@ -1,0 +1,78 @@
+% TODO Change language to en_GB (recommended) or en_US for English documents
+\documentclass[11pt,a4paper,oneside]{report}             % Single-side
+%\documentclass[11pt,a4paper,twoside,openright]{report}  % Duplex
+
+\input{include/packages}
+
+%TODO Set the main variables
+\newcommand{\vikszerzoVezeteknev}{Csarnó}
+\newcommand{\vikszerzoKeresztnev}{Tamás}
+
+\newcommand{\vikkonzulensAMegszolitas}{dr.~}
+\newcommand{\vikkonzulensAVezeteknev}{Gulyás}
+\newcommand{\vikkonzulensAKeresztnev}{Gábor}
+
+\newcommand{\vikcim}{Gépi tanulási eljárásokkal generált adatok adatvédelmi vizsgálata} % Cím
+\newcommand{\viktanszek}{\bmemit} % Tanszék
+\newcommand{\vikdoktipus}{\msc} % Dokumentum típusa (\bsc vagy \msc)
+\newcommand{\vikmunkatipusat}{diplomatervet} % a "hallgató nyilatkozat" részhez: szakdolgozatot vagy diplomatervet
+
+\newcommand{\szerzoMeta}{\vikszerzoVezeteknev{} \vikszerzoKeresztnev}
+
+% Beállítások magyar nyelvű dolgozathoz
+\input{include/thesis-hu}
+\input{include/preamble}
+
+%--------------------------------------------------------------------------------------
+% Table of contents and the main text
+%--------------------------------------------------------------------------------------
+\begin{document}
+
+\pagenumbering{gobble}
+\selectthesislanguage
+
+% Titlepage
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+% \include{include/titlepage}		   % Szakdolgozat/Diplomaterv címlap
+
+
+% Table of Contents
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+% \tableofcontents\vfill
+
+
+% Declaration and Abstract
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+% \include{include/declaration} %TODO Hallgatói nyilatkozat
+% \include{content/abstract}
+
+
+% The main part of the thesis
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+\pagenumbering{arabic}
+
+\include{content/test}
+
+
+% Acknowledgements
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+% \include{content/acknowledgement}
+
+
+% List of Figures, Tables
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+%\listoffigures\addcontentsline{toc}{chapter}{\listfigurename}
+%\listoftables\addcontentsline{toc}{chapter}{\listtablename}
+
+
+% Bibliography
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+% \addcontentsline{toc}{chapter}{\bibname}
+% \bibliography{bib/mybib}
+
+
+% Appendix
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+% \include{content/appendices}
+
+\end{document}
