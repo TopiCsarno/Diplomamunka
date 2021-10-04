@@ -2,13 +2,17 @@
 \section{\bevezetes}
 %----------------------------------------------------------------------------
 
-Gépi tanulásos rendszereket egyre szélesebb körben alkalmaznak komplex feladatok megoldására, többek között az orvostudományban, pénzügyi technológiákban illetve az iparban is. A gépi tanulás nagy részben hozzájárult a tudomány és technológia fejlődéshez. Szinte minden iparág és vállalat felismerte a gépi tanulás előnyeit és lehetőségeit.
+Gépi tanulásos rendszereket egyre szélesebb körben alkalmaznak komplex feladatok megoldására, többek között az orvostudományban, pénzügyi technológiákban illetve az iparban is. A gépi tanulás nagy részben hozzájárult a tudomány és technológia fejlődéshez. Szinte minden iparág és vállalat felismerte a gépi tanulás előnyeit és lehetőségeit. Ezek között számos olyan eljárás is található, amelyek az adatot generálnaka bemenetből, mint példáulgeneratív modellekvagy adeep metric learning, de ide sorolhatóakanapjainkban egyre elterjedtebben használtgépi tanulásra épülő arcfelismerési rendszerek is.
+% adatgeneráló eljárások
+% arcfelismerés machine learninggel
 
-Az IoT egyik típusú elemei azok a kamera hálózatok (CCTV), amelyek arcfelismerési funkcióval is rendelkeznek. Ez a technológia ma már relatíve olcsóbb eszközökön is elérhető, köszönhetően az arcfelismerési eljárások utóbbi években tapasztalt ugrásszerű fejlődésének. Ezek a rendszerek jellemzően egy dedikált helyi számítógépen vagy a felhőben lévő adatbázisban gyűjtik az arcfelismerés során kinyert adatokat. A korszerű eljárások által kinyert adatok nyers formában az emberi operátor számára nem értelmezhető, nagyobb méretű lebegőpontos vektorok. Ezek magukba kódolva olyan információkat is hordoznak, mint a rassz, a nem és az arc egyéb jellemzői.  Együttesen lehetővé tehetik, hogy valakit azonosíthatóvá tegyenek akkor is, ha csak ezeket tudjuk róluk. Ezért munkám során az elmúlt időszakban azt vizsgáltam, hogy a gépi tanulás alapú arcfelismerés által kinyert ún. embeddingek, lehetővé teszik-e az embedding forrását, az eredeti adatalanynak a felismerését, és ha igen, akkor mely részei kódolják az egyes információkat.
+Az IoT egyik típusú elemei azok a kamera hálózatok (CCTV), amelyek arcfelismerési funkcióval is rendelkeznek. Ez a technológia ma már relatíve olcsóbb eszközökön is elérhető, köszönhetően az arcfelismerési eljárások utóbbi években tapasztalt ugrásszerű fejlődésének. Ezek a rendszerek jellemzően egy dedikált helyi számítógépen vagy a felhőben lévő adatbázisban gyűjtik az arcfelismerés során kinyert adatokat.
 
-A célom, hogy meghatározzam az arclenyomat vektorok (embeddingek) azon koordinátáit, amelyek az érzékeny információkat hordozzák, például a rasszt. Ezt különböző gépi tanulás elemzésére és értelmezésére használható eszközökkel hajtom végre. Az itt meghatározott koordinátákat módosítjuk vagy töröljük. Ezek után vizsgáljuk, hogy ennek hatására hogyan változik az érzékeny információ meghatározására alkalmas modellek pontossága.
+A korszerű eljárások által kinyert adatok nyers formában az emberi operátor számára nem értelmezhető, nagyobb méretű lebegőpontos vektorok. Ezek magukba kódolva olyan információkat is hordoznak, mint a rassz, a nem és az arc egyéb jellemzői.  Együttesen lehetővé tehetik, hogy valakit azonosíthatóvá tegyenek akkor is, ha csak ezeket tudjuk róluk. 
 
+Ezért munkám során az elmúlt időszakban azt vizsgáltam, hogy a gépi tanulás alapú arcfelismerés által kinyert ún. embeddingek, lehetővé teszik-e az embedding forrását, az eredeti adatalanynak a felismerését, és ha igen, akkor mely részei kódolják az egyes információkat. A célom, hogy meghatározzam az arclenyomat vektorok (embeddingek) azon koordinátáit, amelyek az érzékeny információkat hordozzák, például a rasszt. Ezt különböző gépi tanulás elemzésére és értelmezésére használható eszközökkel hajtom végre. Az itt meghatározott koordinátákat módosítjuk vagy töröljük. Ezek után vizsgáljuk, hogy ennek hatására hogyan változik az érzékeny információ meghatározására alkalmas modellek pontossága.
 
+% diplomaterv felépítse
 
 
 %----------------------------------------------------------------------------
@@ -19,6 +23,7 @@ Felépítés:
 	\item adatgeneráló eljárások \\ ... ennek utánajár
 	\item arcfelismerés bemutat: egyre gyakrabban használnak kamerát \\ térfigyelő kamerák, ...
 	\item adatvédelmi kockázat
+	\item valami szemléltető ábra hasznos lenne, működés magyarázatához
 	\begin{itemize}
 		\item pl kína szociális kreditrendszer
 		\item  arcfelismerő rendszerek tökéletlenségét kihasználó hozzáférési támadások (pl. "face morphing", "presentation attacks", stb.)
