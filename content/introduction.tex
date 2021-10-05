@@ -2,34 +2,60 @@
 \section{\bevezetes}
 %----------------------------------------------------------------------------
 
-Gépi tanulásos rendszereket egyre szélesebb körben alkalmaznak komplex feladatok megoldására, többek között az orvostudományban, pénzügyi technológiákban illetve az iparban is. A gépi tanulás nagy részben hozzájárult a tudomány és technológia fejlődéshez. Szinte minden iparág és vállalat felismerte a gépi tanulás előnyeit és lehetőségeit. Ezek között számos olyan eljárás is található, amelyek az adatot generálnaka bemenetből, mint példáulgeneratív modellekvagy adeep metric learning, de ide sorolhatóakanapjainkban egyre elterjedtebben használtgépi tanulásra épülő arcfelismerési rendszerek is.
-% adatgeneráló eljárások
-% arcfelismerés machine learninggel
+%--------------------------------
+% advancement in ML, GPUs, big data
 
-Az IoT egyik típusú elemei azok a kamera hálózatok (CCTV), amelyek arcfelismerési funkcióval is rendelkeznek. Ez a technológia ma már relatíve olcsóbb eszközökön is elérhető, köszönhetően az arcfelismerési eljárások utóbbi években tapasztalt ugrásszerű fejlődésének. Ezek a rendszerek jellemzően egy dedikált helyi számítógépen vagy a felhőben lévő adatbázisban gyűjtik az arcfelismerés során kinyert adatokat.
+Az elmúlt években a nagyméretű adathalmazok elérhetősége és a számítási kapacitás exponenciális növekedésével jelentősen megnövekedett az érdeklődés a gépi tanulás iránt. Manapság a gépi tanulási algoritmusokat sikeresen alkalmazzák a különösen nagy dimenziós bemeneti adatokok osztályozási, regressziós, csoportosítási vagy dimenziócsökkentési feladataihoz. A gépi tanulás emberfeletti képességekkel rendelkezik számos területen (például képosztályozásban). Ennek eredményeképpen mindennapi életünk hatalmas részei. A kép- és beszédfelismerés, az internetes keresés, az arcfelismerés és még sok mást, gépi tanulási algoritmusok tették lehetővé.
 
-A korszerű eljárások által kinyert adatok nyers formában az emberi operátor számára nem értelmezhető, nagyobb méretű lebegőpontos vektorok. Ezek magukba kódolva olyan információkat is hordoznak, mint a rassz, a nem és az arc egyéb jellemzői.  Együttesen lehetővé tehetik, hogy valakit azonosíthatóvá tegyenek akkor is, ha csak ezeket tudjuk róluk. 
+% In recent years, the availability of large datasets combined with the improvement in algorithms and the exponential growth in computing power led to an unparalleled surge of interest in the topic of machine learning. Nowadays, machine learning algorithms are successfully employed for classification, regression, clustering, or dimensionality reduction tasks of large sets of especially high-dimensional input data.1 In fact, machine learning has proved to have superhuman abilities in numerous fields (such as playing go,2 self driving cars,3 image classification,4 etc). As a result, huge parts of our daily life, for example, image and speech recognition,5,6 web-searches,7 fraud detection,8 email/spam filtering,9 credit scores,10 and many more are powered by machine learning algorithms.
 
-Ezért munkám során az elmúlt időszakban azt vizsgáltam, hogy a gépi tanulás alapú arcfelismerés által kinyert ún. embeddingek, lehetővé teszik-e az embedding forrását, az eredeti adatalanynak a felismerését, és ha igen, akkor mely részei kódolják az egyes információkat. A célom, hogy meghatározzam az arclenyomat vektorok (embeddingek) azon koordinátáit, amelyek az érzékeny információkat hordozzák, például a rasszt. Ezt különböző gépi tanulás elemzésére és értelmezésére használható eszközökkel hajtom végre. Az itt meghatározott koordinátákat módosítjuk vagy töröljük. Ezek után vizsgáljuk, hogy ennek hatására hogyan változik az érzékeny információ meghatározására alkalmas modellek pontossága.
-
-% diplomaterv felépítse
+A gépi tanulás nagy részben hozzájárult a tudomány és technológia fejlődéshez. Szinte minden iparág és vállalat felismerte a gépi tanulás előnyeit és lehetőségeit. A technológia fejlődése lehetővé tette a közelmúltbeli áttöréseket, amelyek elősegítik a gyorsabb és hatékonyabb üzleti intelligenciát, az arcfelismeréstől a természetes nyelvfeldolgozásig terjedő képességek felhasználásával.
 
 
-%----------------------------------------------------------------------------
-\newpage
-Felépítés:
-\begin{itemize}
-	\item gépi tanulás jelentősége \\ napjainkban egyre elterjedtebb, hol használják
-	\item adatgeneráló eljárások \\ ... ennek utánajár
-	\item arcfelismerés bemutat: egyre gyakrabban használnak kamerát \\ térfigyelő kamerák, ...
-	\item adatvédelmi kockázat
-	\item valami szemléltető ábra hasznos lenne, működés magyarázatához
-	\begin{itemize}
-		\item pl kína szociális kreditrendszer
-		\item  arcfelismerő rendszerek tökéletlenségét kihasználó hozzáférési támadások (pl. "face morphing", "presentation attacks", stb.)
-		\item a gépi tanulás hibáiból bekövetkező diszkriminációk és pontatlanságok
-		\item az arclenyomatokból gépi tanulási eljárásokkal kiszedhető személyes információk kiszivárgása
-	\end{itemize}
-	\item motiváció, mit vizsgálok a dolgozatban
-	\item diplomaterv felépítése
-\end{itemize}
+% Advances in this technology have allowed for recent breakthroughs that promote faster and more efficient business intelligence, using abilities ranging from facial recognition to natural language processing.
+
+
+% --------------------------------
+% adatgeneráló eljárások megjelenése, motivációja (moar data)
+
+A gépi tanulás alkalmazásai között szerepelnek olyan eljárások, amelyek képesek adatot generálni a bemenetből, mint például a generatív modellek vagy a deep metric learning, de ide sorolhatóak a napjainkban egyre elterjedtebben használt gépi tanulásra épülő arcfelismerési rendszerek is.
+
+A generatív modellek, mint a GAN (Generative Adversarial Network) olyan neurális hálózatok, amelyek képesek új adatot előállítani a semmiből. Bemenetként megadható véletlenszerű zaj hatására realisztikus képeket tudnak generálni. A GAN-ok elsősorban olyan szituációkban lehetnek nagyon hasznosak, amikor több tanítóadatra van szükségünk, viszont az adat gyűjtése nehezen oldható meg. Sok esetben az adatgyűjtés és címkézés hosszas, drága folyamat. Fontos viszont, hogy a generált szintetikus adat minősége megfelelő legyen a célra. Ahhoz azonban, hogy hasznosak legyenek, az új adatoknak eléggé reálisnak kell lenniük ahhoz, hogy a generált adatokból szerzett ismeretek továbbra is érvényesek legyenek a valós adatokra.  Egy generatív modell leírja az adathalmaz előállításának módját a valószínűségi modell alapján. Ebből a modellből mintavételezéssel új adatokat tudunk előállítani. A GAN -ok olyan struktúrát fedeznek fel az adatokban, amely lehetővé teszi számukra, hogy reális adatokat készítsenek.
+
+% GAN is a type of neural network that is able to generate new data from scratch. You can feed it a little bit of random noise as input, and it can produce realistic images of bedrooms, or birds, or whatever it is trained to generate. One thing all scientists can agree on is that we need more data. GANs, which can be used to produce new data in data-limited situations, can prove to be really useful. Data can sometimes be difficult and expensive and time-consuming to generate. To be useful, though, the new data has to be realistic enough that whatever insights we obtain from the generated data still applies to real data. If you’re training a cat to hunt mice, and you’re using fake mice, you’d better make sure that the fake mice actually look like mice.
+
+
+% A generative model can be broadly defined as follows: A generative model describes how a dataset is generated, in terms of a probabilistic model. By sampling from this model, we are able to generate new data. Another way of thinking about it is the GANs are discovering structure in the data that allows them to make realistic data. This can be useful if we can’t see that structure on our own or can’t pull it out with other methods. 
+
+% A mélygenerációs modellek (DGM) alkalmazásai, mint például a híres képekből hamis portrék készítése, nemrégiben címlapokra kerültek. Ezen úgynevezett mély hamisítványok megjelenése jelentős társadalmi és jogi kihívások elé állít, de új előnyös technológiákat is ígér.
+
+% Applications of deep generative models (DGM), such as creating fake portraits from celebrity images, have recently made headlines. The advent of these so-called deep fakes poses considerable societal and legal challenges, but also promise new beneficial technologies [10].
+
+% --------------------------------
+% arcfelismerés -> egyre több kamera
+
+A gépi tanulási technikák fejlődésének köszönhetően, illetve az egyre olcsóbb okos eszközök elterjedésével egyre jobban elterjedt az arcfelismerés használata. A generatív modellekhez hasonlóan, az modern arcfelismerő rendszerek is gépi tanulásra támaszkodnak. Működésük során szükséges az emberek arcáról készült digitális arcképekről képes az arcokat jellemző metrikákat előállítani oly módon, hogy egy emberhez tartozó arcleíró vektorok (későbbiekben arclenyomatok) távolsága kicsi legyen, míg különböző emberek között nagy. Erre a célra létrehozott neurális hálók képesek megtanulni azt a deep metrikát ami legjobban írja le az emberi arc struktúráját.
+
+% párhuzam a kettő között
+
+% Mind a 
+
+% arcfelismerés és adatvédelem
+
+
+% Ezért munkám során az elmúlt időszakban azt vizsgáltam, hogy a gépi tanulás alapú arcfelismerés által kinyert ún. embeddingek, lehetővé teszik-e az embedding forrását, az eredeti adatalanynak a felismerését, és ha igen, akkor mely részei kódolják az egyes információkat. A célom, hogy meghatározzam az arclenyomat vektorok (embeddingek) azon koordinátáit, amelyek az érzékeny információkat hordozzák, például a rasszt. Ezt különböző gépi tanulás elemzésére és értelmezésére használható eszközökkel hajtom végre. Az itt meghatározott koordinátákat módosítjuk vagy töröljük. Ezek után vizsgáljuk, hogy ennek hatására hogyan változik az érzékeny információ meghatározására alkalmas modellek pontossága.
+
+% We live in times when efficient uses of artificial intelligence and cheap smart technology are exploding. By the spread of smart cameras, applications on facial recognition had become almost ubiquitous in some cities around the world. In some cases we can find the driver reason for this in the security concerns of the public, but face recognition (or FR in short) can be applied to a much broader set of use-cases. Beside identification or authentication of individuals in crowds, it could benefit the society also in criminal detection, searching for lost people, customer behavior analysis, etc.
+
+% However, FR technology could be abused and therefore it has the potential to pose risks to individuals, to the society and even to the governmental and business sectors, as well. This puts related ethical issues into the focus.
+
+% The 2010s kickstarted the modern era of facial recognition, as computers were finally powerful enough to train the neural networks required to make facial recognition a standard feature.
+% Facial recognition first trickled into personal devices as a security feature with Windows Hello and Android’s Trusted Face in 2015, and then with the introduction of the iPhone X and Face ID in 2017.
+
+% Proponents of facial recognition suggest that the software is useful because alongside identifying suspects, it can monitor known criminals and help identify child victims of abuse. In crowds, it could monitor for suspects at large events and increase security at airports or border crossings. The most long-running type of facial recognition software runs a photo through a government-controlled database, such as the FBI’s database of over 400 million photos, which includes driver’s licenses from some states, to identify a suspect. Local police departments use a variety of facial recognition software, often purchased from private companies.
+
+% There’s a long list of benefits facial recognition can offer outside of law enforcement, adding convenience or security to everyday things and experiences. Facial recognition is helpful for organizing photos, useful in securing devices like laptops and phones, and beneficial in assisting blind and low-vision communities. It can be a more secure option for entry into places of business, fraud protection at ATMs, event registration, or logging in to online accounts. Advertising and commercial applications of facial recognition promise a wide array of supposed benefits, including tracking customer behavior in a store to personalize ads online.
+
+% Face recognition systems are being increasingly used for secure access in applications ranging from personal devices to access control (e.g., banking and border control). In critical applications, face recognition needs to meet stringent performance requirements, including low error rates and strong system security. In particular, the face recognition system must be resistant to spoofing (presentation) attacks and template invertivility. Therefore, it is critical to evaluate the vulnerabilities of a face recognition system to these attacks and devise necessary countermeasures. To this end, several attack mechanisms (such as hill climbing [1], [2], [3], spoofing [4], [5], [6], [7], [8], and template reconstruction (template invertibility) [9]) have been proposed to determine the vulnerabilities of face recognition systems.
+
+% A 2. chapterben ... a 3. chapterben ... a 4. chapterben ...
