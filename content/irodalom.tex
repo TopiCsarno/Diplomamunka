@@ -2,3 +2,255 @@
 \section{Irodalomkutatás}
 %----------------------------------------------------------------------------
 
+\subsection{Felvezető}
+
+\subsubsection{Supervised learning}
+
+In Supervised Learning, we train the machine using data that is well “labeled”. It means the data is already tagged with the correct answer. A supervised learning algorithm learns from labeled training data and predicts outcomes for unforeseen data. There are two subcategories of supervised learning, viz- Regression and Classification.
+Classification means to group the output into a class. If the algorithm tries to label input into two distinct classes, it is called binary classification. Selecting between more than two classes is referred to as multiclass classification. On the other hand, Regression Algorithms are used to predict continuous values such as price, salary, and age.
+
+Unsupervised Learning is a machine learning technique, where the model does not need any supervision. Instead, we need to allow the model to work on its own to discover information. It mainly deals with the unlabelled data. Density estimation, dimensionality reduction, and clustering and some of the main applications of unsupervised learning.
+
+In Machine learning, supervised learning methods are used when the objective is to learn mapping between the attributes and the target in the data. When the objective is to identify the underlying structure or the pattern in the data, unsupervised learning methods are useful. Some of the popular unsupervised learning methods are Clustering, Dimensionality reduction, Association mining, Anomaly detection and Generative models. Each of these techniques have a different pattern recognition objective such as identifying latent grouping, identifying latent space, finding irregularities in the data, density estimation or generating new samples from the data. 
+
+%----------------------------------------------------------------------------
+\subsubsection{Generative models}
+
+The learning models in machine learning can be classified into two sub-categories, viz – Discriminative models and Generative models. To understand GANs, we should know about generative models and how they are different from Discriminative models.
+
+Discriminative models classify input data; i.e., given the features of an instance of data, they predict a label or category to which that data belongs. In Supervised Learning, the classification algorithms/models are examples of discriminative models.
+
+Generative Modelling is an unsupervised learning task in machine learning that involves generating new data samples from the probability distribution of training data. Given some data, the aim is to have a model for the underlying probability distribution of that data so that we can draw samples that are similar to our training data.
+
+Mathematically, generative models learn the joint probability distribution P(X,Y), whereas the discriminative models learn the posterior probability, P(Y|X), that is the probability of the label Y given the data X.
+
+%----------------------------------------------------------------------------
+\subsubsection{Uses for Generative models}
+
+Uses of Generative Models
+Contributed by: Saurav Sindhwani
+LinkedIn Profile: https://www.linkedin.com/in/saurav-sindhwani-35b7b728/
+
+\begin{itemize}
+	\item It can help in generating artificial faces.
+	\item It can be used in Text to image generation.
+	\item It can produce fake voices or noises and can be used in image denoising.
+	\item It can be used in MRI image reconstruction.
+	\item It can also be used to generate instances of data to handle imbalanced data.
+\end{itemize}
+
+Generative models target the true distribution of the training data to generate new data points with some variations. Now, it is not always possible for our machine to learn the true distribution of the data, for this, we take the help of a powerful neural network which can help make the machine learn the approximate true distribution of the data.
+The neural networks we use as generative models have parameters which are smaller than the amount of data we have as training dataset. The models are forced to discover the distribution in order to generate data.
+
+%----------------------------------------------------------------------------
+\subsubsection{Generative model types}
+
+The association between a random continuous variable ‘x’ and the probability of it assuming specific values ‘p(x)’ is referred to as the probability density function or simply ‘density’. Figure 2 shows a typical density function. Knowing the probability density for a random variable can be useful to determine how likely the random variable is to assume a specific value. From the density plot in figure 2 it is easy to know that the variable x is more likely to assume a value of 50 and less likely to assume a value of 65.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.65\columnwidth]{figures/abra.png}
+	\caption{abra alatti szoveg}
+\end{figure}
+
+In practice, we may not be able to assess or observe all possible outcomes of a random variable due to which we generally do not know the actual density function. In such conditions, we must rely on approximating the density function from a sample of observations. Approximating a density function using a sample of observations is referred to as ‘Density estimation’.  Learning density estimate from the training samples is fundamental to generative models.
+
+Two types of density estimations are generally used in generative models; Explicit Density Estimation (EDE) and Implicit Density Estimation (IDE). In EDE, predefined density functions are used to approximate the relationship between observations and their probability. The observed data is fit to predefined function by manipulating a fixed set of parameters of the function. An example is trying to fit given data to normal distribution using mean and the standard deviations of the samples. This type of density estimation is also known as parametric density estimation. In IDE, predefined density functions are not used. Instead an algorithm is used to approximate the probability distribution of the data. Kernel density approximation is an example of this type. Though the IDE methods use parameters for approximation, they cannot be directly manipulated the way they are in EDE. Figure 3 shows the taxonomy of different generative models based on the type of density estimation used.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.65\columnwidth]{figures/abra.png}
+	\caption{abra alatti szoveg}
+\end{figure}
+
+Generative Adversial Network (GAN) is an Implicit density based generative model. Variational Autoencoder (VAE) and Boltzmann Machine (BM) are the explicit density based generative models.  
+
+
+%----------------------------------------------------------------------------
+\subsection{Boltzman machines}
+
+In the current article we will focus on generative models, specifically Boltzmann Machine (BM), its popular variant Restricted Boltzmann Machine (RBM), working of RBM and some of its applications. Before deep-diving into details of BM, we will discuss some of the fundamental concepts that are vital to understanding BM. 
+
+BMs are useful to extract latent space from the data. The difference is in the architecture, the representation of the latent space and the training process. 
+
+%----------------------------------------------------------------------------
+\subsubsection{Markov Chain}
+
+A Markov chain is a probabilistic model used to estimate a sequence of possible events in which the probability of each event depends only on the state attained in the previous event.  In a Markov chain, the future state depends only on the present state and not on the past states. An example of Markov’s process is show in figure 4.  The position of the randomly walking person at instant t+1 is dependent on the current state t and not on the previous states (t-1, t-2, …..). This behavior is referred to as Markov property.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.65\columnwidth]{figures/abra.png}
+	\caption{abra alatti szoveg}
+\end{figure}
+
+
+%----------------------------------------------------------------------------
+\subsubsection{Graphical model}
+
+A graphical probabilistic model is a graphical representation used to expresses the conditional dependency between random variables. A graphical model has two components in it; Vertices and edges. The vertices indicate the state of random variable and the edge indicates direction of transformation. Figure 5 shows two main types of computational graphs; directed and undirected.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.65\columnwidth]{figures/abra.png}
+	\caption{abra alatti szoveg}
+\end{figure}
+
+In directed graph, the state of the variable can transform in one direction. In the directed graph in figure 5, the state of the variable can transform from A to B or C to D, indicated by the direction of the edge and not from D to C or B to A. Edges are directed arrows in Directed graph. In undirected graph, there is no specific direction for the state of the variable to transform. In the undirected graph in figure 5, the state of the variable can transform from A to B or B to A, or from C to D or D to A. Edges are plain arcs in undirected graph. Figure 6 shows an undirected graphical model of a Markov process of diet habit of a baby. The graph model is used to indicate a baby’s choice for the next meal with the associated probabilities. The baby’s choice of next meal depends solely on what it is eating now and not what it ate earlier. The probability of choosing a specific food for next meal is calculated based on historic observations.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.65\columnwidth]{figures/abra.png}
+	\caption{abra alatti szoveg}
+\end{figure}
+
+A set of random variables having Markov property and described by an undirected graph is referred to as Markov Random Field (MRF) or Markov network. In other words, a random field is said to be a Markov random field if it satisfies Markov property. BM is a type of MRF.
+
+We now have a grasp on some of the fundamental concepts to understand BM. A Boltzmann Machine (BM) is a probabilistic generative undirected graph model that satisfies Markov property. BMs learn the probability density from the input data to generating new samples from the same distribution.  A BM has an input or visible layer and one or several hidden layers. There is no output layer. Figure 6 shows a typical architecture of a BM with single hidden layer. 
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.65\columnwidth]{figures/abra.png}
+	\caption{abra alatti szoveg}
+\end{figure}
+
+The neurons in the network learn to make stochastic decisions about whether to turn on or off based on the data fed to the network during training.  This helps the BM discover and model the complex underlying patterns in the data. A vital difference between BM and other popular neural net architectures is that the neurons in BM are connected not only to neurons in other layers but also to neurons within the same layer. Essentially, every neuron is connected to every other neuron in the network.  This imposes a stiff challenge in training a BM and this version of BM, referred to as ‘Unrestricted Boltzmann Machine’ has very little practical use. Eliminating the connections between the neurons in the same layer relaxes the challenges in training the network and such networks are called as Restricted Boltzmann Machine (RBM). In practice, RBMs are used in verity of applications due to simpler training process compared to BMs
+
+%----------------------------------------------------------------------------
+\subsubsection{Restricted Boltzmann Machines}
+
+As indicated earlier, RBM is a class of BM with single hidden layer and with a bipartite connection. This means every neuron in the visible layer is connected to every neuron in the hidden layer but the neurons in the same layer are not connected to each other. Figure 7 shows a typical architecture of an RBM. Note the differences in the connections between the neurons in figures 6 and 7. This is the only difference between the unrestricted BM and RBM.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.65\columnwidth]{figures/abra.png}
+	\caption{abra alatti szoveg}
+\end{figure}
+
+% \subsubsection{Training}
+% ha kell még content
+
+%----------------------------------------------------------------------------
+\subsection{GAN}
+%----------------------------------------------------------------------------
+
+Generative adversarial networks, also known as GANs are deep generative models and like most generative models they use a differential function represented by a neural network known as a Generator network. GANs also consist of another neural network called Discriminator network.
+
+% ez az abra nem jön be az oldalról
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.65\columnwidth]{figures/abra.png}
+	\caption{abra alatti szoveg}
+\end{figure}
+
+A Generator network takes random noise as input and runs that noise through the differential function to transform the noise and reshape it to get a recognisable structure. The output of the generator seems like a real data point. The choice of the random input voice determines which data point will come out of the generator network. Running the generator network with many different input noise values produces many different realistic output data samples. The goal for these generated data samples is to be the fair samples from the distribution of real data.
+
+But the generator network needs to be trained before it can generate realistic data points as output. The training process for a generative model is different from that of the training process of a supervised model. For a supervised learning model, each input data is associated with its respective label whereas, for a generative model, the model is shown a lot of data samples and it makes new data samples that come from the same probability distribution.
+
+GANs use an approximation where a second network called the Discriminator guides the Generator to generate the samples from the probability distribution of given data. The Discriminator is a regular neural network classifier that classifies the real samples from the fake samples generated by the Generator.
+
+During the training process, the Discriminator is shown real samples half of the time and fake samples from the Generator the other half of the time. It assigns a probability close to ‘1’ to real samples and the probability close to ‘0’ to fake samples.
+
+Meanwhile, the Generator is trying to output samples that the Discriminator would assign a probability of near one and classify them as real samples. Over time the generator is forced to produce the samples that are more realistic outputs in order to fool the Discriminator. It is clear that the two networks are competing against each other and can be termed as adversarial networks.  
+
+Note that this adversarial framework has transformed an unsupervised problem with raw data and no samples into a supervised problem with labels we create, that is, real and fake. 
+
+% ez az abra nem jön be az oldalról
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.65\columnwidth]{figures/abra.png}
+	\caption{abra alatti szoveg}
+\end{figure}
+
+In the figure above, the blue line represents the distribution of Discriminator, the green line represents Generative distribution while the bell is the distribution of real data.
+
+The Generator takes random noise value z and maps them to output values x. The probability distribution over x represented by the model becomes denser wherever more values of z are mapped. The Discriminator outputs high values wherever the density of real data is greater than the density of generated data. The Generator changes the samples it produces to move uphill along the function learned by the Discriminator and eventually the Generator’s distribution matches the distribution of real data. Due to this, the Discriminator outputs the probability of 0.5 for every sample because every sample is equally likely to be generated by the real data-set as it is to be generated by the Generator.
+
+We can think of this process as a competition between police and counterfeiters. The Generator network is like a counterfeiter trying to produce fake money and pass it off as real. The police act as a Discriminator network and want to catch the counterfeiter spending the fake money but also do not want to stop people using real money. Over time the police get better at recognising fake money but at the same time, the counterfeiter also improves his techniques to produce fake currency. At some point, the counterfeiter makes exact replicas of the currency and the police can no longer discriminate between the real and fake money.
+
+\subsubsection{Where are GANs used}
+%ide lehetne tenni pár példát a netről
+
+%----------------------------------------------------------------------------
+\subsection{Variational auto-encoder}
+
+\subsubsection{Autoencoders}
+
+Autoencoder is a type of neural network where the output layer has the same dimensionality as the input layer. In simpler words, the number of output units in the output layer is equal to the number of input units in the input layer. An autoencoder replicates the data from the input to the output in an unsupervised manner and is therefore sometimes referred to as a replicator neural network.
+
+The autoencoders reconstruct each dimension of the input by passing it through the network. It may seem trivial to use a neural network for the purpose of replicating the input, but during the replication process, the size of the input is reduced into its smaller representation. The middle layers of the neural network have a fewer number of units as compared to that of input or output layers. Therefore, the middle layers hold the reduced representation of the input. The output is reconstructed from this reduced representation of the input.
+
+An autoencoder consists of three components:
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.65\columnwidth]{figures/abra.png}
+	\caption{abra alatti szoveg}
+\end{figure}
+
+\begin{itemize}
+	\item Encoder: An encoder is a feedforward, fully connected neural network that compresses the input into a latent space representation and encodes the input image as a compressed representation in a reduced dimension. The compressed image is the distorted version of the original image.
+	\item Code: This part of the network contains the reduced representation of the input that is fed into the decoder.
+	\item Decoder: Decoder is also a feedforward network like the encoder and has a similar structure to the encoder. This network is responsible for reconstructing the input back to the original dimensions from the code.
+\end{itemize}
+
+First, the input goes through the encoder where it is compressed and stored in the layer called Code, then the decoder decompresses the original input from the code. The main objective of the autoencoder is to get an output identical to the input.
+
+Note that the decoder architecture is the mirror image of the encoder. This is not a requirement but it’s typically the case. The only requirement is the dimensionality of the input and output must be the same.
+
+\subsubsection{Variational autoencoders}
+
+The basic difference between autoencoder and variational encoder is its ability to provide continuous data or a range of data in the latent space which is helping us to generate new data or a new image.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.65\columnwidth]{figures/abra.png}
+	\caption{abra alatti szoveg}
+\end{figure}
+
+Let us understand how we are generating new data. Let’s say we have the image of a celebrity face from which our encoder model has to recognize important features mentioned below. 
+
+With every feature, we have a probability distribution. Our goal is to produce new data from the current data or a new face from the current face. How do faces differ? Skin tone, eye colour, hair colour, and many other features are different. But overall, the list of the features remains the same. Since we have a facility with two probability distributions: mean and standard deviations, we have datasets of two new ranges to provide to the decoder.
+
+As our input data follows a normal distribution, we will be able to provide two variables: mean and variance in the latent space. We want to build a multivariate Gaussian model with the assumption of non-correlation in data which helps us result in a simple vector.
+
+Now, provide a set of random samples from mean and variance distributions from latent space to the decoder for the reproduction of data (image).
+
+Still, we do not get the desired result unless we train this model to improvise with new samples every time.
+
+Since this is not a one-time activity, we need to train the model. Backpropagation is one of the important processes to train the model. Since we have random sampling, we cannot perform backpropagation, but we perform a reparameterization trick. 
+
+
+%We can randomly sample ε from a unit Gaussian, and then shift the randomly sampled ε by the μ and scale it by σ.
+
+A screenshot of a cell phone
+
+Description automatically generated
+Now we can backpropagate, and the autoencoder can learn to improvise. Let us now see post reparameterization.
+
+
+Now the most important part of the process is to identify the Loss function that helps to train the model and to minimise the loss. In our case, VAEs loss functions consist of two values.
+
+Let’s us say encoding process as recognition model loss in recognition model will be calculated with the sum of the square of means which will be:
+
+%L(x,x’)
+
+Let’s say the decoding process is generation model and error will be the difference between two distributions and which can be measured with KL divergence: 
+
+%KL(q(z|x)||p(z))
+
+Loss function of VAEs is:
+
+%L(x,x’) + ∑KL(q(z|x)||p(z))
+
+We can conclude with a conceptual understanding of VAEs. This process is widely used to generate new data for driverless vehicles, data transfer, new synthetic music and images.  Let’s look at one of the classic examples of fake face production. 
+
+A group of people posing for a photo
+
+In the above image, Source A and Source B are input to create a result in combination of A and B. 
+
+%----------------------------------------------------------------------------
+\subsection{Deep metric learning}
+
+%----------------------------------------------------------------------------
+\subsection{Siamese networks}
