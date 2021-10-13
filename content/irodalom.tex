@@ -6,24 +6,70 @@
 
 % \subsubsection{Supervised learning}
 
-%~~~~~~~~~~~~~~~~
-% Because deep learning relies on the amount and quality of the data that is used to train it, companies spend a lot to get good image data. Typically, they use either expensive human annotation or other labor-intensive tasks, such as taking more photos of products or people. This approach is costly, and it doesn’t scale. Training computers to generate high-quality images can significantly reduce cost and stimulate business growth. One of the main challenges for AI is the lack of annotated or tagged data. High-quality annotated data is very costly, so only big or rich companies can get it. Using deep learning methods, such as those described in the paper, allows more companies to generate quality data from fewer samples.
-%~~~~~~~~~~~~~~~~ (https://aws.amazon.com/blogs/machine-learning/combining-deep-learning-networks-gan-and-siamese-to-generate-high-quality-life-like-images/)
+A gépi tanulási modellek csoportosíthatók a feladat típusa alapján: megkülönböztetünk felügyelt és felügyelet nélküli, illetve megerősítéses tanulást.
 
-% In Supervised Learning, we train the machine using data that is well “labeled”. It means the data is already tagged with the correct answer. A supervised learning algorithm learns from labeled training data and predicts outcomes for unforeseen data. There are two subcategories of supervised learning, viz- Regression and Classification. Classification means to group the output into a class. If the algorithm tries to label input into two distinct classes, it is called binary classification. Selecting between more than two classes is referred to as multiclass classification. On the other hand, Regression Algorithms are used to predict continuous values such as price, salary, and age.
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=1\columnwidth]{figures/machine_learning_types.png}
+	\caption{abra alatti szoveg}
+\end{figure}
+
+A felügyelt tanulásnál ismerjük a tanító mintakészlethez tartozó célértékeket, elvárt kimeneteket. Az ilyen adatot címkézett adatot címkézettnek nevezzük. A felügyelt tanulás célja egy olyan funkció elsajátítása, amely az adatok mintája és a kívánt kimenetek alapján a legjobban közelíti az adatokban megfigyelhető bemenet és kimenet közötti kapcsolatot. A felügyelet nélküli tanulásnak viszont nincsenek címkézett kimenetei, ezért célja az adathalmazon belső szerkezetének megtanulása. Az ilyen modelleket címkézett adatokon tanítanak be, majd a modell által korábban nem látott új mintákra képest helyes becslést adni. A felügyelt tanulásnak két alkategóriája van, a regresszió és az osztályozás vagy más nével klasszifikáció. Osztályozás esetén a kimenetet két vagy több osztályba kell csoportosítani. Ha az algoritmus a bemenetet két különböző osztályba sorolja, akkor ezt bináris osztályozásnak nevezzük, míg a több mint két osztály közötti választást többosztályos osztályozásnak nevezzük. Ezzel szemben a regressziós algoritmusokat folytonos értékek előrejelzésére használják, mint például az ár, a fizetés és az életkor.
+ 
+A felügyelet nélküli tanulás esetén a megfigyelésekhez nem áll rendelkezésre elvárt célérték (azaz felügyelet). Célunk, hogy az adatok közt mintázatokat, összefüggéseket azonosítsunk. A tanítás itt a kérdéses mintázat/összefüggés definícióját jelenti, ami általában számos mérnöki iteráció után alakul ki. felügyelet nélküli tanulás alkalmazható többek között klaszterezési feladatok megoldására, dimenziócsökkentésre, asszociációs feladatokra, anomália detektálásra, illetve generatív modelleknél is.
+
+% In Supervised Learning, we train the machine using data that is well “labeled”. It means the data is already tagged with the correct answer. A supervised learning algorithm learns from labeled training data and predicts outcomes for unforeseen data. There are two subcategories of supervised learning, Regression and Classification. Classification means to group the output into a class. If the algorithm tries to label input into two distinct classes, it is called binary classification. Selecting between more than two classes is referred to as multiclass classification. On the other hand, Regression Algorithms are used to predict continuous values such as price, salary, and age.
+
+%--------------
+% Felügyelt tanulás (supervised learning): a tapasztalatok itt egy megfigyelés/adat és a hozzá tartozó elvárt célérték. A tapasztalatok halmaza egyben adott, ezt hívjuk tanító adatbázisnak (training dataset). A cél, hogy ez alapján olyan modellt tanuljunk ami korábban nem látott példákon is helyesen működik. Példa alkalmazás: ügyfélszolgálatra érkező e-mail panaszleveleket akarunk automatikusan továbbítani a megfelelő munkatárshoz, aki meg tudja válaszolni azt. Ehhez rendelkezésre áll több ezer e-mail a múltból (adat) és, hogy melyik munkatárshoz kellett irányítani a levelet (elvárt célérték). Ebből a tanító adatbázisból kell megtanulnunk egy modellt, ami a holnap érkező e-maileket a lehető legnagyobb pontossággal automatikusan a megfelelő munkatárshoz irányítja.  
+% Felügyelet nélküli tanulás (unsupervised learning): A megfigyelésekhez nem áll rendelkezésre elvárt célérték (azaz felügyelet). Célunk, hogy az adatok közt mintázatokat/összefüggéseket azonosítsunk. A tanítás itt a kérdéses mintázat/összefüggés definícióját jelenti, ami általában számos mérnöki iteráció után alakul ki.  Példa alkalmazás: a vállalat ügyfeleiről rendelkezésre állnak azok múltbeli tranzakcióinak adatai. Találjunk olyan ügyfél csoportokat, akik hasonlóan viselkednek anélkül, hogy a viselkedési csoportokat előre megadnánk! Figyelem, mérnöki feladat, hogy két tranzakciósorozat hasonlóságt leírjuk!  
+% Megerősítéses tanulás (reinforcement learning): a rendszer folyamatosan akciókat hajt végre, néha kap megerősítést, hogy mennyire jól csinálja a feladatát, és ezekből a megerősítésekbő folyamatosan tanul.  Példa alkalmazás: Robotot tanítunk büntetőt rúgni fociban. A robot csak a büntetőrúgás végén kap visszajelzést, hogy sikeres volt-e. Ebből kell saját magának kialakítani a mozgássorozatot, amire majd megint kap megerősítést (aktív tanulás).
+%-------------- (https://www.inf.u-szeged.hu/~rfarkas/ML20/alapfogalmak.html)
 
 % Unsupervised Learning is a machine learning technique, where the model does not need any supervision. Instead, we need to allow the model to work on its own to discover information. It mainly deals with the unlabelled data. Density estimation, dimensionality reduction, and clustering and some of the main applications of unsupervised learning.
 
 % In Machine learning, supervised learning methods are used when the objective is to learn mapping between the attributes and the target in the data. When the objective is to identify the underlying structure or the pattern in the data, unsupervised learning methods are useful. Some of the popular unsupervised learning methods are Clustering, Dimensionality reduction, Association mining, Anomaly detection and Generative models. Each of these techniques have a different pattern recognition objective such as identifying latent grouping, identifying latent space, finding irregularities in the data, density estimation or generating new samples from the data. 
 
 %----------------------------------------------------------------------------
-% \subsubsection{Generative models}
+% \subsubsection{Generative vs discriminative modeling}
 
-The learning models in machine learning can be classified into two sub-categories, viz – Discriminative models and Generative models. To understand GANs, we should know about generative models and how they are different from Discriminative models.
+A gépi tanulási modelleket feladatuk szerint két további alkategóriába sorolhatjuk: generatív és diszkriminatív modellek. 
 
-Discriminative models classify input data; i.e., given the features of an instance of data, they predict a label or category to which that data belongs. In Supervised Learning, the classification algorithms/models are examples of discriminative models.
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.65\columnwidth]{figures/generative_discriminative.png}
+	\caption{abra alatti szoveg}
+\end{figure}
 
-Generative Modelling is an unsupervised learning task in machine learning that involves generating new data samples from the probability distribution of training data. Given some data, the aim is to have a model for the underlying probability distribution of that data so that we can draw samples that are similar to our training data.
+A diszkriminatív modellek a statisztikai osztályozásban használt modellek egy osztályára vonatkozik, amelyet főként felügyelt gépi tanulási feladatokra használnak. Az ilyen típusú modelleket feltételes modelleknek is nevezik, mivel megtanulják az osztályok vagy címkék elhatárolását egy adathalmazban. A diszkriminatív modellek (akárcsak a szó szerinti értelemben) a feltételes valószínűség modellezése helyett elkülönítik az osztályokat, és nem tesznek feltételezéseket az adatpontokról. Ezek a modellek azonban nem képesek új adatpontok előállítására. Ezért a diszkriminatív modellek végső célja az egyes osztályok elkülönítése egymástól.
+
+%----------
+A generatív modelleket a statisztikai modellek osztályának tekintik, amelyek új adatpéldányokat hozhatnak létre. Ezeket a modelleket a felügyelet nélküli gépi tanulásban használják olyan feladatok elvégzésére, mint pl
+
+% Valószínűség és valószínűség becslés,
+% Modellezési adatpontok,
+% A jelenség adatokban való leírásához,
+% E valószínűségek alapján meg kell különböztetni az osztályokat.
+% Mivel az ilyen típusú modellek gyakran a Bayes -tételre támaszkodnak, hogy megtalálják az együttes valószínűséget, a generatív modellek komplexebb feladatot is megoldhatnak, mint az analóg diszkriminatív modellek.
+
+% Tehát a generációs modellek az egyes osztályok eloszlására összpontosítanak egy adathalmazban, és a tanulási algoritmusok hajlamosak modellezni az adatpontok mögöttes mintáit vagy eloszlását. Ezek a modellek a közös valószínűség fogalmát használják, és létrehozzák azokat az eseteket, amikor egy adott tulajdonság (x) vagy bemenet és a kívánt kimenet vagy címke (y) egyszerre léteznek.
+
+% Ezek a modellek valószínűségi becsléseket és valószínűséget használnak az adatpontok modellezésére és az adathalmazban található különböző osztálycímkék megkülönböztetésére. A diszkriminatív modellektől eltérően ezek a modellek új adatpontok generálására is képesek.
+
+% Mindazonáltal jelentős hátrányuk is van - Ha vannak kiugró értékek az adatkészletben, akkor ez jelentős mértékben befolyásolja az ilyen típusú modelleket.
+
+
+%-----
+% A generatív modellezés egy felügyelet nélküli tanulási feladat a gépi tanulásban, amely magában foglalja az új adatminták előállítását a képzési adatok valószínűségi eloszlásából. Bizonyos adatok ismeretében a cél az, hogy legyen egy modell az adatok mögöttes valószínűségi eloszlására, hogy mintákat vehessünk a képzési adatainkhoz.
+
+% ~~~
+% The learning models in machine learning can be classified into two sub-categories, Discriminative models and Generative models. Discriminative models classify input data; i.e., given the features of an instance of data, they predict a label or category to which that data belongs. In Supervised Learning, the classification algorithms/models are examples of discriminative models.
+
+% Generative Modelling is an unsupervised learning task in machine learning that involves generating new data samples from the probability distribution of training data. Given some data, the aim is to have a model for the underlying probability distribution of that data so that we can draw samples that are similar to our training data.
+
+%~~~~~~~~~~
+% Machine learning models can be classified into two types of models – Discriminative and Generative models. In simple words, a discriminative model makes predictions on the unseen data based on conditional probability and can be used either for classification or regression problem statements. On the contrary, a generative model focuses on the distribution of a dataset to return a probability for a given example.
+%~~~~~~~~~~ (https://www.analyticsvidhya.com/blog/2021/07/deep-understanding-of-discriminative-and-generative-models-in-machine-learning/)
 
 %~~~~~~~~~
 % Each observation consists of many features—for an image generation problem, the features are usually the individual pixel values. It is our goal to build a model that can generate new sets of features that look as if they have been created using the same rules as the original data. Conceptually, for image generation this is an incredibly difficult task, considering the vast number of ways that individual pixel values can be assigned and the relatively tiny number of such arrangements that constitute an image of the entity we are trying to simulate.
@@ -34,19 +80,22 @@ Generative Modelling is an unsupervised learning task in machine learning that i
 %~~~~~~~~~ (https://www.oreilly.com/library/view/generative-deep-learning/9781492041931/ch01.html)
 
 %~~~~~~~~~
-Mathematically, generative models learn the joint probability distribution P(X,Y), whereas the discriminative models learn the posterior probability, P(Y|X), that is the probability of the label Y given the data X.
+% Mathematically, generative models learn the joint probability distribution P(X,Y), whereas the discriminative models learn the posterior probability, P(Y|X), that is the probability of the label Y given the data X.
 
 % Mathematically, we think about a dataset of examples x_1, \ldots, x_nx 1 ​ ,…,x n ​ as samples from a true data distribution p(x)p(x). In the example image below, the blue region shows the part of the image space that, with a high probability (over some threshold) contains real images, and black dots indicate our data points (each is one image in our dataset). Now, our model also describes a distribution \hat{p}_{\theta}(x) p ^ ​ θ ​ (x) (green) that is defined implicitly by taking points from a unit Gaussian distribution (red) and mapping them through a (deterministic) neural network — our generative model (yellow). Our network is a function with parameters \thetaθ, and tweaking these parameters will tweak the generated distribution of images. Our goal then is to find parameters \thetaθ that produce a distribution that closely matches the true data distribution (for example, by having a small KL divergence loss). Therefore, you can imagine the green distribution starting out random and then the training process iteratively changing the parameters \thetaθ to stretch and squeeze it to better match the blue distribution.
 % + ábra
 %~~~~~~~~~ (https://openai.com/blog/generative-models/)
 
+%~~~~~~~~~~~~~~~~
+% Because deep learning relies on the amount and quality of the data that is used to train it, companies spend a lot to get good image data. Typically, they use either expensive human annotation or other labor-intensive tasks, such as taking more photos of products or people. This approach is costly, and it doesn’t scale. Training computers to generate high-quality images can significantly reduce cost and stimulate business growth. One of the main challenges for AI is the lack of annotated or tagged data. High-quality annotated data is very costly, so only big or rich companies can get it. Using deep learning methods, such as those described in the paper, allows more companies to generate quality data from fewer samples.
+%~~~~~~~~~~~~~~~~ (https://aws.amazon.com/blogs/machine-learning/combining-deep-learning-networks-gan-and-siamese-to-generate-high-quality-life-like-images/)
+
+%~~~~~~~~~~~~~ some more from: (https://www.analyticsvidhya.com/blog/2021/07/deep-understanding-of-discriminative-and-generative-models-in-machine-learning/)
+
 %----------------------------------------------------------------------------
 % \subsubsection{Uses for Generative models}
 
-Uses of Generative Models
-Contributed by: Saurav Sindhwani
-LinkedIn Profile: https://www.linkedin.com/in/saurav-sindhwani-35b7b728/
-
+Uses of Generative Models:
 \begin{itemize}
 	\item It can help in generating artificial faces.
 	\item It can be used in Text to image generation.
