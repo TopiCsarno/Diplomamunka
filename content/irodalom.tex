@@ -1,22 +1,23 @@
 %----------------------------------------------------------------------------
-\section{Generative models}
+\section{Irodalomkutatás}
 %----------------------------------------------------------------------------
 
-\subsection{Felvezető}
+% \subsection{Generatív modellek csoportosítása}
 
-\subsubsection{Supervised learning}
+% \subsubsection{Supervised learning}
 
-Because deep learning relies on the amount and quality of the data that is used to train it, companies spend a lot to get good image data. Typically, they use either expensive human annotation or other labor-intensive tasks, such as taking more photos of products or people. This approach is costly, and it doesn’t scale. Training computers to generate high-quality images can significantly reduce cost and stimulate business growth. One of the main challenges for AI is the lack of annotated or tagged data. High-quality annotated data is very costly, so only big or rich companies can get it. Using deep learning methods, such as those described in the paper, allows more companies to generate quality data from fewer samples.(https://aws.amazon.com/blogs/machine-learning/combining-deep-learning-networks-gan-and-siamese-to-generate-high-quality-life-like-images/)
+%~~~~~~~~~~~~~~~~
+% Because deep learning relies on the amount and quality of the data that is used to train it, companies spend a lot to get good image data. Typically, they use either expensive human annotation or other labor-intensive tasks, such as taking more photos of products or people. This approach is costly, and it doesn’t scale. Training computers to generate high-quality images can significantly reduce cost and stimulate business growth. One of the main challenges for AI is the lack of annotated or tagged data. High-quality annotated data is very costly, so only big or rich companies can get it. Using deep learning methods, such as those described in the paper, allows more companies to generate quality data from fewer samples.
+%~~~~~~~~~~~~~~~~ (https://aws.amazon.com/blogs/machine-learning/combining-deep-learning-networks-gan-and-siamese-to-generate-high-quality-life-like-images/)
 
-In Supervised Learning, we train the machine using data that is well “labeled”. It means the data is already tagged with the correct answer. A supervised learning algorithm learns from labeled training data and predicts outcomes for unforeseen data. There are two subcategories of supervised learning, viz- Regression and Classification.
-Classification means to group the output into a class. If the algorithm tries to label input into two distinct classes, it is called binary classification. Selecting between more than two classes is referred to as multiclass classification. On the other hand, Regression Algorithms are used to predict continuous values such as price, salary, and age.
+% In Supervised Learning, we train the machine using data that is well “labeled”. It means the data is already tagged with the correct answer. A supervised learning algorithm learns from labeled training data and predicts outcomes for unforeseen data. There are two subcategories of supervised learning, viz- Regression and Classification. Classification means to group the output into a class. If the algorithm tries to label input into two distinct classes, it is called binary classification. Selecting between more than two classes is referred to as multiclass classification. On the other hand, Regression Algorithms are used to predict continuous values such as price, salary, and age.
 
-Unsupervised Learning is a machine learning technique, where the model does not need any supervision. Instead, we need to allow the model to work on its own to discover information. It mainly deals with the unlabelled data. Density estimation, dimensionality reduction, and clustering and some of the main applications of unsupervised learning.
+% Unsupervised Learning is a machine learning technique, where the model does not need any supervision. Instead, we need to allow the model to work on its own to discover information. It mainly deals with the unlabelled data. Density estimation, dimensionality reduction, and clustering and some of the main applications of unsupervised learning.
 
-In Machine learning, supervised learning methods are used when the objective is to learn mapping between the attributes and the target in the data. When the objective is to identify the underlying structure or the pattern in the data, unsupervised learning methods are useful. Some of the popular unsupervised learning methods are Clustering, Dimensionality reduction, Association mining, Anomaly detection and Generative models. Each of these techniques have a different pattern recognition objective such as identifying latent grouping, identifying latent space, finding irregularities in the data, density estimation or generating new samples from the data. 
+% In Machine learning, supervised learning methods are used when the objective is to learn mapping between the attributes and the target in the data. When the objective is to identify the underlying structure or the pattern in the data, unsupervised learning methods are useful. Some of the popular unsupervised learning methods are Clustering, Dimensionality reduction, Association mining, Anomaly detection and Generative models. Each of these techniques have a different pattern recognition objective such as identifying latent grouping, identifying latent space, finding irregularities in the data, density estimation or generating new samples from the data. 
 
 %----------------------------------------------------------------------------
-\subsubsection{Generative models}
+% \subsubsection{Generative models}
 
 The learning models in machine learning can be classified into two sub-categories, viz – Discriminative models and Generative models. To understand GANs, we should know about generative models and how they are different from Discriminative models.
 
@@ -25,11 +26,11 @@ Discriminative models classify input data; i.e., given the features of an instan
 Generative Modelling is an unsupervised learning task in machine learning that involves generating new data samples from the probability distribution of training data. Given some data, the aim is to have a model for the underlying probability distribution of that data so that we can draw samples that are similar to our training data.
 
 %~~~~~~~~~
-Each observation consists of many features—for an image generation problem, the features are usually the individual pixel values. It is our goal to build a model that can generate new sets of features that look as if they have been created using the same rules as the original data. Conceptually, for image generation this is an incredibly difficult task, considering the vast number of ways that individual pixel values can be assigned and the relatively tiny number of such arrangements that constitute an image of the entity we are trying to simulate.
+% Each observation consists of many features—for an image generation problem, the features are usually the individual pixel values. It is our goal to build a model that can generate new sets of features that look as if they have been created using the same rules as the original data. Conceptually, for image generation this is an incredibly difficult task, considering the vast number of ways that individual pixel values can be assigned and the relatively tiny number of such arrangements that constitute an image of the entity we are trying to simulate.
 
-A generative model must also be probabilistic rather than deterministic. If our model is merely a fixed calculation, such as taking the average value of each pixel in the dataset, it is not generative because the model produces the same output every time. The model must include a stochastic (random) element that influences the individual samples generated by the model.
+% A generative model must also be probabilistic rather than deterministic. If our model is merely a fixed calculation, such as taking the average value of each pixel in the dataset, it is not generative because the model produces the same output every time. The model must include a stochastic (random) element that influences the individual samples generated by the model.
 
-In other words, we can imagine that there is some unknown probabilistic distribution that explains why some images are likely to be found in the training dataset and other images are not. It is our job to build a model that mimics this distribution as closely as possible and then sample from it to generate new, distinct observations that look as if they could have been included in the original training set.
+% In other words, we can imagine that there is some unknown probabilistic distribution that explains why some images are likely to be found in the training dataset and other images are not. It is our job to build a model that mimics this distribution as closely as possible and then sample from it to generate new, distinct observations that look as if they could have been included in the original training set.
 %~~~~~~~~~ (https://www.oreilly.com/library/view/generative-deep-learning/9781492041931/ch01.html)
 
 %~~~~~~~~~
@@ -40,7 +41,7 @@ Mathematically, generative models learn the joint probability distribution P(X,Y
 %~~~~~~~~~ (https://openai.com/blog/generative-models/)
 
 %----------------------------------------------------------------------------
-\subsubsection{Uses for Generative models}
+% \subsubsection{Uses for Generative models}
 
 Uses of Generative Models
 Contributed by: Saurav Sindhwani
@@ -58,7 +59,7 @@ Generative models target the true distribution of the training data to generate 
 The neural networks we use as generative models have parameters which are smaller than the amount of data we have as training dataset. The models are forced to discover the distribution in order to generate data.
 
 %----------------------------------------------------------------------------
-\subsubsection{Generative model types}
+% \subsubsection{Generative model types}
 
 The association between a random continuous variable ‘x’ and the probability of it assuming specific values ‘p(x)’ is referred to as the probability density function or simply ‘density’. Figure 2 shows a typical density function. Knowing the probability density for a random variable can be useful to determine how likely the random variable is to assume a specific value. From the density plot in figure 2 it is easy to know that the variable x is more likely to assume a value of 50 and less likely to assume a value of 65.
 
@@ -132,9 +133,9 @@ We now have a grasp on some of the fundamental concepts to understand BM. A Bolt
 The neurons in the network learn to make stochastic decisions about whether to turn on or off based on the data fed to the network during training.  This helps the BM discover and model the complex underlying patterns in the data. A vital difference between BM and other popular neural net architectures is that the neurons in BM are connected not only to neurons in other layers but also to neurons within the same layer. Essentially, every neuron is connected to every other neuron in the network.  This imposes a stiff challenge in training a BM and this version of BM, referred to as ‘Unrestricted Boltzmann Machine’ has very little practical use. Eliminating the connections between the neurons in the same layer relaxes the challenges in training the network and such networks are called as Restricted Boltzmann Machine (RBM). In practice, RBMs are used in verity of applications due to simpler training process compared to BMs
 
 %~~~~~~~~
-Boltzmann Machine consists of a neural network with an input layer and one or several hidden layers. The neurons in the neural network make stochastic decisions about whether to turn on or off based on the data we feed during training and the cost function the Boltzmann Machine is trying to minimize.
-By doing so, the Boltzmann Machine discovers interesting features about the data, which help model the complex underlying relationships and patterns present in the data.
-This Boltzmann Machine uses neural networks with neurons that are connected not only to other neurons in other layers but also to neurons within the same layer. That makes training an unrestricted Boltzmann machine very inefficient and Boltzmann Machine had very little commercial success.
+% Boltzmann Machine consists of a neural network with an input layer and one or several hidden layers. The neurons in the neural network make stochastic decisions about whether to turn on or off based on the data we feed during training and the cost function the Boltzmann Machine is trying to minimize.
+% By doing so, the Boltzmann Machine discovers interesting features about the data, which help model the complex underlying relationships and patterns present in the data.
+% This Boltzmann Machine uses neural networks with neurons that are connected not only to other neurons in other layers but also to neurons within the same layer. That makes training an unrestricted Boltzmann machine very inefficient and Boltzmann Machine had very little commercial success.
 Boltzmann Machines are primarily divided into two categories: Energy-based Models (EBMs) and Restricted Boltzmann Machines (RBM). When these RBMs are stacked on top of each other, they are known as Deep Belief Networks (DBN).
 %~~~~~~~~~ (https://medium.com/machine-learning-researcher/boltzmann-machine-c2ce76d94da5)
 
@@ -186,7 +187,9 @@ During the training process, the Discriminator is shown real samples half of the
 
 Meanwhile, the Generator is trying to output samples that the Discriminator would assign a probability of near one and classify them as real samples. Over time the generator is forced to produce the samples that are more realistic outputs in order to fool the Discriminator. It is clear that the two networks are competing against each other and can be termed as adversarial networks.  
 
-Generative adversarial networks (GANs), are a relatively new deep learning architecture for neural networks. They were pioneered by Ian Goodfellow and his colleagues at the University of Montreal in 2014. A GAN trains two different networks, one against the other, hence they are adversarial. One network generates an image (or any other sample, such as text or speech) by taking a real image and modifying it as much as it can. The other network tries to predict whether the image is “fake” or “real.” The first network, called the G network, learns to generate better images. The second network, the D network, learns to discriminate between the fake and real images. Its ability to discriminate improves over time. (https://aws.amazon.com/blogs/machine-learning/combining-deep-learning-networks-gan-and-siamese-to-generate-high-quality-life-like-images/)
+%~~~~~~~~~~~~~
+% Generative adversarial networks (GANs), are a relatively new deep learning architecture for neural networks. They were pioneered by Ian Goodfellow and his colleagues at the University of Montreal in 2014. A GAN trains two different networks, one against the other, hence they are adversarial. One network generates an image (or any other sample, such as text or speech) by taking a real image and modifying it as much as it can. The other network tries to predict whether the image is “fake” or “real.” The first network, called the G network, learns to generate better images. The second network, the D network, learns to discriminate between the fake and real images. Its ability to discriminate improves over time. 
+%~~~~~~~~~~~~~ (https://aws.amazon.com/blogs/machine-learning/combining-deep-learning-networks-gan-and-siamese-to-generate-high-quality-life-like-images/)
 
 Note that this adversarial framework has transformed an unsupervised problem with raw data and no samples into a supervised problem with labels we create, that is, real and fake. 
 
@@ -215,9 +218,11 @@ Autoencoder is a type of neural network where the output layer has the same dime
 
 The autoencoders reconstruct each dimension of the input by passing it through the network. It may seem trivial to use a neural network for the purpose of replicating the input, but during the replication process, the size of the input is reduced into its smaller representation. The middle layers of the neural network have a fewer number of units as compared to that of input or output layers. Therefore, the middle layers hold the reduced representation of the input. The output is reconstructed from this reduced representation of the input.
 
-Anautoencoder is a neural network that is trained to attempt to copy its inputto its output. Internally, it has a hidden layerhthat describes acodeused torepresent the input. The network may be viewed as consisting of two parts: anencoder functionh=f(x) and a decoder that produces a reconstructionr=g(h).This architecture is presented in ﬁgure 14.1. If an autoencoder succeeds in simplylearning to setg(f(x)) =xeverywhere, then it is not especially useful. Instead,autoencoders are designed to be unable to learn to copy perfectly. Usually they arerestricted in ways that allow them to copy only approximately, and to copy onlyinput that resembles the training data. Because the model is forced to prioritizewhich aspects of the input should be copied, it often learns useful properties of thedata (https://www.deeplearningbook.org/contents/autoencoders.html)
+%~~~~~~~~~~~~~~~~~~~~~~~
+Anautoencoder is a neural network that is trained to attempt to copy its inputto its output. Internally, it has a hidden layerhthat describes acodeused torepresent the input. The network may be viewed as consisting of two parts: anencoder functionh=f(x) and a decoder that produces a reconstructionr=g(h).This architecture is presented in ﬁgure 14.1. If an autoencoder succeeds in simplylearning to setg(f(x)) =xeverywhere, then it is not especially useful. Instead,autoencoders are designed to be unable to learn to copy perfectly. Usually they arerestricted in ways that allow them to copy only approximately, and to copy onlyinput that resembles the training data. Because the model is forced to prioritizewhich aspects of the input should be copied, it often learns useful properties of thedata
 
-Modern autoencoders have generalized the idea of an encoder and a de-coder beyond deterministic functions to stochastic mappingspencoder(h | x) andpdecoder(x | h).The idea of autoencoders has been part of the historical landscape of neuralnetworks for decades (LeCun, 1987; Bourlard and Kamp, 1988; Hinton and Zemel,1994). Traditionally, autoencoders were used for dimensionality reduction orfeature learning. Recently, theoretical connections between autoencoders andlatent variable models have brought autoencoders to the forefront of generativemodeling (https://www.deeplearningbook.org/contents/autoencoders.html)
+Modern autoencoders have generalized the idea of an encoder and a de-coder beyond deterministic functions to stochastic mappingspencoder(h | x) andpdecoder(x | h).The idea of autoencoders has been part of the historical landscape of neuralnetworks for decades (LeCun, 1987; Bourlard and Kamp, 1988; Hinton and Zemel,1994). Traditionally, autoencoders were used for dimensionality reduction orfeature learning. Recently, theoretical connections between autoencoders andlatent variable models have brought autoencoders to the forefront of generativemodeling
+%~~~~~~~~~~~~~~~~~~~~~~ (https://www.deeplearningbook.org/contents/autoencoders.html)
 
 An autoencoder consists of three components:
 
@@ -299,8 +304,6 @@ In the above image, Source A and Source B are input to create a result in combin
 %if need more / better explonation: https://medium.com/analytics-vidhya/vae-generative-modelling-for-face-recognition-71e8ba16950c
 
 %----------------------------------------------------------------------------
-\section{Arcfelismerés}
-
 \subsection{Deep metric learning}
 
 Similarity learning is an area of supervised machine learning in which the goal is to learn a similarity function that measures how similar or related two objects are and returns a similarity value. A higher similarity score is returned when the objects are similar and a lower similarity score is returned when the objects are different. Now let us see some use cases to know why and when similarity learning is used.
@@ -353,7 +356,7 @@ So when A and B are the same person, we will have a label y equal to 1 and when 
 By using contrastive loss, we bring positive pairs together and negative pairs apart. But using this loss function we cannot learn ranking which means we are not able to say how much two pairs are similar to each other, we shall see how to do this in the next section.
 
 %----------------------------------------------------------------------------
-\subsection{Triplet loss}
+% \subsection{Triplet loss}
 
 When using contrastive loss we were only able to differentiate between similar
 and different images but when we use triplet loss we can also find out which
