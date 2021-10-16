@@ -119,7 +119,6 @@ Matematikailag, az adathalmaz elemei $x_1, \dots, x_n$ a valódi háttéreloszl�
 	\label{fig:data_distribution}
 \end{figure}
 
-
 %-------
 % Now, it is not always possible for our machine to learn the true distribution of the data, for this, we take the help of a powerful neural network which can help make the machine learn the approximate true distribution of the data. The neural networks we use as generative models have parameters which are smaller than the amount of data we have as training dataset. The models are forced to discover the distribution in order to generate data.
 %-------
@@ -139,86 +138,107 @@ A generatív modellek általában kétféle sűrűségbecslést használnak. Exp
 
 
 %----------------------------------------------------------------------------
+%----------------------------------------------------------------------------
 \subsection{Boltzman machines}
 
-In the current article we will focus on generative models, specifically Boltzmann Machine (BM), its popular variant Restricted Boltzmann Machine (RBM), working of RBM and some of its applications. Before deep-diving into details of BM, we will discuss some of the fundamental concepts that are vital to understanding BM. 
+A következő részben a generatív modellek egyik fajtáját: a Boltzman gépet (BM) működését, illetve annak egyik változatát, a Restricted Boltzman gépet (RBM) mutatom be, de előtte néhány alapvető fogalmat mutatok be amik szükségesek a BM megértéséhez.
 
-BMs are useful to extract latent space from the data. The difference is in the architecture, the representation of the latent space and the training process. 
+% A jelenlegi cikkben a generatív modellekre fogunk összpontosítani, különösen a Boltzmann Machine (BM), népszerű változata a Restricted Boltzmann Machine (RBM), az RBM működésére és néhány alkalmazására. Mielőtt elmélyülne a BM részleteiben, megvitatunk néhány alapvető fogalmat, amelyek elengedhetetlenek a BM megértéséhez.
+
+% In the current article we will focus on generative models, specifically Boltzmann Machine (BM), its popular variant Restricted Boltzmann Machine (RBM), working of RBM and some of its applications. Before deep-diving into details of BM, we will discuss some of the fundamental concepts that are vital to understanding BM. 
+
+% BMs are useful to extract latent space from the data. The difference is in the architecture, the representation of the latent space and the training process. 
 
 %----------------------------------------------------------------------------
-\subsubsection{Markov Chain}
+\subsubsection{Markov-lánc}
 
-A Markov chain is a probabilistic model used to estimate a sequence of possible events in which the probability of each event depends only on the state attained in the previous event.  In a Markov chain, the future state depends only on the present state and not on the past states. An example of Markov’s process is show in figure 4.  The position of the randomly walking person at instant t+1 is dependent on the current state t and not on the previous states (t-1, t-2, …..). This behavior is referred to as Markov property.
+A matematikában a Markov-lánc egy olyan diszkrét sztochasztikus folyamatot jelent, amely Markov-tulajdonságú. Nevét egy orosz matematikusról, Andrej Markovról kapta, aki hírnevét a tudomány ezen ágában végzett kutatásaival szerezte. Markov-tulajdonságúnak lenni röviden annyit jelent, hogy adott jelenbeli állapot mellett, a rendszer jövőbeni állapota nem függ a múltbeliektől. Másképpen megfogalmazva ez azt is jelenti, hogy a jelen leírása teljesen magába foglalja az összes olyan információt, ami befolyásolhatja a folyamat jövőbeli helyzetét. A \ref{fig:markov}. ábra mutat egy példát a Markov-láncra. A véletlenszerűen sétáló személy helyzete a $t+1$ pillanatban a $t$ aktuális állapottól függ, és nem a korábbi állapotoktól $(t-1, t-2,\dots)$. Ezt a viselkedést Markov tulajdonságnak nevezik.
+
+% A Markov chain is a probabilistic model used to estimate a sequence of possible events in which the probability of each event depends only on the state attained in the previous event.  In a Markov chain, the future state depends only on the present state and not on the past states. An example of Markov’s process is show in figure 4.  The position of the randomly walking person at instant t+1 is dependent on the current state t and not on the previous states (t-1, t-2, …..). This behavior is referred to as Markov property.
 
 \begin{figure}[ht]
 	\centering
-	\includegraphics[width=0.65\columnwidth]{figures/abra.png}
+	\includegraphics[width=1\columnwidth]{figures/markov_chain.png}
 	\caption{abra alatti szoveg}
+	\label{fig:markov}
 \end{figure}
 
 
 %----------------------------------------------------------------------------
 \subsubsection{Graphical model}
 
-A graphical probabilistic model is a graphical representation used to expresses the conditional dependency between random variables. A graphical model has two components in it; Vertices and edges. The vertices indicate the state of random variable and the edge indicates direction of transformation. Figure 5 shows two main types of computational graphs; directed and undirected.
+A grafikus valószínűségi modell egy grafikus ábrázolás, amivel véletlen változók közötti feltételes valószínűséget lehet kifejezni. A grafikus modellnek két fő komponense van: csúcsok és élek. A csúcsok a véletlen változó állapotát jelzik, míg az élek az átalakulás irányát. Az ilyen gráfoknak két fő típusa van: irányított és irányítatlan. A \ref{fig:graph}. ábrán látható példán egy csecsemő táplálkozási szokásainak Markov folyamatának irányítatlan grafikus modelljét láthatjuk. A baba következő étkezésének kiválasztása kizárólag attól függ, hogy mit eszik most, és nem attól, amit korábban evett.
 
 \begin{figure}[ht]
 	\centering
-	\includegraphics[width=0.65\columnwidth]{figures/abra.png}
+	\includegraphics[width=0.7\columnwidth]{figures/graph_example.png}
 	\caption{abra alatti szoveg}
+	\label{fig:graph}
 \end{figure}
 
-In directed graph, the state of the variable can transform in one direction. In the directed graph in figure 5, the state of the variable can transform from A to B or C to D, indicated by the direction of the edge and not from D to C or B to A. Edges are directed arrows in Directed graph. In undirected graph, there is no specific direction for the state of the variable to transform. In the undirected graph in figure 5, the state of the variable can transform from A to B or B to A, or from C to D or D to A. Edges are plain arcs in undirected graph. Figure 6 shows an undirected graphical model of a Markov process of diet habit of a baby. The graph model is used to indicate a baby’s choice for the next meal with the associated probabilities. The baby’s choice of next meal depends solely on what it is eating now and not what it ate earlier. The probability of choosing a specific food for next meal is calculated based on historic observations.
+%https://en.wikipedia.org/wiki/Graphical_model
+
+% A grafikonmodell segítségével jelezhetjük a baba választását a következő étkezéshez a valószínűségekkel együtt. A baba következő étkezésének kiválasztása kizárólag attól függ, hogy mit eszik most, és nem attól, amit korábban evett. Annak valószínűségét, hogy egy adott ételt választanak a következő étkezéshez, történelmi megfigyelések alapján számítják ki.
+
+% A graphical probabilistic model is a graphical representation used to expresses the conditional dependency between random variables. A graphical model has two components in it; Vertices and edges. The vertices indicate the state of random variable and the edge indicates direction of transformation. The two main types of computational graphs; directed and undirected. Figure 6 shows an undirected graphical model of a Markov process of diet habit of a baby. The graph model is used to indicate a baby’s choice for the next meal with the associated probabilities. The baby’s choice of next meal depends solely on what it is eating now and not what it ate earlier. The probability of choosing a specific food for next meal is calculated based on historic observations.
+
+%-------
+
+Egy Markov tulajdonsággal rendelkező irányítatlan gráf által leírt valószínűségi változók halmazát Markov hálózatnak (Markov Random Field az angol szakirodalomban). A Boltzman gépek is a MRF-ek közé tartozik.
+
+A Boltzman gép egy probabilisztikus generatív irányítatlan gráfmodell, amely kielégíti a Markov tulajdonságot. A BM-ek megtanulják a tanító minták eloszlását, majd abból új mintákat tudnak generálni. A BM rendelkezik bemeneti réteggel (látható réteggel) és egy vagy több rejtett réteggel. Kimeneti rétege nincs. A \ref{fig:bm}/a. ábrán láthatunk egy tipikus egy rejtett réteget tartalmazó Boltzman gépet.
+
+% A Markov tulajdonsággal rendelkező és egy nem irányított gráf által leírt véletlen változók halmazát Markov Random Field (MRF) vagy Markov hálózatnak nevezzük. Más szavakkal, egy véletlen mező Markov véletlenszerű mező, ha kielégíti Markov tulajdonságát. A BM egyfajta MRF.
+
+% A Boltzmann -gép (BM) egy valószínűségi generatív irányítatlan gráfmodell, amely kielégíti Markov tulajdonságát. A BM -ek megtanulják a valószínűségi sűrűséget a bemeneti adatoktól az új minták generálásáig azonos eloszlásból. A BM rendelkezik bemeneti vagy látható réteggel és egy vagy több rejtett réteggel. Nincs kimeneti réteg. A 6. ábra egy rejtett rétegű BM tipikus architektúráját mutatja.
+
+% A set of random variables having Markov property and described by an undirected graph is referred to as Markov Random Field (MRF) or Markov network. In other words, a random field is said to be a Markov random field if it satisfies Markov property. BM is a type of MRF.
+
+% We now have a grasp on some of the fundamental concepts to understand BM. A Boltzmann Machine (BM) is a probabilistic generative undirected graph model that satisfies Markov property. BMs learn the probability density from the input data to generating new samples from the same distribution. A BM has an input or visible layer and one or several hidden layers. There is no output layer. Figure 6 shows a typical architecture of a BM with single hidden layer. 
+
+A hálózat neuronjai megtanulnak sztochasztikus döntéseket hozni akkór, hogy be vagy kikapcsoljanak a tanítás során látott mintáknak megfelelően. Így a BM-ek fel tudják fedni a tanító adatok összetett mögöttes mintázatait. Lényeges különbség a BM és az egyéb neurális hálózat architektúrák között az, hogy a BM neuronjai nemcsak más rétegek neuronjaihoz kapcsolódnak, hanem ugyanazon a rétegen belüli neuronokhoz is, minden neuron kapcsolódik a hálózat összes többi neuronhoz. Ezt azt architektúrát Korlátlan Boltzman Gépnek nevezik, aminek a tanítása rendkívűl nehézkes és e miatt kevés gyakorlati haszna van. Az azonos rétegbeli idegsejtek közötti kapcsolatok megszüntetésével egy más architektúrát kapunk amit Korlátozott Boltzman Gépnek (RMB) hív a szakirodalom. A gyakorlatban az RBM-et használják, mert a hálót könyebb tanítani. A BM és RBM közötti különbséget a \ref{fig:bm}. ábra szemlélteti.
 
 \begin{figure}[ht]
 	\centering
-	\includegraphics[width=0.65\columnwidth]{figures/abra.png}
-	\caption{abra alatti szoveg}
+	\includegraphics[width=0.60\columnwidth]{figures/RBM.png}
+	\caption{A korlátozott Boltzman gép (RBM) egy kétirányú gráfon alapuló irányítatlan grafikus modell, aminek egyik részén a látható elemek vannak (v), a másik részén a rejtett elemek (h).}
+	\label{fig:bm}
 \end{figure}
 
-A set of random variables having Markov property and described by an undirected graph is referred to as Markov Random Field (MRF) or Markov network. In other words, a random field is said to be a Markov random field if it satisfies Markov property. BM is a type of MRF.
+% The neurons in the network learn to make stochastic decisions about whether to turn on or off based on the data fed to the network during training.  This helps the BM discover and model the complex underlying patterns in the data. A vital difference between BM and other popular neural net architectures is that the neurons in BM are connected not only to neurons in other layers but also to neurons within the same layer. Essentially, every neuron is connected to every other neuron in the network.  This imposes a stiff challenge in training a BM and this version of BM, referred to as ‘Unrestricted Boltzmann Machine’ has very little practical use. Eliminating the connections between the neurons in the same layer relaxes the challenges in training the network and such networks are called as Restricted Boltzmann Machine (RBM). In practice, RBMs are used in verity of applications due to simpler training process compared to BMs
 
-We now have a grasp on some of the fundamental concepts to understand BM. A Boltzmann Machine (BM) is a probabilistic generative undirected graph model that satisfies Markov property. BMs learn the probability density from the input data to generating new samples from the same distribution.  A BM has an input or visible layer and one or several hidden layers. There is no output layer. Figure 6 shows a typical architecture of a BM with single hidden layer. 
-
-\begin{figure}[ht]
-	\centering
-	\includegraphics[width=0.65\columnwidth]{figures/abra.png}
-	\caption{abra alatti szoveg}
-\end{figure}
-
-The neurons in the network learn to make stochastic decisions about whether to turn on or off based on the data fed to the network during training.  This helps the BM discover and model the complex underlying patterns in the data. A vital difference between BM and other popular neural net architectures is that the neurons in BM are connected not only to neurons in other layers but also to neurons within the same layer. Essentially, every neuron is connected to every other neuron in the network.  This imposes a stiff challenge in training a BM and this version of BM, referred to as ‘Unrestricted Boltzmann Machine’ has very little practical use. Eliminating the connections between the neurons in the same layer relaxes the challenges in training the network and such networks are called as Restricted Boltzmann Machine (RBM). In practice, RBMs are used in verity of applications due to simpler training process compared to BMs
-
+% \subsubsection{Energy based model}
 %~~~~~~~~
-% Boltzmann Machine consists of a neural network with an input layer and one or several hidden layers. The neurons in the neural network make stochastic decisions about whether to turn on or off based on the data we feed during training and the cost function the Boltzmann Machine is trying to minimize.
-% By doing so, the Boltzmann Machine discovers interesting features about the data, which help model the complex underlying relationships and patterns present in the data.
-% This Boltzmann Machine uses neural networks with neurons that are connected not only to other neurons in other layers but also to neurons within the same layer. That makes training an unrestricted Boltzmann machine very inefficient and Boltzmann Machine had very little commercial success.
-Boltzmann Machines are primarily divided into two categories: Energy-based Models (EBMs) and Restricted Boltzmann Machines (RBM). When these RBMs are stacked on top of each other, they are known as Deep Belief Networks (DBN).
+% Boltzmann Machines are primarily divided into two categories: Energy-based Models (EBMs) and Restricted Boltzmann Machines (RBM). When these RBMs are stacked on top of each other, they are known as Deep Belief Networks (DBN).
 %~~~~~~~~~ (https://medium.com/machine-learning-researcher/boltzmann-machine-c2ce76d94da5)
 
-\subsubsection{Energy based model}
-
 %~~~~~~
-Energy is a term that may not be associated with deep learning in the first place. Rather is energy a quantitative property of physics. E.g. gravitational energy describes the potential energy a body with mass has in relation to another massive objected due to gravity. Yet some deep learning architectures use the idea of energy as a metric for the measurement of the model’s quality.
-One purpose of deep learning models is to encode dependencies between variables. The capturing of dependencies happens through associating of scalar energy to each configuration of the variables, which serves as a measure of compatibility. High energy means bad compatibility. An energy-based model tries always to minimize a predefined energy function. The energy function for the RBMs is defined as:
+% Energy is a term that may not be associated with deep learning in the first place. Rather is energy a quantitative property of physics. E.g. gravitational energy describes the potential energy a body with mass has in relation to another massive objected due to gravity. Yet some deep learning architectures use the idea of energy as a metric for the measurement of the model’s quality.
+% One purpose of deep learning models is to encode dependencies between variables. The capturing of dependencies happens through associating of scalar energy to each configuration of the variables, which serves as a measure of compatibility. High energy means bad compatibility. An energy-based model tries always to minimize a predefined energy function. The energy function for the RBMs is defined as:
 
 %equation :)
-
-As can be noticed the value of the energy function depends on the configurations of visible/input states, hidden states, weights, and biases. The training of RBM consists of the finding of parameters for given input values so that the energy reaches a minimum.
+ 
+% As can be noticed the value of the energy function depends on the configurations of visible/input states, hidden states, weights, and biases. The training of RBM consists of the finding of parameters for given input values so that the energy reaches a minimum.
 %~~~~~~ (https://medium.com/machine-learning-researcher/boltzmann-machine-c2ce76d94da5)
-
-%----------------------------------------------------------------------------
-\subsubsection{Restricted Boltzmann Machines}
-
-As indicated earlier, RBM is a class of BM with single hidden layer and with a bipartite connection. This means every neuron in the visible layer is connected to every neuron in the hidden layer but the neurons in the same layer are not connected to each other. Figure 7 shows a typical architecture of an RBM. Note the differences in the connections between the neurons in figures 6 and 7. This is the only difference between the unrestricted BM and RBM.
-
-\begin{figure}[ht]
-	\centering
-	\includegraphics[width=0.65\columnwidth]{figures/abra.png}
-	\caption{abra alatti szoveg}
-\end{figure}
 
 % \subsubsection{Training}
 % ha kell még content
+%----------------------------------------------------------------------------
+\subsubsection{RBM alkalmazásai}
+
+Az mély tanulás első napjaiban az RBM-eknek különféle feladatoknál alkalmazták, mint például dimenziócsökkentéshez, vagy ajánlórendszerekhez vagy természetes nyelv feldolgozásra. Néhány alkalmazási példa RBM-re:
+\begin{itemize}
+	\item Mintázat felismerés: Az RBM jellemzők kinyerésére (feature extraction) alkalmas mintázatfelismerési problémák esetén, amikor kézzel írott szöveg felismerése a cél. [REF]
+	\item Anánlórendszerek: Az RBM-eket széles közben használják olyan feladatokra, ahol megjósolják, hogy mit érdemes ajánlani a felhasználónak ami számára hasznos lenne, és ezért szívesen használja az alkalmazást. Példa: filmajánlás, zeneajánló. [REF]
+\end{itemize}
+
+Azonban az utóbbi időkben a gyakorlatban az RBM-eket szinte teljesen felváltották a Generatív Adversarial Network-ök (GAN), vagy a Variational Autoencoderek (VAE).
+
+% Pattern recognition : RBM is used for feature extraction in pattern recognition problems where the challenge is to understand the hand written text or a random pattern. 
+% Recommendation Engines : RBM is widely used for collaborating filtering techniques where it is used to predict what should be recommended to the end user so that the user enjoys using a particular application or platform. For example : Movie Recommendation, Book Recommendation
+% Radar Target Recognition : Here, RBM is used to detect intra pulse in Radar systems which have very low SNR and high noise.
+
+% During the early days of deep learning, RBMs were used to build a variety of applications such as Dimensionality reduction, Recommender systems, Topic modelling. However, in recent times, RBMs have been almost replaced by Generative Adversarial Networks (GANs) or Variation Autoencoder (VAEs) in different machine learning applications.
 
 %----------------------------------------------------------------------------
 \subsection{GAN}
