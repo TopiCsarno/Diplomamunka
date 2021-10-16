@@ -44,23 +44,20 @@ A gépi tanulási modelleket feladatuk szerint két további alkategóriába sor
 A diszkriminatív modellek a statisztikai osztályozásban használt modellek egy osztályára vonatkozik, amelyet főként felügyelt gépi tanulási feladatokra használnak. Az ilyen típusú modelleket feltételes modelleknek is nevezik, mivel megtanulják az osztályok vagy címkék elhatárolását egy adathalmazban. A diszkriminatív modellek (akárcsak a szó szerinti értelemben) a feltételes valószínűség modellezése helyett elkülönítik az osztályokat, és nem tesznek feltételezéseket az adatpontokról. Ezek a modellek azonban nem képesek új adatpontok előállítására. Ezért a diszkriminatív modellek végső célja az egyes osztályok elkülönítése egymástól.
 
 %----------
-A generatív modelleket a statisztikai modellek osztályának tekintik, amelyek új adatpéldányokat hozhatnak létre. Ezeket a modelleket a felügyelet nélküli gépi tanulásban használják olyan feladatok elvégzésére, mint pl
+A generatív modellek a felügyelet nélküli tanulásban használatosak. Ezek a modellek képesek megtanulni a tanító minták valószínűségi eloszlását, majd tanítás után új minták generálására képesek. Ez a tulajdonság a gyakorlatban rendkívűl előnyös. 
 
-% Valószínűség és valószínűség becslés,
-% Modellezési adatpontok,
-% A jelenség adatokban való leírásához,
-% E valószínűségek alapján meg kell különböztetni az osztályokat.
-% Mivel az ilyen típusú modellek gyakran a Bayes -tételre támaszkodnak, hogy megtalálják az együttes valószínűséget, a generatív modellek komplexebb feladatot is megoldhatnak, mint az analóg diszkriminatív modellek.
+A mély tanulásban használt modellek betanításához nagy mennyiségű, és megflelelő minőségű adatra van szükség, ezért az ezzel foglalkozó vállalatok rengeteg erőforrást áldoznak a tanítóminták begyűjtésére. Jellemzően manuális annotációra van szükség ami munkaigényes folyamat. Ez a megközelítés költséges, és nehezen skálázható. A jó minőségű adathoz tipikusan csak a nagyobb vállalatok képesek hozzájutni. A miatt generatív modellek használatával több válalat képes minőségi adatokat előállítani kevesebb mintából.
 
-% Tehát a generációs modellek az egyes osztályok eloszlására összpontosítanak egy adathalmazban, és a tanulási algoritmusok hajlamosak modellezni az adatpontok mögöttes mintáit vagy eloszlását. Ezek a modellek a közös valószínűség fogalmát használják, és létrehozzák azokat az eseteket, amikor egy adott tulajdonság (x) vagy bemenet és a kívánt kimenet vagy címke (y) egyszerre léteznek.
+% ezt lehetne szövegesen kifejteni mert érdekes.
+A generatív modelleknek számos felhasználási területe van, ezek közül néhány példa:
+\begin{itemize} 
+	\item Fotorealisztikus emberi arcképek generálására képes. [REF]
+	\item Egy képet leíró szöveg alapján képes képet készíteni
+	\item MRI kép rekonstruációra alkalmas
+	\item Az adathalmazban ritkán előforduló adatok generálását tudja, ami kiegyensúlyozhatja az adatot.
+	\item Realisztikusan képes utánozni az emberi hangot
+\end{itemize}
 
-% Ezek a modellek valószínűségi becsléseket és valószínűséget használnak az adatpontok modellezésére és az adathalmazban található különböző osztálycímkék megkülönböztetésére. A diszkriminatív modellektől eltérően ezek a modellek új adatpontok generálására is képesek.
-
-% Mindazonáltal jelentős hátrányuk is van - Ha vannak kiugró értékek az adatkészletben, akkor ez jelentős mértékben befolyásolja az ilyen típusú modelleket.
-
-
-%-----
-% A generatív modellezés egy felügyelet nélküli tanulási feladat a gépi tanulásban, amely magában foglalja az új adatminták előállítását a képzési adatok valószínűségi eloszlásából. Bizonyos adatok ismeretében a cél az, hogy legyen egy modell az adatok mögöttes valószínűségi eloszlására, hogy mintákat vehessünk a képzési adatainkhoz.
 
 % ~~~
 % The learning models in machine learning can be classified into two sub-categories, Discriminative models and Generative models. Discriminative models classify input data; i.e., given the features of an instance of data, they predict a label or category to which that data belongs. In Supervised Learning, the classification algorithms/models are examples of discriminative models.
@@ -72,7 +69,27 @@ A generatív modelleket a statisztikai modellek osztályának tekintik, amelyek 
 %~~~~~~~~~~ (https://www.analyticsvidhya.com/blog/2021/07/deep-understanding-of-discriminative-and-generative-models-in-machine-learning/)
 
 %~~~~~~~~~
-% Each observation consists of many features—for an image generation problem, the features are usually the individual pixel values. It is our goal to build a model that can generate new sets of features that look as if they have been created using the same rules as the original data. Conceptually, for image generation this is an incredibly difficult task, considering the vast number of ways that individual pixel values can be assigned and the relatively tiny number of such arrangements that constitute an image of the entity we are trying to simulate.
+Tegyük fel, hogy van egy adathalmazunk, amely emberi arcokról készült fényképeket tartalamz. Egy olyan modellt szeretnénk létrehozni, amely képes egy nem létező emberről arcképet generálni, ami mégis valóságosnak tűnik, mert a modell megtanulta az emberi arcot leíró általános szabályokat. Az ilyen feladatok megoldhatóak generatív modellezéssel. a \ref{fig:generative_model}. ábra egy tipikus generatív modellezési folyamatot mutat be.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.9\columnwidth]{figures/generative_model_struct.png}
+	\caption{abra alatti szoveg}
+	\label{fig:generative_model}
+\end{figure}
+
+Először is szükségünk van egy adathalmazra, amely számos mintát tartalmaz az általunk generálni kivánt dologról. Az adathalmaz egyes elemeit megfigyeléseknek (observation) is nevezik. Minden megfigyelés sok jellemzőből (feature) áll amelyek képek esetén az egyes pixelek értékeit jelentik. Célunk egy olyan modell létrehozása, amely képes olyan új megfigyeléseket generálni, amelyek jellemzői jól közelítik az az eredeti adathalmazban lévő jellemzőket. Képgenerálás esetén ez egy rendkívűl nehéz feladat, mivel az egyes pixel értékek rengeteg lehetséges értéket vehetnek fel, és ezek közül csak relatíve kevés konfiguráció felel meg annak a képnek amit mi generálni szeretnénk.
+
+A generatív modellek sztochasztikus jellegűnek kell lennnie, nem pedig determinisztikusnak. Ha a modellünk csupán egy fixált számítást végezne, példáuk az adathalmaz minden egyes pixelének átlagát számolná, akkor a modell minden alkalommal ugyanazt a kimenetet eredményezi. Így a generatív modellek szükségszerűen tartalmaznia kell egy sztochasztikus (véletlenszerű) elemet, amely befolyásolja a modell által generált mintákat.
+
+Más szavakkal, létezik egy ismeretlen valószínűségi eloszlás, amely megmagyarázza, hogy az egyes képek miért találhatóak a mintakészletünkban, még más képek nem. A gyakorlatban nem ismerjük a tényleges valószínűségi eloszlást, ezért azt csak közelíteni tudjuk a megfigyelések mintájából. A generatív modellek célja az, hogy ezt az eloszlást minél jobban közelítse. A modell tanítása után az eloszlást mintavételezve olyan megfigyeléseket kaphatunk, amelyek az eredeti adathalmaz elemeihez nagyon hasonlóak.
+
+%------------
+% In practice, we may not be able to assess or observe all possible outcomes of a random variable due to which we generally do not know the actual density function. In such conditions, we must rely on approximating the density function from a sample of observations. Approximating a density function using a sample of observations is referred to as ‘Density estimation’.  Learning density estimate from the training samples is fundamental to generative models.
+%~~~~~~~~~~~
+% Suppose we have a dataset containing images of horses. We may wish to build a model that can generate a new image of a horse that has never existed but still looks real because the model has learned the general rules that govern the appearance of a horse. This is the kind of problem that can be solved using generative modeling. A summary of a typical generative modeling process is shown in Figure 1-1.
+
+% First, we require a dataset consisting of many examples of the entity we are trying to generate. This is known as the training data, and one such data point is called an observation. Each observation consists of many features—for an image generation problem, the features are usually the individual pixel values. It is our goal to build a model that can generate new sets of features that look as if they have been created using the same rules as the original data. Conceptually, for image generation this is an incredibly difficult task, considering the vast number of ways that individual pixel values can be assigned and the relatively tiny number of such arrangements that constitute an image of the entity we are trying to simulate.
 
 % A generative model must also be probabilistic rather than deterministic. If our model is merely a fixed calculation, such as taking the average value of each pixel in the dataset, it is not generative because the model produces the same output every time. The model must include a stochastic (random) element that influences the individual samples generated by the model.
 
@@ -81,9 +98,6 @@ A generatív modelleket a statisztikai modellek osztályának tekintik, amelyek 
 
 %~~~~~~~~~
 % Mathematically, generative models learn the joint probability distribution P(X,Y), whereas the discriminative models learn the posterior probability, P(Y|X), that is the probability of the label Y given the data X.
-
-% Mathematically, we think about a dataset of examples x_1, \ldots, x_nx 1 ​ ,…,x n ​ as samples from a true data distribution p(x)p(x). In the example image below, the blue region shows the part of the image space that, with a high probability (over some threshold) contains real images, and black dots indicate our data points (each is one image in our dataset). Now, our model also describes a distribution \hat{p}_{\theta}(x) p ^ ​ θ ​ (x) (green) that is defined implicitly by taking points from a unit Gaussian distribution (red) and mapping them through a (deterministic) neural network — our generative model (yellow). Our network is a function with parameters \thetaθ, and tweaking these parameters will tweak the generated distribution of images. Our goal then is to find parameters \thetaθ that produce a distribution that closely matches the true data distribution (for example, by having a small KL divergence loss). Therefore, you can imagine the green distribution starting out random and then the training process iteratively changing the parameters \thetaθ to stretch and squeeze it to better match the blue distribution.
-% + ábra
 %~~~~~~~~~ (https://openai.com/blog/generative-models/)
 
 %~~~~~~~~~~~~~~~~
@@ -93,42 +107,35 @@ A generatív modelleket a statisztikai modellek osztályának tekintik, amelyek 
 %~~~~~~~~~~~~~ some more from: (https://www.analyticsvidhya.com/blog/2021/07/deep-understanding-of-discriminative-and-generative-models-in-machine-learning/)
 
 %----------------------------------------------------------------------------
-% \subsubsection{Uses for Generative models}
-
-Uses of Generative Models:
-\begin{itemize}
-	\item It can help in generating artificial faces.
-	\item It can be used in Text to image generation.
-	\item It can produce fake voices or noises and can be used in image denoising.
-	\item It can be used in MRI image reconstruction.
-	\item It can also be used to generate instances of data to handle imbalanced data.
-\end{itemize}
-
-Generative models target the true distribution of the training data to generate new data points with some variations. Now, it is not always possible for our machine to learn the true distribution of the data, for this, we take the help of a powerful neural network which can help make the machine learn the approximate true distribution of the data.
-The neural networks we use as generative models have parameters which are smaller than the amount of data we have as training dataset. The models are forced to discover the distribution in order to generate data.
-
-%----------------------------------------------------------------------------
 % \subsubsection{Generative model types}
 
-The association between a random continuous variable ‘x’ and the probability of it assuming specific values ‘p(x)’ is referred to as the probability density function or simply ‘density’. Figure 2 shows a typical density function. Knowing the probability density for a random variable can be useful to determine how likely the random variable is to assume a specific value. From the density plot in figure 2 it is easy to know that the variable x is more likely to assume a value of 50 and less likely to assume a value of 65.
+
+Matematikailag, az adathalmaz elemei $x_1, \dots, x_n$ a valódi háttéreloszlásból $p(x)$ lettek mintavételezve. A \ref{fig:data_distribution}. ábrán a kék háttérrel jelölt terület azon részét mutatja, amely nagy valószínűséggel (bizonyos küszöbérték felett) valódi képeket tartalmaz, és fekete pontok jelzik adatpontjainkat (mindegyik egy kép az adatkészletünkben). Modellünk egy becsült elosztást is leír $\hat{p}_{\theta}(x)$ (zölddel jelölt az ábrán) amelyet implicit módon úgy határozunk meg, hogy pontokat veszült egy egység Gauss eloszlásból (pirossal jelölt), és feltérképezzük őket egy determinisztijus neurális hálón - ami a generatív modellünk (sárga). A Neurális hálózat $\theta$ paraméterekkel rendelkezik, amelyeket módosítva megváltozik a generált képek eloszlását. Célunk olyan $\theta$ paraméterek meghatározása, amelyek egy olyan eloszlást hoznak létre, amely jól közelíti a valódi adateloszlásunkat. A $\theta$ paraméterek meghatározása egy iteraív folyamat, véletlenszerű értékekkel inicializálva, majd a tanítás során a paraméterek megváltoztatásával egyre jobban közelíti a becsült eloszlás a valódi adateloszlást.
 
 \begin{figure}[ht]
 	\centering
-	\includegraphics[width=0.65\columnwidth]{figures/abra.png}
+	\includegraphics[width=1\columnwidth]{figures/generative_model_math.png}
 	\caption{abra alatti szoveg}
+	\label{fig:data_distribution}
 \end{figure}
 
-In practice, we may not be able to assess or observe all possible outcomes of a random variable due to which we generally do not know the actual density function. In such conditions, we must rely on approximating the density function from a sample of observations. Approximating a density function using a sample of observations is referred to as ‘Density estimation’.  Learning density estimate from the training samples is fundamental to generative models.
 
-Two types of density estimations are generally used in generative models; Explicit Density Estimation (EDE) and Implicit Density Estimation (IDE). In EDE, predefined density functions are used to approximate the relationship between observations and their probability. The observed data is fit to predefined function by manipulating a fixed set of parameters of the function. An example is trying to fit given data to normal distribution using mean and the standard deviations of the samples. This type of density estimation is also known as parametric density estimation. In IDE, predefined density functions are not used. Instead an algorithm is used to approximate the probability distribution of the data. Kernel density approximation is an example of this type. Though the IDE methods use parameters for approximation, they cannot be directly manipulated the way they are in EDE. Figure 3 shows the taxonomy of different generative models based on the type of density estimation used.
+%-------
+% Now, it is not always possible for our machine to learn the true distribution of the data, for this, we take the help of a powerful neural network which can help make the machine learn the approximate true distribution of the data. The neural networks we use as generative models have parameters which are smaller than the amount of data we have as training dataset. The models are forced to discover the distribution in order to generate data.
+%-------
+
+A generatív modellek általában kétféle sűrűségbecslést használnak. Explicit Sűrűségbecslés (EDE), és Implicit Sűrűségbecslés (IDE). Az EDE-ben előre meghatározott sűrűségfüggvényeket használnak a megfigyelések és valószínűségeik közötti kapcsolat közelítésére. Ezek a függvények paramétereik változtatásával illeszthetőek a megfigyelésekre. Például normál eloszlás két paramétere: várható érték és szórás állításával illeszthető az adatra. Aze IDE-ben nem előre meghatározott sűrűségfüggvényeket használnak, hanem egy algoritmust használnak a valószínűségi eloszlás közelítésére. Ennek egy példája kernel sűrűségbecslés. Bár az IDE módszerek is paramétereket használnak a közelítéshez, ezeket nem lehet közvetlenül manipulálni mint az EDE esetén. A \ref{fig:gen_models_tax}. ábra a különböző generatív modellek rendszerezését mutatja be az alkalmazott sűrűségbecslés típusa szerint.
+
+% Generative Adversial Network (GAN) is an Implicit density based generative model. Variational Autoencoder (VAE) and Boltzmann Machine (BM) are the explicit density based generative models.  
+
+% Two types of density estimations are generally used in generative models; Explicit Density Estimation (EDE) and Implicit Density Estimation (IDE). In EDE, predefined density functions are used to approximate the relationship between observations and their probability. The observed data is fit to predefined function by manipulating a fixed set of parameters of the function. An example is trying to fit given data to normal distribution using mean and the standard deviations of the samples. This type of density estimation is also known as parametric density estimation. In IDE, predefined density functions are not used. Instead an algorithm is used to approximate the probability distribution of the data. Kernel density approximation is an example of this type. Though the IDE methods use parameters for approximation, they cannot be directly manipulated the way they are in EDE. Figure 3 shows the taxonomy of different generative models based on the type of density estimation used.
 
 \begin{figure}[ht]
 	\centering
-	\includegraphics[width=0.65\columnwidth]{figures/abra.png}
+	\includegraphics[width=0.8\columnwidth]{figures/generative_model_taxonomy.png}
 	\caption{abra alatti szoveg}
+	\label{fig:gen_models_tax}
 \end{figure}
-
-Generative Adversial Network (GAN) is an Implicit density based generative model. Variational Autoencoder (VAE) and Boltzmann Machine (BM) are the explicit density based generative models.  
 
 
 %----------------------------------------------------------------------------
