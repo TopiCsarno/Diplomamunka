@@ -139,7 +139,7 @@ A generatív modellek általában kétféle sűrűségbecslést használnak. Exp
 
 %----------------------------------------------------------------------------
 %----------------------------------------------------------------------------
-\subsection{Boltzman machines}
+\subsection{Boltzman gépek}
 
 A következő részben a generatív modellek egyik fajtáját: a Boltzman gépet (BM) működését, illetve annak egyik változatát, a Restricted Boltzman gépet (RBM) mutatom be, de előtte néhány alapvető fogalmat mutatok be amik szükségesek a BM megértéséhez.
 
@@ -165,7 +165,7 @@ A matematikában a Markov-lánc egy olyan diszkrét sztochasztikus folyamatot je
 
 
 %----------------------------------------------------------------------------
-\subsubsection{Graphical model}
+\subsubsection{Grafikus modell}
 
 A grafikus valószínűségi modell egy grafikus ábrázolás, amivel véletlen változók közötti feltételes valószínűséget lehet kifejezni. A grafikus modellnek két fő komponense van: csúcsok és élek. A csúcsok a véletlen változó állapotát jelzik, míg az élek az átalakulás irányát. Az ilyen gráfoknak két fő típusa van: irányított és irányítatlan. A \ref{fig:graph}. ábrán látható példán egy csecsemő táplálkozási szokásainak Markov folyamatának irányítatlan grafikus modelljét láthatjuk. A baba következő étkezésének kiválasztása kizárólag attól függ, hogy mit eszik most, és nem attól, amit korábban evett.
 
@@ -186,7 +186,7 @@ A grafikus valószínűségi modell egy grafikus ábrázolás, amivel véletlen 
 
 Egy Markov tulajdonsággal rendelkező irányítatlan gráf által leírt valószínűségi változók halmazát Markov hálózatnak (Markov Random Field az angol szakirodalomban). A Boltzman gépek is a MRF-ek közé tartozik.
 
-A Boltzman gép egy probabilisztikus generatív irányítatlan gráfmodell, amely kielégíti a Markov tulajdonságot. A BM-ek megtanulják a tanító minták eloszlását, majd abból új mintákat tudnak generálni. A BM rendelkezik bemeneti réteggel (látható réteggel) és egy vagy több rejtett réteggel. Kimeneti rétege nincs. A \ref{fig:bm}/a. ábrán láthatunk egy tipikus egy rejtett réteget tartalmazó Boltzman gépet.
+A Boltzman gép egy probabilisztikus generatív irányítatlan gráfmodell, amely kielégíti a Markov tulajdonságot. A BM-ek megtanulják a tanító minták eloszlását, majd abból új mintákat tudnak generálni. A BM rendelkezik bemeneti réteggel (látható réteggel) és egy vagy több rejtett réteggel. Kimeneti rétege nincs. A \ref{fig:bm}. ábrán láthatunk egy tipikus egy rejtett réteget tartalmazó Boltzman gépet.
 
 % A Markov tulajdonsággal rendelkező és egy nem irányított gráf által leírt véletlen változók halmazát Markov Random Field (MRF) vagy Markov hálózatnak nevezzük. Más szavakkal, egy véletlen mező Markov véletlenszerű mező, ha kielégíti Markov tulajdonságát. A BM egyfajta MRF.
 
@@ -268,7 +268,7 @@ Az alábbi \ref{fig:gan_struct}. ábrán látható, hogy a generátor nem talál
 	\label{fig:gan_struct}
 \end{figure}
 
-\subsubsection{Modell tanítása}
+\subsubsection{GAN tanítása}
 
 A generátor be kell tanítani, mielőtt realisztikus mintákat képes létrehozni. Tegyük fel, hogy egy újonnan inicializált hálót használunk 200 kép előállítására, minden mintánál új random zaj bemenettel. Mivel a generatív modell tanítása felügyelet nélküli, nincsenek címkéink amivel össze lehetne vetni a háló kimenetét. Honnan tudjuk mégis, hogy milyen irányba kell módosítani a háló paramétereit, hogy javuljon a generált képek minősége? Egy generált kép ``jóságát'' nem külsőleg mondjuk meg (címke segítségével), hanem az dönti el, hogy sikerült-e átverni a diszkriminátort.
 
@@ -391,6 +391,11 @@ Mint a fenti ábrán látjuk, minden jellemzőhöz tartozik egy valószínűség
 
 Célunk, hogy új képeket állítsunk elő az arcképekből álló tanító mintahalmaz alapján. Feltéve, hogy a bemeneti adataink normál eloszlást követnek, új képek létrehozásához mindössze annyit kell tennünk, hogy normál eloszlásból mintavételezünk egy látens változó vektort. Ezt megadjuk a dekódolónak, ami a vektor alapján generálni tud egy új képet.
 
+%TODO ezt kifejteni ha kell még content, ha nem akkor komment
+A VEA számos területen alkalmazott, ezek közül egy példa az úgynevezett ``deepfake'' előállítása, ami lényegében abból áll, hogy egy személy arcát alakítják át úgy, hogy egy másik személy vonásait utánozza. [REF]
+
+% This novel technique allows generating so-called deepfakes, which actually morph a person’s face to mimic someone else’s features, although preserving the original facial expression.
+
 % With every feature, we have a probability distribution. Our goal is to produce new data from the current data or a new face from the current face. How do faces differ? Skin tone, eye colour, hair colour, and many other features are different. But overall, the list of the features remains the same. Since we have a facility with two probability distributions: mean and standard deviations, we have datasets of two new ranges to provide to the decoder.
 
 % As our input data follows a normal distribution, we will be able to provide two variables: mean and variance in the latent space. We want to build a multivariate Gaussian model with the assumption of non-correlation in data which helps us result in a simple vector. Now, provide a set of random samples from mean and variance distributions from latent space to the decoder for the reproduction of data (image).
@@ -398,7 +403,11 @@ Célunk, hogy új képeket állítsunk elő az arcképekből álló tanító min
 %if need more / better explonation: https://medium.com/analytics-vidhya/vae-generative-modelling-for-face-recognition-71e8ba16950c
 
 %----------------------------------------------------------------------------
-\subsection{Deep metric learning}
+\subsection{Arcfelismerés neurális hálókkal}
+
+asdfasf
+
+\subsubsection{Mély metrika tanulás}
 
 Similarity learning is an area of supervised machine learning in which the goal is to learn a similarity function that measures how similar or related two objects are and returns a similarity value. A higher similarity score is returned when the objects are similar and a lower similarity score is returned when the objects are different. Now let us see some use cases to know why and when similarity learning is used.
 
@@ -413,7 +422,7 @@ We can also solve NLP problems using similarity learning. One popular problem it
 Now how do we train a network to learn similarity? We use Siamese neural networks which is discussed next.
 
 %----------------------------------------------------------------------------
-\subsection{Siamese networks}
+\subsubsection{Sziámi hálók}
 
 A Siamese neural network (sometimes called a twin neural network) is an artificial neural network that contains two or more identical subnetworks which means they have the same configuration with the same parameters and weights. Usually, we only train one of the subnetworks and use the same configuration for other sub-networks. These networks are used to find the similarity of the inputs by comparing their feature vectors.
 
@@ -450,7 +459,7 @@ So when A and B are the same person, we will have a label y equal to 1 and when 
 By using contrastive loss, we bring positive pairs together and negative pairs apart. But using this loss function we cannot learn ranking which means we are not able to say how much two pairs are similar to each other, we shall see how to do this in the next section.
 
 %----------------------------------------------------------------------------
-% \subsection{Triplet loss}
+\subsubsection{Triplet veszteségfüggvény}
 
 When using contrastive loss we were only able to differentiate between similar
 and different images but when we use triplet loss we can also find out which
