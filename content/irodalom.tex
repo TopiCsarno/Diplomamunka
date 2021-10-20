@@ -244,7 +244,7 @@ Azonban az utóbbi időkben a gyakorlatban az RBM-eket szinte teljesen felválto
 \subsection{Generatív Adversarial Network}
 %----------------------------------------------------------------------------
 
-A Generatív Adversarial Network (más néven GAN) egy az utóbbi évek egyik innovációja a mély tanulás területén. A GAN-okat eredetiel Ian Goodfello és Yoshua Gengio vezették be a Montreali Egyetemen, 2014-ben. A GAN-ok célja egy eloszlás megtanulása, és abból új példányok generálása.
+A Generatív Adversarial Network (más néven GAN) az utóbbi évek egyik innovációja a mély tanulás területén. A GAN-okat eredetiel Ian Goodfellow és Yoshua Gengio vezették be a Montreali Egyetemen, 2014-ben. A GAN-ok célja egy eloszlás megtanulása, és abból új példányok generálása.
 
 A GAN egy generatív modell, amelyben két neurális háló verseng egymással. Az első hálót generátornak nevezik. A generátor felelős új szintetikus minták előállításáért, amelyek hasonlítanak a tanító halmaz mintáihoz. A másik neurális hálót diszkriminátornak nevezik, aminek a feladata megkülönböztetni a valódi minták (tanító minta) illetve a generátor által létrehozott szintetikus minták között. A generátor célja becsapnia a diszkriminátort, míg a diszkriminátor megpróbál ennek ellenállni. A két háló versengéséből ered az ``adversarial'' elnevezés.
 
@@ -314,96 +314,86 @@ A GAN-oknak annak ellenére, hogy nemrég jelentek csak meg, gyakorlati hasznuk 
 \end{itemize}
 
 %----------------------------------------------------------------------------
-\subsection{Variational auto-encoder}
+\subsection{Generatív Autoenkóderek}
 
-\subsubsection{Autoencoders}
+Az autoenkóderek olyan neurális hálók, ahol a kimeneti réteg mérete megegyezik a bemeneti réteg méretével. Az autoenkóder felügyelet nélküli tanulásra képes, feladata minél kisebb veszteséggel visszaállítsa a bemenetre érkező adatot, ezért replikátor neurális hálónak is nevezik. [REF]
 
-Autoencoder is a type of neural network where the output layer has the same dimensionality as the input layer. In simpler words, the number of output units in the output layer is equal to the number of input units in the input layer. An autoencoder replicates the data from the input to the output in an unsupervised manner and is therefore sometimes referred to as a replicator neural network.
+% Autoencoder is a type of neural network where the output layer has the same dimensionality as the input layer. In simpler words, the number of output units in the output layer is equal to the number of input units in the input layer. An autoencoder replicates the data from the input to the output in an unsupervised manner and is therefore sometimes referred to as a replicator neural network.
 
-The autoencoders reconstruct each dimension of the input by passing it through the network. It may seem trivial to use a neural network for the purpose of replicating the input, but during the replication process, the size of the input is reduced into its smaller representation. The middle layers of the neural network have a fewer number of units as compared to that of input or output layers. Therefore, the middle layers hold the reduced representation of the input. The output is reconstructed from this reduced representation of the input.
+% Az automatikus kódolók a bemenet minden dimenzióját úgy rekonstruálják, hogy átviszik a hálózaton. Lehet, hogy triviálisnak tűnik a neurális hálózat használata a bemenet replikálására, de a replikációs folyamat során a bemenet mérete kisebbre csökken. A neurális hálózat középső rétegei kevesebb egységgel rendelkeznek, mint a bemeneti vagy kimeneti rétegek. Ezért a középső rétegek tartják a bemenet csökkentett ábrázolását. Belsőleg rejtett réteggel rendelkezik, amely leírja a bemenet ábrázolásához használt kódot. A kimenet a bemenet ezen csökkentett ábrázolásából rekonstruálódik.
+
+% The autoencoders reconstruct each dimension of the input by passing it through the network. It may seem trivial to use a neural network for the purpose of replicating the input, but during the replication process, the size of the input is reduced into its smaller representation. The middle layers of the neural network have a fewer number of units as compared to that of input or output layers. Therefore, the middle layers hold the reduced representation of the input. Internally, it has a hidden layer that describes a code used to represent the input. The output is reconstructed from this reduced representation of the input.
+
+A háló tartalmaz egy $\textbf{h}$ rejtett réteget, ami a bemenet belső leképezését tárolja. A háló két részből tevődik össze: egy kódoló függvényből $\textbf{h} = f(\textbf{x})$, és egy dekódolóból, amely rekonstruálja a bemenetet $\textbf{r} = g(\textbf{h})$. Ha az autoenkóder egyszerűen megtanulná a $g(f(\textbf{x})) = \textbf{x}$ függvényt, az nem lenne túl hasznos, ezért a kódolót úgy tervezték, hogy képtelenek legyenek a bemenetet tökéletesen másolni. A kódolót úgy korlátozzák, hogy a középső rejtett réteg kevesebb neuront tartalmaz mint a bemeneti réteg. Ennek hatására a kódoló kénytelen priorizálni, hogy a bemenet mely jellemzőit érdemes másolni, így képes megtanulni az adatok hasznos tulajdonságait.
+
+Az autoenkóderek tipikus felépítése: (látsd: \ref{fig:autoenc_struct}. ábra).
+
+% A hálózat két részből tevődik össze: egy anenkódoló függvény = f (x) és egy dekódoló, amely rekonstrukciót eredményez = g (h). Ezt az architektúrát a 14.1. Ábra mutatja be. Ha egy automatikus kódolónak sikerül egyszerűen megtanulnia a setg (f (x)) = x mindenhol, akkor ez nem különösen hasznos. Ehelyett az automatikus kódolókat úgy tervezték, hogy képtelenek legyenek megtanulni tökéletesen másolni. Általában olyan módon korlátozzák őket, amelyek lehetővé teszik számukra, hogy csak hozzávetőlegesen másoljanak, és csak olyan adatokat másoljanak be, amelyek hasonlítanak az edzési adatokhoz. Mivel a modell kénytelen priorizálni, hogy a bemenet mely aspektusait kell másolni, gyakran megtanulja az adatok hasznos tulajdonságait
 
 %~~~~~~~~~~~~~~~~~~~~~~~
-Anautoencoder is a neural network that is trained to attempt to copy its inputto its output. Internally, it has a hidden layerhthat describes acodeused torepresent the input. The network may be viewed as consisting of two parts: anencoder functionh=f(x) and a decoder that produces a reconstructionr=g(h).This architecture is presented in ﬁgure 14.1. If an autoencoder succeeds in simplylearning to setg(f(x)) =xeverywhere, then it is not especially useful. Instead,autoencoders are designed to be unable to learn to copy perfectly. Usually they arerestricted in ways that allow them to copy only approximately, and to copy onlyinput that resembles the training data. Because the model is forced to prioritizewhich aspects of the input should be copied, it often learns useful properties of thedata
-
-Modern autoencoders have generalized the idea of an encoder and a de-coder beyond deterministic functions to stochastic mappingspencoder(h | x) andpdecoder(x | h).The idea of autoencoders has been part of the historical landscape of neuralnetworks for decades (LeCun, 1987; Bourlard and Kamp, 1988; Hinton and Zemel,1994). Traditionally, autoencoders were used for dimensionality reduction orfeature learning. Recently, theoretical connections between autoencoders andlatent variable models have brought autoencoders to the forefront of generativemodeling
+% Internally, it has a hidden layerhthat describes acodeused torepresent the input. The network may be viewed as consisting of two parts: anencoder function=f(x) and a decoder that produces a reconstructionr=g(h).This architecture is presented in ﬁgure 14.1. If an autoencoder succeeds in simplylearning to setg(f(x)) =xeverywhere, then it is not especially useful. Instead,autoencoders are designed to be unable to learn to copy perfectly. Usually they are restricted in ways that allow them to copy only approximately, and to copy onlyinput that resembles the training data. Because the model is forced to prioritize which aspects of the input should be copied, it often learns useful properties of thedata
+  
 %~~~~~~~~~~~~~~~~~~~~~~ (https://www.deeplearningbook.org/contents/autoencoders.html)
 
-An autoencoder consists of three components:
+% An autoencoder consists of three components:
 
 \begin{figure}[ht]
 	\centering
-	\includegraphics[width=0.65\columnwidth]{figures/abra.png}
-	\caption{abra alatti szoveg}
+	\includegraphics[width=0.8\columnwidth]{figures/autoenc.png}
+	\caption{Az autoenkóder részei: enkóder, kód és dekódoló}
+	\label{fig:autoenc_struct}
 \end{figure}
 
 \begin{itemize}
-	\item Encoder: An encoder is a feedforward, fully connected neural network that compresses the input into a latent space representation and encodes the input image as a compressed representation in a reduced dimension. The compressed image is the distorted version of the original image.
-	\item Code: This part of the network contains the reduced representation of the input that is fed into the decoder. (aka latent variables)
-	\item Decoder: Decoder is also a feedforward network like the encoder and has a similar structure to the encoder. This network is responsible for reconstructing the input back to the original dimensions from the code.
+	\item \textbf{Kódoló}: A kódoló egy előrecsatolt, teljesen kapcsolt neurális háló, amely a bemenetet látens térbeli reprezentációba tömöríti. A bemeneti képet tömörített ábrázolásként kódolja csökkentett méretben.
+	\item \textbf{Kód}: A hálózat ezen része tartalmazza a dekódolóba táplált bemenet csökkentett ábrázolását. (más néven látens változók).
+	\item \textbf{Dekódoló}: A dekódoló a kódolóhoz hasonló struktúrájú előrecsatolt háló. Feladata kód alapján a bemenet visszaállítása.
 \end{itemize}
 
-First, the input goes through the encoder where it is compressed and stored in the layer called Code, then the decoder decompresses the original input from the code. The main objective of the autoencoder is to get an output identical to the input.
+Az autoenkóderek évtizedek óta ismertek a neurális hálózatok világában [REF]. Míg eleinte az autoenkódereket dimenziócsökkentéshez, vagy jellemző tanuláshoz használták, a közelmúltban a generatív modellezésben is előtérbe került. Az első komoly generatív tulajdonsággal rendelkező autoenkódert a variációs autoenkóder megjelenése hozta.
 
-Note that the decoder architecture is the mirror image of the encoder. This is not a requirement but it’s typically the case. The only requirement is the dimensionality of the input and output must be the same.
+% A modern autókódolók a determinisztikus funkciókon túli kódoló és dekódoló ötletét a sztochasztikus leképezésekre (h | x) és pdekódolókra (x | h) általánosították. Az automatikus kódolók ötlete évtizedek óta része a neurális hálózatok történelmi tájának (LeCun , 1987; Bourlard és Kamp, 1988; Hinton és Zemel, 1994). Hagyományosan az automatikus kódolókat használták a dimenziócsökkentéshez vagy a funkciók tanulásához. A közelmúltban az autokódolók és a változó modellek közötti elméleti kapcsolatok az autokódolókat a generációs modellezés előtérébe hozták.
 
-\subsubsection{Variational autoencoders}
+% Modern autoencoders have generalized the idea of an encoder and a de-coder beyond deterministic functions to stochastic mappingspencoder(h | x) andpdecoder(x | h).
+% The idea of autoencoders has been part of the historical landscape of neuralnetworks for decades (LeCun, 1987; Bourlard and Kamp, 1988; Hinton and Zemel,1994). Traditionally, autoencoders were used for dimensionality reduction orfeature learning. Recently, theoretical connections between autoencoders andlatent variable models have brought autoencoders to the forefront of generativemodeling
+
+\subsubsection{Variációs autoenkóderek}
+
+A variációs autoenkóder (VAE) megjelenése nem túl régi, 2014-ben publikálták először [REF]. Bár mély neurális háló alapú autoenkóderek korábban is léteztek, mint generatív modell rosszul teljesítettek. Később azonban képgenerálás [REF], és megerősítéses tanulás [REF] területén is előremutató eredmények születtek.
+
+% Az első komoly generatív tulajdonsággal rendelkező autóenkóder, a Variációs Au- tóenkóder (továbbiakban VAE) megjelenése nem túl régi: [25] [26] pulikálták elő- ször 2014-ben. Bár mély mesterséges háló alapú autóenkóderek előtte is léteztek, mint generatív modell azonban rosszul teljesítettek. Később azonban a képgenerálás, és a megerősítéses tanulás [27] területén is előremutató eredmények születtek.
+
+%We add a constraint on the encoding network, that forces it to generate latent vectors that roughly follow a unit gaussian distribution. It is this constraint that separates a variational autoencoder from a standard one.
+
+%TODO ezt újraírni h érthető legyen
+A variációs autoenkóder annyiban tér el a standard autoenkódertől, hogy adunk egy megkötést a kódolónak, aminek hatására a generált látens változók vektora ($\textbf{h}$) közel követik a normál eloszlást. Ebben az esetben a normál eloszlás $N(\mu,\sigma)$ várható értéke ($\mu$) és szórása ($\sigma$) leírja a látens változók eloszlását. Ekkor az enkóder és dekóder nem determenisztikus hanem sztohasztikus jellegű. Ez a megkötés azért hasznos számunkra, mert normál eloszlásból könnyen tudunk mintavételezni, ami megkönnyíti az új képek generálását. 
+
+% Új képek létrehozása most egyszerű: mindössze annyit kell tennünk, hogy mintát veszünk egy látens vektorból a gauss -egységből, és átadjuk a dekódolónak. A gyakorlatban kompromisszum van a hálózatunk pontossága és a látens változóinak közelítő egységei között.
 
 %~~~~~~~~~~~~~~
 % There's a simple solution here. We add a constraint on the encoding network, that forces it to generate latent vectors that roughly follow a unit gaussian distribution. It is this constraint that separates a variational autoencoder from a standard one.
 
-% Generating new images is now easy: all we need to do is sample a latent vector from the unit gaussian and pass it into the decoder.
-
-% In practice, there's a tradeoff between how accurate our network can be and how close its latent variables can match the unit gaussian distribution.
+% Generating new images is now easy: all we need to do is sample a latent vector from the unit gaussian and pass it into the decoder. In practice, there's a tradeoff between how accurate our network can be and how close its latent variables can match the unit gaussian distribution.
 %~~~~~~~~~~~~~~ (https://kvfrans.com/variational-autoencoders-explained/)
 
-The basic difference between autoencoder and variational encoder is its ability to provide continuous data or a range of data in the latent space which is helping us to generate new data or a new image.
+A VAE működését könyebb egy példán keresztül bemutatni. Tegyük fel, hogy van egy képünk egy emberi arcról. A betanított háló ez a kép alapján képes látens változó vektort kinyerni a képből, ami az arcot leíró fontos jellemzőkből áll. Erre mutat egy példát a \ref{fig:vae_face}.ábra.
+
+% Let us understand how we are generating new data. Let’s say we have the image of a celebrity face from which our encoder model has to recognize important features mentioned below. 
 
 \begin{figure}[ht]
 	\centering
-	\includegraphics[width=0.65\columnwidth]{figures/abra.png}
-	\caption{abra alatti szoveg}
+	\includegraphics[width=1\columnwidth]{figures/autoenc_latent.png}
+	\caption{Látens változók kinyerése a bemeneti arcképből.}
+	\label{fig:vae_face}
 \end{figure}
 
-Let us understand how we are generating new data. Let’s say we have the image of a celebrity face from which our encoder model has to recognize important features mentioned below. 
+Mint a fenti ábrán látjuk, minden jellemzőhöz tartozik egy valószínűségi eloszlás. Miben különböznem az arcok? Megfogalmazhatunk pár ilyen jellemzőt, mint a bőrszín, haj színe, szemek távolsága, stb. Ezen jellemzőkből álló vektor leírhat egy emberi arcot. Eltérő arcoknál a jellemzők értékei mások lesznek, de jellemzők listája ugyanaz marad. Az autoenkóderek nem feltétlenül ilyen ember által könnyen értelmezhető jellemzőket nyer ki az arcokból, hanem azok ennél a példánál absztraktabbak.
 
-With every feature, we have a probability distribution. Our goal is to produce new data from the current data or a new face from the current face. How do faces differ? Skin tone, eye colour, hair colour, and many other features are different. But overall, the list of the features remains the same. Since we have a facility with two probability distributions: mean and standard deviations, we have datasets of two new ranges to provide to the decoder.
+Célunk, hogy új képeket állítsunk elő az arcképekből álló tanító mintahalmaz alapján. Feltéve, hogy a bemeneti adataink normál eloszlást követnek, új képek létrehozásához mindössze annyit kell tennünk, hogy normál eloszlásból mintavételezünk egy látens változó vektort. Ezt megadjuk a dekódolónak, ami a vektor alapján generálni tud egy új képet.
 
-As our input data follows a normal distribution, we will be able to provide two variables: mean and variance in the latent space. We want to build a multivariate Gaussian model with the assumption of non-correlation in data which helps us result in a simple vector.
+% With every feature, we have a probability distribution. Our goal is to produce new data from the current data or a new face from the current face. How do faces differ? Skin tone, eye colour, hair colour, and many other features are different. But overall, the list of the features remains the same. Since we have a facility with two probability distributions: mean and standard deviations, we have datasets of two new ranges to provide to the decoder.
 
-Now, provide a set of random samples from mean and variance distributions from latent space to the decoder for the reproduction of data (image).
-
-Still, we do not get the desired result unless we train this model to improvise with new samples every time.
-
-Since this is not a one-time activity, we need to train the model. Backpropagation is one of the important processes to train the model. Since we have random sampling, we cannot perform backpropagation, but we perform a reparameterization trick. 
-
-
-%We can randomly sample ε from a unit Gaussian, and then shift the randomly sampled ε by the μ and scale it by σ.
-
-A screenshot of a cell phone
-
-Description automatically generated
-Now we can backpropagate, and the autoencoder can learn to improvise. Let us now see post reparameterization.
-
-
-Now the most important part of the process is to identify the Loss function that helps to train the model and to minimise the loss. In our case, VAEs loss functions consist of two values.
-
-Let’s us say encoding process as recognition model loss in recognition model will be calculated with the sum of the square of means which will be:
-
-%L(x,x’)
-
-Let’s say the decoding process is generation model and error will be the difference between two distributions and which can be measured with KL divergence: 
-
-%KL(q(z|x)||p(z))
-
-Loss function of VAEs is:
-
-%L(x,x’) + ∑KL(q(z|x)||p(z))
-
-We can conclude with a conceptual understanding of VAEs. This process is widely used to generate new data for driverless vehicles, data transfer, new synthetic music and images.  Let’s look at one of the classic examples of fake face production. 
-
-A group of people posing for a photo
-
-In the above image, Source A and Source B are input to create a result in combination of A and B. 
+% As our input data follows a normal distribution, we will be able to provide two variables: mean and variance in the latent space. We want to build a multivariate Gaussian model with the assumption of non-correlation in data which helps us result in a simple vector. Now, provide a set of random samples from mean and variance distributions from latent space to the decoder for the reproduction of data (image).
 
 %if need more / better explonation: https://medium.com/analytics-vidhya/vae-generative-modelling-for-face-recognition-71e8ba16950c
 
