@@ -1,5 +1,6 @@
 %----------------------------------------------------------------------------
 \section{Irodalomkutatás}
+\label{sec:irodalom}
 %----------------------------------------------------------------------------
 
 % \subsection{Generatív modellek csoportosítása}
@@ -123,7 +124,7 @@ Matematikailag, az adathalmaz elemei $x_1, \dots, x_n$ a valódi háttéreloszl�
 % Now, it is not always possible for our machine to learn the true distribution of the data, for this, we take the help of a powerful neural network which can help make the machine learn the approximate true distribution of the data. The neural networks we use as generative models have parameters which are smaller than the amount of data we have as training dataset. The models are forced to discover the distribution in order to generate data.
 %-------
 
-A generatív modellek általában kétféle sűrűségbecslést használnak. Explicit Sűrűségbecslés (EDE), és Implicit Sűrűségbecslés (IDE). Az EDE-ben előre meghatározott sűrűségfüggvényeket használnak a megfigyelések és valószínűségeik közötti kapcsolat közelítésére. Ezek a függvények paramétereik változtatásával illeszthetőek a megfigyelésekre. Például normál eloszlás két paramétere: várható érték és szórás állításával illeszthető az adatra. Aze IDE-ben nem előre meghatározott sűrűségfüggvényeket használnak, hanem egy algoritmust használnak a valószínűségi eloszlás közelítésére. Ennek egy példája kernel sűrűségbecslés. Bár az IDE módszerek is paramétereket használnak a közelítéshez, ezeket nem lehet közvetlenül manipulálni mint az EDE esetén. A \ref{fig:gen_models_tax}. ábra a különböző generatív modellek rendszerezését mutatja be az alkalmazott sűrűségbecslés típusa szerint.
+A generatív modellek általában kétféle sűrűségbecslést használnak. Explicit Sűrűségbecslés (EDE), és Implicit Sűrűségbecslés (IDE). Az EDE-ben előre meghatározott sűrűségfüggvényeket használnak a megfigyelések és valószínűségeik közötti kapcsolat közelítésére. Ezek a függvények paramétereik változtatásával illeszthetőek a megfigyelésekre. Például normális eloszlás két paramétere: várható érték és szórás állításával illeszthető az adatra. Aze IDE-ben nem előre meghatározott sűrűségfüggvényeket használnak, hanem egy algoritmust használnak a valószínűségi eloszlás közelítésére. Ennek egy példája kernel sűrűségbecslés. Bár az IDE módszerek is paramétereket használnak a közelítéshez, ezeket nem lehet közvetlenül manipulálni mint az EDE esetén. A \ref{fig:gen_models_tax}. ábra a különböző generatív modellek rendszerezését mutatja be az alkalmazott sűrűségbecslés típusa szerint.
 
 % Generative Adversial Network (GAN) is an Implicit density based generative model. Variational Autoencoder (VAE) and Boltzmann Machine (BM) are the explicit density based generative models.  
 
@@ -309,7 +310,7 @@ A \ref{fig:gan_dist}. ábrán láthatjuk a GAN tanulásának folyamatát. A gene
 
 A GAN-oknak annak ellenére, hogy nemrég jelentek csak meg, gyakorlati hasznuk is van. Erre pár példa:
 \begin{itemize}
-	\item \textbf{StyleGan3}: Ez egy GAN-on alapuló neurális háló, amely képes az fotorealisztikus emberi arcképeket generálni. [REF] [https://nvlabs.github.io/stylegan3/]
+	\item \textbf{StyleGan3}: Ez egy GAN-on alapuló neurális háló, amely képes az fotorealisztikus emberi arcképeket generálni. \cite{stylegan3}
 	\item Egy 2018-as aukción egy GAN által ``festett'' kép több mint \$400 ezer dollárért kelt el [REF]
 \end{itemize}
 
@@ -339,8 +340,8 @@ Az autoenkóderek tipikus felépítése: (látsd: \ref{fig:autoenc_struct}. ábr
 
 \begin{figure}[ht]
 	\centering
-	\includegraphics[width=0.8\columnwidth]{figures/autoenc.png}
-	\caption{Az autoenkóder részei: enkóder, kód és dekódoló}
+	\includegraphics[width=1\columnwidth]{figures/ae.png}
+	\caption{Az autoenkóder részei: enkóder, kód (látens tér) és dekódoló}
 	\label{fig:autoenc_struct}
 \end{figure}
 
@@ -366,7 +367,14 @@ A variációs autoenkóder (VAE) megjelenése nem túl régi, 2014-ben publikál
 %We add a constraint on the encoding network, that forces it to generate latent vectors that roughly follow a unit gaussian distribution. It is this constraint that separates a variational autoencoder from a standard one.
 
 %TODO ezt újraírni h érthető legyen
-A variációs autoenkóder annyiban tér el a standard autoenkódertől, hogy adunk egy megkötést a kódolónak, aminek hatására a generált látens változók vektora ($\textbf{h}$) közel követik a normál eloszlást. Ebben az esetben a normál eloszlás $N(\mu,\sigma)$ várható értéke ($\mu$) és szórása ($\sigma$) leírja a látens változók eloszlását. Ekkor az enkóder és dekóder nem determenisztikus hanem sztohasztikus jellegű. Ez a megkötés azért hasznos számunkra, mert normál eloszlásból könnyen tudunk mintavételezni, ami megkönnyíti az új képek generálását. 
+A variációs autoenkóder annyiban tér el a standard autoenkódertől, hogy adunk egy megkötést a kódolónak, aminek hatására a generált látens változók vektora ($\textbf{h}$) közel követik a normális eloszlást. Ebben az esetben a normális eloszlás $\mathcal{N}(\mu,\sigma^2)$ várható értéke ($\mu$) és szórásnégyzete ($\sigma^2$) leírja a látens változók eloszlását. Ekkor az enkóder és dekóder nem determenisztikus hanem sztohasztikus jellegű. Ez a megkötés azért hasznos számunkra, mert normális eloszlásból könnyen tudunk mintavételezni, ami megkönnyíti az új képek generálását (látsd: \ref{fig:vae}. ábra)
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=1\columnwidth]{figures/vae.png}
+	\caption{A variációs autoenkóder részei.}
+	\label{fig:vae}
+\end{figure}
 
 % Új képek létrehozása most egyszerű: mindössze annyit kell tennünk, hogy mintát veszünk egy látens vektorból a gauss -egységből, és átadjuk a dekódolónak. A gyakorlatban kompromisszum van a hálózatunk pontossága és a látens változóinak közelítő egységei között.
 
@@ -380,6 +388,8 @@ A VAE működését könyebb egy példán keresztül bemutatni. Tegyük fel, hog
 
 % Let us understand how we are generating new data. Let’s say we have the image of a celebrity face from which our encoder model has to recognize important features mentioned below. 
 
+Mint az alábbi ábrán látjuk, minden jellemzőhöz tartozik egy valószínűségi eloszlás. Miben különböznem az arcok? Megfogalmazhatunk pár ilyen jellemzőt, mint a bőrszín, haj színe, szemek távolsága, stb. Ezen jellemzőkből álló vektor leírhat egy emberi arcot. Eltérő arcoknál a jellemzők értékei mások lesznek, de jellemzők listája ugyanaz marad. Az autoenkóderek nem feltétlenül ilyen ember által könnyen értelmezhető jellemzőket nyer ki az arcokból, hanem azok ennél a példánál absztraktabbak.
+
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=1\columnwidth]{figures/autoenc_latent.png}
@@ -387,9 +397,7 @@ A VAE működését könyebb egy példán keresztül bemutatni. Tegyük fel, hog
 	\label{fig:vae_face}
 \end{figure}
 
-Mint a fenti ábrán látjuk, minden jellemzőhöz tartozik egy valószínűségi eloszlás. Miben különböznem az arcok? Megfogalmazhatunk pár ilyen jellemzőt, mint a bőrszín, haj színe, szemek távolsága, stb. Ezen jellemzőkből álló vektor leírhat egy emberi arcot. Eltérő arcoknál a jellemzők értékei mások lesznek, de jellemzők listája ugyanaz marad. Az autoenkóderek nem feltétlenül ilyen ember által könnyen értelmezhető jellemzőket nyer ki az arcokból, hanem azok ennél a példánál absztraktabbak.
-
-Célunk, hogy új képeket állítsunk elő az arcképekből álló tanító mintahalmaz alapján. Feltéve, hogy a bemeneti adataink normál eloszlást követnek, új képek létrehozásához mindössze annyit kell tennünk, hogy normál eloszlásból mintavételezünk egy látens változó vektort. Ezt megadjuk a dekódolónak, ami a vektor alapján generálni tud egy új képet.
+Célunk, hogy új képeket állítsunk elő az arcképekből álló tanító mintahalmaz alapján. Feltéve, hogy a bemeneti adataink normális eloszlást követnek, új képek létrehozásához mindössze annyit kell tennünk, hogy normális eloszlásból mintavételezünk egy látens változó vektort. Ezt megadjuk a dekódolónak, ami a vektor alapján generálni tud egy új képet.
 
 %TODO ezt kifejteni ha kell még content, ha nem akkor komment
 A VEA számos területen alkalmazott, ezek közül egy példa az úgynevezett ``deepfake'' előállítása, ami lényegében abból áll, hogy egy személy arcát alakítják át úgy, hogy egy másik személy vonásait utánozza. [REF]
@@ -403,42 +411,69 @@ A VEA számos területen alkalmazott, ezek közül egy példa az úgynevezett ``
 %if need more / better explonation: https://medium.com/analytics-vidhya/vae-generative-modelling-for-face-recognition-71e8ba16950c
 
 %----------------------------------------------------------------------------
+% ARCFELISMERÉS
+%----------------------------------------------------------------------------
 \subsection{Arcfelismerés neurális hálókkal}
 
-asdfasf
+A generatív modellek után áttérnék a modern arcfelismerő rendszerek bemutatására. Mivel a legkorszerűbb arcfelismerő rendszerek mély tanulásra építenek, az ehhez kapcsolódó fogalmakat, neurális háló architektúrákat mutatom be a következő részekben.
 
 \subsubsection{Mély metrika tanulás}
 
-Similarity learning is an area of supervised machine learning in which the goal is to learn a similarity function that measures how similar or related two objects are and returns a similarity value. A higher similarity score is returned when the objects are similar and a lower similarity score is returned when the objects are different. Now let us see some use cases to know why and when similarity learning is used.
+% TODO mély metrika legyen végig (nem hasonlósági metrika)
+% TODO István anyagát belefűzni kicsit
 
-Consider a problem in which we have to train a model that can recognise all the students in a class to mark their attendance. We can use Image classification as discussed in the last section, we will collect data for all the students in the class and use them to train the model. After training the model, now we can recognise each student in the class. But what if we have a new student enrolled since we did not train the model on his data, it cannot recognise the new student. We will have to collect the new data and retrain the model, but training the model is expensive in terms of time and computation power. So we can pose this problem as similarity learning problem instead of a classification problem to solve this problem in an optimal way.
+A mély metrika tanulás (angol szakirodalomban: deep metric learning) a felügyelet gépi tanulás azon területe, amelyben a cél egy hasonlósági függvény megtanulása \cite{kaya2019dmlsurvey}. Ez a függvény képes meghatározni két objektumról, hogy mennyire hasonlítanak egymáshoz és hasonlóság mértékét számszerűsíteni tudja. Magasabb hasonlósági értéket ad vissza a függvény, ha az objektumok hasonlóak, és alacsonyabb értéket ad vissza, ha az objektumok eltérőek. Ez a metrika majd használható különböző feladatokra, mint osztályozásra, vagy klaszterezésre. A mély metrika tanulásnak sok felhasználási esete van, ezek közül mutatok be pár példát.
 
-Now we will have a model that returns a similarity score instead of labels. So when a student enters, we can compare him with his photo and if the similarity score is higher than a certain threshold, we mark him present. Now if we have an unknown person who does not match any images in the data, the similarity score will be low and he won’t be marked present. Remember we don’t have to retrain the model in order to add new students, we just need his one image from which he can be compared.
+% Similarity learning is an area of supervised machine learning in which the goal is to learn a similarity function that measures how similar or related two objects are and returns a similarity value. A higher similarity score is returned when the objects are similar and a lower similarity score is returned when the objects are different. Now let us see some use cases to know why and when similarity learning is used.
 
-Another example of similarity learning can be comparing the signature on the checks. These kinds of networks can also be used to compare the signature of the account holder to the signature on the check. If the similarity score is higher than the check is accepted and if the similarity score is low than the signature is most probably forged
+% TODO legyen szó arclenyomat vektorról is, István anyaga..
+Tekintsünk egy olyan példát, amelyben egy iskolában elhelyezett kamerák felvételei alapján, egy gépi tanulási modellel szeretnénk felismerni az iskola tanulóit. Szeretnénk tudni, hogy mely tanulók vettek részt a tanórákon. Egyik lehetséges megoldás az lenne, ha kép klasszifikációt alkalmazunk, ahol a klasszifikáció minden osztálya egy-egy tanulónak felel meg. Ehhez szükséges minden tanulóról begyűjteni valamennyi képet, majd a képek alapján be tudunk tanítani egy klasszifikáció modellt. A modell betanítása után már minden tanulót felismerhetünk az osztályteremben. Ez az elképzelés működhet, viszont probléma adódik akkor, ha új tanuló csatlakozik az osztályhoz. Ekkor a modellünk nem fogja felismerni az új tanulót addig, amíg az új tanító minták alapján újra nem tanítjuk a modellünket, viszont a modell újratanítása költséges idő és számításigény szempontjából. A tipikus képklasszifikációs modell helyett a feladat könnyebben megoldható ha hasonlósági tanulást alkalmazunk.
 
-We can also solve NLP problems using similarity learning. One popular problem it can solve is to recognise duplicate questions on popular forums such as Quora or StackOverflow on which thousands of questions are posted every hour. You might think that this is not that hard problem as all we have to do is compare words in these questions. You may be even right in some cases such as the questions “Where do you live?” and “Where are you living?” have almost same words in them so we can say that they are asking the same question. But if you consider another question “where are you going?”, this also looks similar to the last question but has an entirely different meaning. Even in some cases, the words may totally not match but the questions are the same such as “How old are you?” and “What is your age?” are exactly two same questions but have so common words. So here we train a network that returns a high similarity score when the questions are similar and a low similarity score when the questions are different.
+% Consider a problem in which we have to train a model that can recognise all the students in a class to mark their attendance. We can use Image classification as discussed in the last section, we will collect data for all the students in the class and use them to train the model. After training the model, now we can recognise each student in the class. But what if we have a new student enrolled since we did not train the model on his data, it cannot recognise the new student. We will have to collect the new data and retrain the model, but training the model is expensive in terms of time and computation power. So we can pose this problem as similarity learning problem instead of a classification problem to solve this problem in an optimal way.
 
-Now how do we train a network to learn similarity? We use Siamese neural networks which is discussed next.
+Ha hasonlósági tanulást használunk, akkor a modell kimenete a hasonlóság mértéke lesz. Ebben az esetben összehasonlíthatjuk a kamera képet a tanulókról készült képekkel, és ha a hasonlósági függvény által megadott érték nagyobb egy küszöbértéknél, akkor sikerült azonosítani a tanulót. Ennek a módszernek az az előnye, hogy új tanuló esetén sem szükséges újratanítani a modellt. Csupán az új képekre van szükségünk amelyeket fel tudunk használni az összehasonlításhoz.
+
+% Now we will have a model that returns a similarity score instead of labels. So when a student enters, we can compare him with his photo and if the similarity score is higher than a certain threshold, we mark him present. Now if we have an unknown person who does not match any images in the data, the similarity score will be low and he won’t be marked present. Remember we don’t have to retrain the model in order to add new students, we just need his one image from which he can be compared.
+
+A mély metrika tanulásának másik példája lehet a csekkeken lévő aláírások összehasonlítása \cite{soleimani2016signature}. Ekkor a hasonlósági függvény összehasonlítja a csekken lévő aláírást a számlatulajdonos aláírásával. Ha a hasonlóság értéke megfelelően nagy, akkor a csekket elfogadják, ha az érték alacsony akkor az aláírás valószínűleg hamisított.
+
+% Another example of similarity learning can be comparing the signature on the checks. These kinds of networks can also be used to compare the signature of the account holder to the signature on the check. If the similarity score is higher than the check is accepted and if the similarity score is low than the signature is most probably forged
+
+Mély metrika tanulást alkalmazzák természetes nyelvfeldolgozás (NLP) területén is. Az egyik gyakori felhasználása, a gyakran ismétlődő kérdések felismerése olyan fórumokon, mint a Quora vagy a StackOverflow, amelyekre óránként több ezer kérdés érkezik be. Erre a problémára a Kaggle weboldalon rendeztek is egy versenyt, ahol az első helyezettet 12500 amerikai dollárral jutalmazták. \cite{kaggle}. Ez látszólag nem tűnik olyan nehéz feladatbak, hiszen mindössze annyit kell tennünk, hogy összehasonlítjuk a szavakat a kérdésben. Viszont két kérdés sokszor eltérő szavakat használ, mégis a jelentésük lényegében ugyanaz, mint például a ``Milyen idős vagy?'' és ``Hány éves vagy?'' kérdések. Ez a feladat is megoldható egy olyan hálóval, amely magas értéket ad akkor ha a kérdések hasonló jelentésűek, és alacsony értéket akkor, ha a kérdések különbözőek.
+
+% We can also solve NLP problems using similarity learning. One popular problem it can solve is to recognise duplicate questions on popular forums such as Quora or StackOverflow on which thousands of questions are posted every hour. You might think that this is not that hard problem as all we have to do is compare words in these questions. You may be even right in some cases such as the questions “Where do you live?” and “Where are you living?” have almost same words in them so we can say that they are asking the same question. But if you consider another question “where are you going?”, this also looks similar to the last question but has an entirely different meaning. Even in some cases, the words may totally not match but the questions are the same such as “How old are you?” and “What is your age?” are exactly two same questions but have so common words. So here we train a network that returns a high similarity score when the questions are similar and a low similarity score when the questions are different.
+
+% Hasonlósági tanulással is megoldhatjuk az NLP feladatokat. Az egyik népszerű probléma, amelyet megoldhat, az, hogy felismeri az ismétlődő kérdéseket olyan népszerű fórumokon, mint a Quora vagy a StackOverflow, amelyeken óránként több ezer kérdés jelenik meg. Azt gondolhatnánk, hogy ez nem is olyan nehéz probléma, hiszen mindössze annyit kell tennünk, hogy összehasonlítjuk a szavakat ezekben a kérdésekben. Bizonyos esetekben, például a „Hol laksz?” Kérdésekben is igazad lehet. és "Hol laksz?" majdnem ugyanazok a szavak vannak bennük, így azt mondhatjuk, hogy ugyanazt a kérdést teszik fel. De ha figyelembe vesz egy másik kérdést, hogy „hova mész?”, ez is hasonlónak tűnik az utolsó kérdéshez, de teljesen más jelentéssel bír. Még bizonyos esetekben is előfordulhat, hogy a szavak teljesen nem egyeznek, de a kérdések ugyanazok, mint például: "Hány éves vagy?" és "Hány éves vagy?" pontosan két ugyanaz a kérdés, de olyan gyakori szavaik vannak. Tehát itt olyan hálózatot tanítunk, amely magas hasonlósági pontszámot ad vissza, ha a kérdések hasonlóak, és alacsony hasonlósági pontszámot, ha a kérdések különböznek.
+
+% Now how do we train a network to learn similarity? We use Siamese neural networks which is discussed next.
 
 %----------------------------------------------------------------------------
 \subsubsection{Sziámi hálók}
 
-A Siamese neural network (sometimes called a twin neural network) is an artificial neural network that contains two or more identical subnetworks which means they have the same configuration with the same parameters and weights. Usually, we only train one of the subnetworks and use the same configuration for other sub-networks. These networks are used to find the similarity of the inputs by comparing their feature vectors.
+Az előző részben kifejtett deep metrikák tanulásához tipikusan sziámi hálókat alkalmaznak. A sziámi hálókat (siamese network) egy mély neurális háló architektúra, amely két vagy több azonos alhálózatot tartalmaz. Az alhálózatok teljes mértékben megegyeznek egymással, azaz azonos a paramétereik értéke. Ha tanítás során az egyik alháló súlyát megváltoztatjuk, akkor azzal egyidejűleg a többi alhálót is ugyanúgy módosítjuk, hogy azok mindíg azonos súlyokkal rendelkezzenek. Ezeket a hálókat a bemenetek hasonlóságának megállapítására használják a jellemzővektoraik összehasonlításával. [REF]
 
+% A Siamese neural network (sometimes called a twin neural network) is an artificial neural network that contains two or more identical subnetworks which means they have the same configuration with the same parameters and weights. Usually, we only train one of the subnetworks and use the same configuration for other sub-networks. These networks are used to find the similarity of the inputs by comparing their feature vectors.
+
+Az alábbi \ref{fig:siamese}. ábrán láthatjuk a sziámi háló működését. A sziámi hálónak két bemenete van, az egyes bemenetekhez külön külön alháló tartozik. Az első alháló megkapja a bemenő képet, és miután az áthaladt a konvolúciós rétegeken létrehoz egy jellemzővektort (angolul feature vector vagy encoding), ami csökkentett dimenziójú a bemeneti képhez képest. A második alháló ami ugyanolyan súlyokkal dolgozik és egy különböző képet kap a bemenetén. Ezt követően a két jellemzővektorunk van, rendre $f(\mathbf{x_1})$ és $f(\mathbf{x_2})$. A két jellemzővektort ezután valamiyen távolság metrika szerint összevethető, ami alapján meghatározzuk a hasonlóságot. A sziámi háló célja egy olyan metrika megtanulása, amely közel azonosnak tekinthető bemeneti képekre nagy hasonlóságot ad, míg az eltérő képekre kis hasonlóságot kapunk.
+
+% TODO ide kéne egy normális ábra arcokról ami megfelel a szövegnek
 \begin{figure}[ht]
 	\centering
-	\includegraphics[width=0.65\columnwidth]{figures/abra.png}
-	\caption{abra alatti szoveg}
+	\includegraphics[width=1\columnwidth]{figures/siamese.png}
+	\caption{A sziámi háló architektúra.}
+	\label{fig:siamese}
 \end{figure}
 
-Consider the diagram above, the very first subnetwork takes an image as input and after passing through convolutional layers and fully connected layers,we get a vector representation of my face.Now the second face is actually the one I want to compare with the first face,so I pass this image through a network that is exactly the same with same weights and parameters.Now that we have two encodings F(A) and F(B), we will compare these two to know how similar the two faces are.
 
-It is important to note that the F(A) and F(B) must be quite similar if both the inputs are similar which is the case in this example.And if the faces are different,we want F(A) and F(B) to be very different.So this is how we are going to train the network.
+% Consider the diagram above, the very first subnetwork takes an image as input and after passing through convolutional layers and fully connected layers,we get a vector representation of my face.Now the second face is actually the one I want to compare with the first face,so I pass this image through a network that is exactly the same with same weights and parameters.Now that we have two encodings F(A) and F(B), we will compare these two to know how similar the two faces are.
 
-So how do we compare vectors F(A) and F(B) and when can we say that they are similar or different? We simply measure the distance between these vectors and if the distance between them is small than the vectors are similar and if the distance between is larger than the vectors are very different from one another.So we can define a distance function d, that can give us the distance between two vectors such as:
+% It is important to note that the F(A) and F(B) must be quite similar if both the inputs are similar which is the case in this example.And if the faces are different,we want F(A) and F(B) to be very different.So this is how we are going to train the network.
 
-% d(A,B)=|| F(A) - F(B) ||<sup>2</sup>
+% So how do we compare vectors F(A) and F(B) and when can we say that they are similar or different? We simply measure the distance between these vectors and if the distance between them is small than the vectors are similar and if the distance between is larger than the vectors are very different from one another.So we can define a distance function d, that can give us the distance between two vectors such as:
+
+A jellemzővektorok távolságának 
+
+\[ d(f(\mathbf{x_1}),f(\mathbf{x_2})) = ||f(\mathbf{x_1}) - f(\mathbf{x_2}) ||^2 \]
 
 So when A and B are the same person,d(A,B) is small and when A and B are different person d(A,B) is large.So we can form a loss functions around this.When A and B are a positive pair, i.e. are of a same person we can define the loss function exactly as L2 norm between F(A) and F(B).
 
