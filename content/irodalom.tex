@@ -450,11 +450,26 @@ Mély metrika tanulást alkalmazzák természetes nyelvfeldolgozás (NLP) terül
 %----------------------------------------------------------------------------
 \subsubsection{Sziámi hálók}
 
-Az előző részben kifejtett deep metrikák tanulásához tipikusan sziámi hálókat alkalmaznak. A sziámi hálókat (siamese network) egy mély neurális háló architektúra, amely két vagy több azonos alhálózatot tartalmaz. Az alhálózatok teljes mértékben megegyeznek egymással, azaz azonos a paramétereik értéke. Ha tanítás során az egyik alháló súlyát megváltoztatjuk, akkor azzal egyidejűleg a többi alhálót is ugyanúgy módosítjuk, hogy azok mindíg azonos súlyokkal rendelkezzenek. Ezeket a hálókat a bemenetek hasonlóságának megállapítására használják a jellemzővektoraik összehasonlításával. [REF]
+
+Az előző részben kifejtett deep metrikák tanulásához tipikusan sziámi hálókat alkalmaznak. A sziámi hálókat (siamese network) egy mély neurális háló architektúra, amely két vagy több azonos alhálózatot tartalmaz. Az alhálózatok teljes mértékben megegyeznek egymással, azaz azonos a paramétereik értéke. Ha tanítás során az egyik alháló súlyát megváltoztatjuk, akkor azzal egyidejűleg a többi alhálót is ugyanúgy módosítjuk, hogy azok mindíg azonos súlyokkal rendelkezzenek. Ezeket a hálókat a bemenetek hasonlóságának megállapítására használják a jellemzővektoraik összehasonlításával [REF]. 
+
+A sziámi hálóknak elegendő kevesebb tanító minta, mint a tipikus mély neurális hálóknak. Ez a tulajdonsága kedvező olyan feladatoknál, ahol a tanító minták száma korlátozott, vagy nehezen begyűjthető nagy mennyiségben. A sziámi hálókat előszeretettel alkalmazzák arcfelismeréshez, illetve aláírás verifikáláshoz.
+
+A sziámi hálók \textbf{előnyei}:
+\begin{itemize}
+	\item Ellenállóbb a tanító adat kiegyensúlyozatlanságára: A One-shot learning segítségével, osztályonként néhány kép is elegendő ahhoz, hogy a sziámi hálózatok felismerjék ezeket a képeket a jövőben.
+	\item A sziámi hálók embeddingeket tanulnak meg, a hasonló osztályokat/fogalmakat a látens térben közelebb helyezik egymáshoz, így szemantikai hasonlóságot képesek megtanulni.
+\end{itemize}
+
+% Kiegyensúlyozatlanság: Az egyszeri tanulás segítségével osztályonként néhány kép elegendő ahhoz, hogy a sziámi hálózatok felismerjék ezeket a képeket a jövőben
+
+% Kedves a legjobb osztályozóval rendelkező együttes: Tekintettel arra, hogy a tanulási mechanizmusa némileg eltér az osztályozástól, egyszerű átlagolása egy osztályozóval sokkal jobban teljesít, mint az átlagos 2 korrelált felügyelt modell (pl. GBM és RF osztályozó)
+
+% Tanulás a szemantikai hasonlóságból: A sziámi a beágyazások tanulására összpontosít (a mélyebb rétegben), amelyek ugyanazokat az osztályokat/fogalmakat helyezik közel egymáshoz. Így megtanulhatja a szemantikai hasonlóságot.
+
+% It uses only a few numbers of images to get better predictions. The ability to learn from very little data made Siamese networks more popular in recent years.
 
 % A Siamese neural network (sometimes called a twin neural network) is an artificial neural network that contains two or more identical subnetworks which means they have the same configuration with the same parameters and weights. Usually, we only train one of the subnetworks and use the same configuration for other sub-networks. These networks are used to find the similarity of the inputs by comparing their feature vectors.
-
-Az alábbi \ref{fig:siamese}. ábrán láthatjuk a sziámi háló működését. A sziámi hálónak két bemenete van, az egyes bemenetekhez külön külön alháló tartozik. Az első alháló megkapja a bemenő képet, és miután az áthaladt a konvolúciós rétegeken létrehoz egy jellemzővektort (angolul feature vector vagy encoding), ami csökkentett dimenziójú a bemeneti képhez képest. A második alháló ami ugyanolyan súlyokkal dolgozik és egy különböző képet kap a bemenetén. Ezt követően a két jellemzővektorunk van, rendre $f(\mathbf{x_1})$ és $f(\mathbf{x_2})$. A két jellemzővektort ezután valamiyen távolság metrika szerint összevethető, ami alapján meghatározzuk a hasonlóságot. A sziámi háló célja egy olyan metrika megtanulása, amely közel azonosnak tekinthető bemeneti képekre nagy hasonlóságot ad, míg az eltérő képekre kis hasonlóságot kapunk.
 
 % TODO ide kéne egy normális ábra arcokról ami megfelel a szövegnek
 \begin{figure}[ht]
@@ -464,91 +479,125 @@ Az alábbi \ref{fig:siamese}. ábrán láthatjuk a sziámi háló működését.
 	\label{fig:siamese}
 \end{figure}
 
+A \ref{fig:siamese}. ábrán láthatjuk a sziámi háló működését. A sziámi hálónak két bemenete van, az egyes bemenetekhez külön külön alháló tartozik. Az első alháló megkapja a bemenő képet, és miután az áthaladt a konvolúciós rétegeken létrehoz egy jellemzővektort (angolul feature vector vagy encoding), ami csökkentett dimenziójú a bemeneti képhez képest. A második alháló ami ugyanolyan súlyokkal dolgozik és egy különböző képet kap a bemenetén. Ezt követően a két jellemzővektorunk van, rendre $\mathbf{p} = f(\mathbf{x_1})$ és $\mathbf{q} = f(\mathbf{x_2})$. A két jellemzővektort ezután valamiyen távolság metrika szerint összevethető, ami alapján meghatározzuk a hasonlóságot. A sziámi háló célja egy olyan metrika megtanulása, amely közel azonosnak tekinthető bemeneti képekre nagy hasonlóságot ad, míg az eltérő képekre kis hasonlóságot kapunk.
 
-% Consider the diagram above, the very first subnetwork takes an image as input and after passing through convolutional layers and fully connected layers,we get a vector representation of my face.Now the second face is actually the one I want to compare with the first face,so I pass this image through a network that is exactly the same with same weights and parameters.Now that we have two encodings F(A) and F(B), we will compare these two to know how similar the two faces are.
+A jellemzővektorok összehasonlításához többféle távolság metrikát is használhatunk. Ezek közül leggyakrabban a használt metrika a két vektor Euklideszi távolsága (ami megegyezik jellemzővektorok külömbségének $L2$ normájával), ami egyszerűen kiszámolható az alábbi módon n dimenziós esetben \cite{tabak2014geometry}:
+
+% On the n-dimensional Euclidean space {\displaystyle \mathbb {R} ^{n},}{\displaystyle \mathbb {R} ^{n},} the intuitive notion of length of the vector x = (x1, x2, ..., xn) is captured by the formula
+
+\[ d(\mathbf{p} - \mathbf{q}) = \lvert \mathbf{p} - \mathbf{q} \rvert_2 = \sqrt{(p_1 - q_1)^2 + (p_2 - q_2)^2 + \dots + (p_n - q_n)^2}\]
+
+Ahol $\mathbf{p} = (p_1, p_2, \dots, p_n)$ és $\mathbf{q} = (q_1, q_2, \dots, q_n)$ 
+
+\subsubsection{Sziámi hálók tanítása}
+
+Mivel a sziámi hálózatok képzése általában páros tanulással (angolul pairwise learning) jár, a keresztentropia veszteség ebben az esetben nem használható, főként két veszteségfüggvényt használnak ezeknek a sziámi hálózatoknak a betanítására: a hármas veszteségfüggvényt (triplet loss) és a konsztratív veszteségfüggvényt (constrative loss).
+
+A hármas veszteség lényege, tanítás során három sziámi háló bemenetére három különböző képet adunk. A három képből az elsőt referenciának nevezik (anchor), a másodikat pozitív példának, amely a referenciához nagyon hasonló kép, a harmadikat pedig negatív példának, amely a referenciától jelentősen eltérő kép. A tanítás során a neurális háló paramétereit úgy módosítjuk, hogy a referencia bemenetből és a pozitív bemenetből kinyert jellemzővektorok távolsága minimalizálva legyen, míg a referencia bemenetből és a negatív bemenetből kinyert vektorok távolsága minimalizálva legyen. \cite{facenet2015}
+
+% A hármas veszteség egy veszteségfüggvény, ahol az alapvonal (horgony) bemenetét pozitív (truthy) bemenettel és negatív (hamis) bemenettel hasonlítják össze. Az alapvonali (horgony) bemenet és a pozitív (igaz) bemenet közötti távolság minimálisra csökken, az alapvonali (horgony) bemenet és a negatív (hamis) bemenet közötti távolság pedig maximalizálva van. \cite{facenet2015}
+
+% Triplet loss is a loss function where a baseline (anchor) input is compared to a positive (truthy) input and a negative (falsy) input. The distance from the baseline (anchor) input to the positive (truthy) input is minimized, and the distance from the baseline (anchor) input to the negative (falsy) input is maximized. \cite{facenet2015}
+
+\[ \mathcal{L}(A,P,N) = max \left( \lVert f(A) - f(P)) \rVert_2 - \lVert f(a) - f(N) \rVert_2 + \alpha, 0 \right) \]
+
+A fenti egyenletben szereplő $f(A), f(P), f(N)$ a jellemzővektorokat jelöli (sorra referencia, pozitív és negatív bemenetekre), míg az $\alpha$ paraméterrel ``megnyújtható'' a hasonló és eltérő párok távolsága. 
+
+% In the above equation, alpha is a margin term used to “stretch” the distance differences between similar and dissimilar pairs in the triplet, fa, fa, fn are the feature embeddings for the anchor, positive and negative images.
+
+Kellő mennyiségű tanító kép és megfelelően választott kép hármasok használata esetén elérhető, hogy a neurális háló megtanuljon általánosítani, vagyis olyan képekből is megfelelő jellemzővektorokat hozzon létre, amelyeket nem használtunk a tanítás során. 
+
+% Az  arcfelismeréshez  használt  arclenyomat  vektorokat  létrehozó  sziámi  hálók tanítására többek között egy úgynevezett „triplet loss” veszteségfüggvényt alkottak meg a kutatók. E veszteségfüggvény használatának lényege az, hogy tanítás során három sziámi háló bemenetére mindig három különböző arcképet adunk. E három arcképből az elsőt  kinevezzük  referenciának,  a  másodikat  pozitív  példának  (mely  ugyanannak  az embernek az arcát ábrázolja, mint a referencia), a harmadikat pedig negatív példának (mely másik ember arcát ábrázolja). A tanítás során a neurális háló paramétereit úgy módosítjuk, hogy olyan arclenyomat vektorokat állítson elő a bemeneti képekből, hogy a referencia és a pozitív példáról készült arclenyomatok távolsága minél kisebb, míg a referencia és a negatív példa közötti távolság minél nagyobb legyen. Kellő mennyiségű tanító kép és megfelelően választott kép hármasok használata esetén elérhető, hogy a neurális  háló  megtanuljon  általánosítani,  vagyis  olyan  arcképekről  is  megfelelő arclenyomat vektorokat hozzon létre, amelyeket nem használtunk a tanítás során. 
+
+
+
+
+
+
+
+
+
+
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 % It is important to note that the F(A) and F(B) must be quite similar if both the inputs are similar which is the case in this example.And if the faces are different,we want F(A) and F(B) to be very different.So this is how we are going to train the network.
 
 % So how do we compare vectors F(A) and F(B) and when can we say that they are similar or different? We simply measure the distance between these vectors and if the distance between them is small than the vectors are similar and if the distance between is larger than the vectors are very different from one another.So we can define a distance function d, that can give us the distance between two vectors such as:
 
-A jellemzővektorok távolságának 
+% So when A and B are the same person,d(A,B) is small and when A and B are different person d(A,B) is large.So we can form a loss functions around this.When A and B are a positive pair, i.e. are of a same person we can define the loss function exactly as L2 norm between F(A) and F(B).
 
-\[ d(f(\mathbf{x_1}),f(\mathbf{x_2})) = ||f(\mathbf{x_1}) - f(\mathbf{x_2}) ||^2 \]
+% % L(A,B)=|| F(A) - F(B) ||<sup>2</sup>
 
-So when A and B are the same person,d(A,B) is small and when A and B are different person d(A,B) is large.So we can form a loss functions around this.When A and B are a positive pair, i.e. are of a same person we can define the loss function exactly as L2 norm between F(A) and F(B).
+% So when we minimise this loss function,we are actually minimizing the distance d(A, B). But for negative pairs(when two images in a pair are of different persons),we use a different kind of loss function known as hinge loss. When the two faces in a pair are different,we want F(A) and F(B) to have a distance greater than m, so if there is already a negative pair which has a distance greater than m between them,we don’t want to waste our effort by further making them apart.This is the reason we are using hinge loss instead of L2 loss.
 
-% L(A,B)=|| F(A) - F(B) ||<sup>2</sup>
+% % L(A,B)= max(0,m<sup>2</sup> - || F(A) - F(B) ||<sup>2</sup>)
 
-So when we minimise this loss function,we are actually minimizing the distance d(A, B). But for negative pairs(when two images in a pair are of different persons),we use a different kind of loss function known as hinge loss. When the two faces in a pair are different,we want F(A) and F(B) to have a distance greater than m, so if there is already a negative pair which has a distance greater than m between them,we don’t want to waste our effort by further making them apart.This is the reason we are using hinge loss instead of L2 loss.
+% So, this value is going to be zero when F(A) and F(B) are already distant apart(>m).
 
-% L(A,B)= max(0,m<sup>2</sup> - || F(A) - F(B) ||<sup>2</sup>)
+% Now putting both of these losses together, we get a contrastive loss given as:
 
-So, this value is going to be zero when F(A) and F(B) are already distant apart(>m).
+% % L(A,B)= y|| F(A) - F(B) ||<sup>2 </sup> + (1-y)max(0,m<sup>2</sup> - || F(A) - F(B) ||<sup>2</sup>)<br>
 
-Now putting both of these losses together, we get a contrastive loss given as:
+% So when A and B are the same person, we will have a label y equal to 1 and when A and B are different,y is equal to zero.
 
-% L(A,B)= y|| F(A) - F(B) ||<sup>2 </sup> + (1-y)max(0,m<sup>2</sup> - || F(A) - F(B) ||<sup>2</sup>)<br>
+% By using contrastive loss, we bring positive pairs together and negative pairs apart. But using this loss function we cannot learn ranking which means we are not able to say how much two pairs are similar to each other, we shall see how to do this in the next section.
 
-So when A and B are the same person, we will have a label y equal to 1 and when A and B are different,y is equal to zero.
+% When using contrastive loss we were only able to differentiate between similar
+% and different images but when we use triplet loss we can also find out which
+% image is more similar when compared with other images. In other words, the
+% network learns ranking when trained using triplet loss.
 
-By using contrastive loss, we bring positive pairs together and negative pairs apart. But using this loss function we cannot learn ranking which means we are not able to say how much two pairs are similar to each other, we shall see how to do this in the next section.
+% When using triplet loss, we no longer need positive and negative pairs of
+% images. We need triplets of images in which we have an anchor image, a positive
+% image that is similar to anchor image and a negative image that is very
+% different from the anchor image as shown below:
 
-%----------------------------------------------------------------------------
-\subsubsection{Triplet veszteségfüggvény}
+% Siamese network And now the architecture of the siamese network is as :
 
-When using contrastive loss we were only able to differentiate between similar
-and different images but when we use triplet loss we can also find out which
-image is more similar when compared with other images. In other words, the
-network learns ranking when trained using triplet loss.
+% \begin{figure}[ht]
+% 	\centering
+% 	\includegraphics[width=0.65\columnwidth]{figures/abra.png}
+% 	\caption{abra alatti szoveg}
+% \end{figure}
 
-When using triplet loss, we no longer need positive and negative pairs of
-images. We need triplets of images in which we have an anchor image, a positive
-image that is similar to anchor image and a negative image that is very
-different from the anchor image as shown below:
+% Siamese network When computing the vectors for these images, we want the
+% vectors of anchor image and positive image to come closer and we want to make
+% increase the distance between anchor image and negative image.
 
-Siamese network And now the architecture of the siamese network is as :
+% The distance between anchor vector and the positive vector is given by:
 
-\begin{figure}[ht]
-	\centering
-	\includegraphics[width=0.65\columnwidth]{figures/abra.png}
-	\caption{abra alatti szoveg}
-\end{figure}
+% % || F(A) - F(P) ||<sup>2</sup> Whereas the distance between anchor vector and the negative vector is given by:
 
-Siamese network When computing the vectors for these images, we want the
-vectors of anchor image and positive image to come closer and we want to make
-increase the distance between anchor image and negative image.
+% % || F(A) - F(N) ||<sup>2</sup> As mentioned above, we want the anchor image and positive image to have less distance between them as compared to the distance between anchor image and negative image, therefore:
 
-The distance between anchor vector and the positive vector is given by:
+% % || F(A) - F(P) ||<sup>2 </sup>< || F(A) - F(N) ||<sup>2</sup> So we can form the loss function as following:
 
-% || F(A) - F(P) ||<sup>2</sup> Whereas the distance between anchor vector and the negative vector is given by:
+% % L(A,P,N)= max(0, || F(A) - F(P) ||<sup>2 </sup>< || F(A) - F(N) ||<sup>2</sup> +m) Where m is a margin as we also saw in the hinge function of the contrastive
 
-% || F(A) - F(N) ||<sup>2</sup> As mentioned above, we want the anchor image and positive image to have less distance between them as compared to the distance between anchor image and negative image, therefore:
+% loss. So if the positive image is already closer to the anchor than the negative
+% image than the function returns zero and there is no loss. But when the negative
+% image is closer to the anchor than the positive image, we are bringing a
+% positive image closer to the anchor. Remember that we are also using a margin
+% term m, so the anchor point and positive point are not coming very close to each
+% other, and only the distance between anchor image and positive image is smaller
+% as compared to the distance between anchor image and negative image up to a
+% margin m.
 
-% || F(A) - F(P) ||<sup>2 </sup>< || F(A) - F(N) ||<sup>2</sup> So we can form the loss function as following:
+% When training the network, we may face a problem with choosing the triplets. We
+% can choose triplets in which there is a lot of difference between the positive
+% image and negative image, thus the distance between the anchor image and
+% positive image is already quite smaller as compared to the distance between
+% anchor image and negative image. For example, when the positive image of a
+% person's face is completely different from the negative image like they can have
+% different hairstyles, face structure and many other factors. In this case, the
+% network is not able to learn completely and may not be able to differentiate on
+% the basis of more minute features such as eye shape, nose shape etc.\ This may
+% cause the model to not perform correctly when we compare two faces of different
+% persons that do not have much difference.
 
-% L(A,P,N)= max(0, || F(A) - F(P) ||<sup>2 </sup>< || F(A) - F(N) ||<sup>2</sup> +m) Where m is a margin as we also saw in the hinge function of the contrastive
-loss. So if the positive image is already closer to the anchor than the negative
-image than the function returns zero and there is no loss. But when the negative
-image is closer to the anchor than the positive image, we are bringing a
-positive image closer to the anchor. Remember that we are also using a margin
-term m, so the anchor point and positive point are not coming very close to each
-other, and only the distance between anchor image and positive image is smaller
-as compared to the distance between anchor image and negative image up to a
-margin m.
+% So to tackle this problem we use a concept called as hard negative mining in
+% which we train the network with hard cases. So we come up with such triplets in
+% which distance between positive image and anchor is somewhat equal to the
+% distance between negative image and anchor.
 
-When training the network, we may face a problem with choosing the triplets. We
-can choose triplets in which there is a lot of difference between the positive
-image and negative image, thus the distance between the anchor image and
-positive image is already quite smaller as compared to the distance between
-anchor image and negative image. For example, when the positive image of a
-person's face is completely different from the negative image like they can have
-different hairstyles, face structure and many other factors. In this case, the
-network is not able to learn completely and may not be able to differentiate on
-the basis of more minute features such as eye shape, nose shape etc.\ This may
-cause the model to not perform correctly when we compare two faces of different
-persons that do not have much difference.
-
-So to tackle this problem we use a concept called as hard negative mining in
-which we train the network with hard cases. So we come up with such triplets in
-which distance between positive image and anchor is somewhat equal to the
-distance between negative image and anchor.
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
