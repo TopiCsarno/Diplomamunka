@@ -24,91 +24,92 @@
 % 	\item diplomaterv felépítése
 % \end{itemize}
 
+% %----------------------------------------------------------------------------
+% \section{Irodalomkutatás (15-20 oldal)}
+% %----------------------------------------------------------------------------
+% Átfogó jelleggel mutassa be az adat generáló gépi tanulási megoldásokat!
+
+% Az egészet időrendi sorrendben kéne felvezetni -> régi: Boltzman -> új \\
+% Fontos része: mögöttes ötlet -> embedding / látens térbeli reprezentáció
+
+% Syamese network -> ez is embeddingeket hoz létre.
+
+% Probléma felvetés:
+% Ötlet: általánosítható legyen a módszer akár többféle alkalmazásban is. -> Deep fake reprezentáció is tartalmazhat személyes adatot
+
+% Felépítés: \\
+% Adatgeneráló eljárások (4-5 topic ~3-4 oldal)
+% \begin{itemize}
+% 	\item felvezető ~ 4 oldal 
+% 	\begin{itemize}
+% 		\item supervised / unsupervised learning (mygreatlearning GAN)
+% 		\item discriminate / generative models
+% 		\item density estimation (mygreatlearning Boltz)
+% 		\item generative modellek csoportosítása (Explicit, implicit) (mygreatlearning Boltz)
+% 	\end{itemize}
+% 	\item boltzman machines (~3)
+% 	\begin{itemize}
+% 		\item extract latent space from data
+% 		\item Markov chain
+% 		\item graphical models -> remove mb
+% 		\item Markov property
+% 		\item BM and RBM structure - how it works
+% 		\item Usage today (spoiler alert: not much)
+% 		\item ha kell több emlélet: deeplearningbook.org
+% 	\end{itemize}
+% 	\item Generative adversarial network (GAN) (~3-4)
+% 	\begin{itemize}
+% 		\item mygreatlearning explanation
+% 		\item input noise generates the new data
+% 		\item Generator and Discriminator
+% 		\item they compete and get better -> discriminator cant tell anymore
+% 		\item GAN példák -> TODO
+% 	\end{itemize}
+% 	\item variational auto-encoder (~2-3)
+% 	\begin{itemize}
+% 		\item mygreatlearning explanation
+% 		\item auto encoder úgy általában. (dim(input) = dim(output))
+% 		\item compress to small representation -> uncompress
+% 		\item encoder, 'code', decoder
+% 		\item variational auto encoder mitől "variational"
+% 		\item data follows normal distribution -> mean, std
+% 		\item how it's trained (reparameterization trick, loss function)
+% 		\item példa alkalmazásra: deep fake -> TODO
+% 	\end{itemize}
+
+% 	\item deep metric learning -> embedding (~1-2)
+% 	\begin{itemize}
+% 		\item 
+% 	\end{itemize}
+% 	\item syamese networks (~2 oldal)
+% 	\begin{itemize}
+% 		\item 
+% 	\end{itemize}
+% 	\item triplet loss
+% 	\begin{itemize}
+% 		\item 
+% 	\end{itemize}
+% \end{itemize}
+
 %----------------------------------------------------------------------------
-\section{Irodalomkutatás (15-20 oldal)}
-%----------------------------------------------------------------------------
-Átfogó jelleggel mutassa be az adat generáló gépi tanulási megoldásokat!
-
-Az egészet időrendi sorrendben kéne felvezetni -> régi: Boltzman -> új \\
-Fontos része: mögöttes ötlet -> embedding / látens térbeli reprezentáció
-
-Syamese network -> ez is embeddingeket hoz létre.
-
-Probléma felvetés:
-Ötlet: általánosítható legyen a módszer akár többféle alkalmazásban is. -> Deep fake reprezentáció is tartalmazhat személyes adatot
-
-Felépítés: \\
-Adatgeneráló eljárások (4-5 topic ~3-4 oldal)
-\begin{itemize}
-	\item felvezető ~ 4 oldal 
-	\begin{itemize}
-		\item supervised / unsupervised learning (mygreatlearning GAN)
-		\item discriminate / generative models
-		\item density estimation (mygreatlearning Boltz)
-		\item generative modellek csoportosítása (Explicit, implicit) (mygreatlearning Boltz)
-	\end{itemize}
-	\item boltzman machines (~3)
-	\begin{itemize}
-		\item extract latent space from data
-		\item Markov chain
-		\item graphical models -> remove mb
-		\item Markov property
-		\item BM and RBM structure - how it works
-		\item Usage today (spoiler alert: not much)
-		\item ha kell több emlélet: deeplearningbook.org
-	\end{itemize}
-	\item Generative adversarial network (GAN) (~3-4)
-	\begin{itemize}
-		\item mygreatlearning explanation
-		\item input noise generates the new data
-		\item Generator and Discriminator
-		\item they compete and get better -> discriminator cant tell anymore
-		\item GAN példák -> TODO
-	\end{itemize}
-	\item variational auto-encoder (~2-3)
-	\begin{itemize}
-		\item mygreatlearning explanation
-		\item auto encoder úgy általában. (dim(input) = dim(output))
-		\item compress to small representation -> uncompress
-		\item encoder, 'code', decoder
-		\item variational auto encoder mitől "variational"
-		\item data follows normal distribution -> mean, std
-		\item how it's trained (reparameterization trick, loss function)
-		\item példa alkalmazásra: deep fake -> TODO
-	\end{itemize}
-
-	\item deep metric learning -> embedding (~1-2)
-	\begin{itemize}
-		\item 
-	\end{itemize}
-	\item syamese networks (~2 oldal)
-	\begin{itemize}
-		\item 
-	\end{itemize}
-	\item triplet loss
-	\begin{itemize}
-		\item 
-	\end{itemize}
-\end{itemize}
-
-%----------------------------------------------------------------------------
-\section{Probléma bemutatása (4-6 oldal)} 
-%----------------------------------------------------------------------------
-\begin{itemize}
-	\item arcfelismerő rendszerek működése
-	\item arcfelismerés problémakör
-	\item arclenyomat vektor
-\end{itemize}
+% \section{Probléma bemutatása (4-6 oldal)} 
+% %----------------------------------------------------------------------------
+% \begin{itemize}
+% 	\item arcfelismerő rendszerek működése
+% 	\item arcfelismerés problémakör
+% 	\item arclenyomat vektor
+% \end{itemize}
 
 %----------------------------------------------------------------------------
 \section{Arclenyomatok adatvédelmi elemzése (8-10) oldal}
 %----------------------------------------------------------------------------
 \begin{itemize}
-	\item Módszertan, támadó modell (pár adat alapján újraazonosítható) (1-3) 
-	\item Használt adathalmaz előállítása (korábbi munka:
-	VGG dataset) (3-4)
-	\item Predikciós modellek tanítása: sex, race, age 
-	\item Újraazonosíthatóság kockázata
+	\item módszertan, támadómodell -> hozzáfér datasethez
+	\item adatgyűjtés -> vgg és imdb datasetek előállítása (2-4 oldal)
+	\item random forestek betanítása -> race, sex, age, +1 valami?
+	\item betanítás utáni eredmények -> accuracy, ROC curve
+	\item adatvédelmi elemzés -> milyen riskek vannak (munkacsoport szerint)
+	\item pl: több info kiderülése 1 emberről probléma, adatszivárgás: le tudja szűkíteni, hogy ki lehet az, singling out, vagy lehet arcot rekonstruálni az embeddingből, újraazonosítás.
 \end{itemize}
 
 %----------------------------------------------------------------------------
