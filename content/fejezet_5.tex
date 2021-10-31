@@ -1,10 +1,106 @@
 %----------------------------------------------------------------------------
 \section{Az embeddingben kódolt személyes adatok vizsgálata (10-12 oldal)}
+\label{sec:5}
 %----------------------------------------------------------------------------
 
 \begin{itemize}
-	\item Legfontosabb embedding feature-ök meghatározása (kutatási jelentésből)
+	\item elgondolás, ötlet, mire számítottunk
+	\item Legfontosabb embedding feature-ök meghatározása (kutatási jelentésből) (4 oldal)
 	\item Legfontosabb feature-ök eltávolítása, módosítása milyen hatással van a modell pontosságára (kutatási jelentésből) 
 	\item Eredmények kiértékelése (kutatási jelentésből) 
-	\item Arclenyomatvektor feature-einek köncsönös összefüggésének vizsgálata (diploma A-ból)
+	\item Arclenyomatvektor feature-einek köncsönös összefüggésének vizsgálata (diploma A-ból) (5 oldal)
 \end{itemize}
+
+%-----------------------------------------------------------------------------
+% Szükségünk volt meghatározni, hogy egy adott modellnek mely koordinátái járulnak leginkább hozzá a modell predikciójához. Feltételezésünk az volt, hogy ha módosítjuk a legfontosabb koordinátákat, akkor azzal jelentősen romlani fognak a modell pontossági metrikái. Egy modell legfontosabb koordinátáit számos módon meg lehet határozni. Ezek közül először a már korábban bemutatott LIME 12 könyvtárat használtuk, ami kifejezetten gépi tanulási modellek értelmezésére szolgál. Annak érdekében, hogy az így kapott eredményeket megerősítsük, több, eltérő módszerrel is megvizsgáltuk a modelleket. A következőkben a rassz osztályozó modell vizsgálatát mutatjuk be.
+
+% 4.1 LIME eredmények
+% A LIME könyvtár segítségével meg tudtuk határozni egy adott modell legfontosabb koordinátáit. A következő diagramon az egyes koordináták előfordulási gyakoriságai láthatók. Például az (’f83’, 982) esetén az f83 jelöli az adott koordinátát, az 982 pedig, hogy az 1000 LIME magyarázatból hányszor volt benne a 10 legfontosabb koordináta között.
+% % ábra 
+% \begin{figure}[ht]
+% 	\centering
+% 	\includegraphics[width=0.65\columnwidth]{figures/abra.png}
+% 	\caption{abra alatti szoveg}
+% \end{figure}
+
+% 4.2 Modell specifikus módszer
+% Scikit-learn saját, modell-specifikus implementációját 13 használtuk. Ez a módszer kifejezetten döntési fa alapú modellekre alkalmazható. A döntési fákban magasabban található koordináták nagyobb fontosságúak, mint az alacsonyabban találhatóak. A módszer a Mean Decrease in Impurity és a, Gini importance-en alapul.
+% % ábra 
+% \begin{figure}[ht]
+% 	\centering
+% 	\includegraphics[width=0.65\columnwidth]{figures/abra.png}
+% 	\caption{abra alatti szoveg}
+% \end{figure}
+
+% 4.3 Permutation importance
+% A Permutation importance egy modellfüggetlen módszer. Mi az Eli5 14 könyvtár implementációját használtuk. Egy koordináta fontosságát meghatározhatjuk úgy, hogy megnézzük mennyivel csökken a modell pontossági metrikái (F1, R 2 stb.) ha egy adott koordinátát eltávolítunk. Egy koordináta eltávolítása után újratanítjuk a modellt, és összehasonlítjuk a pontosságát az eredeti modell pontosságával. Mivel újratanítás szükséges, ez egy eléggé számításigényes eljárás.
+% % ábra 
+% \begin{figure}[ht]
+% 	\centering
+% 	\includegraphics[width=0.65\columnwidth]{figures/abra.png}
+% 	\caption{abra alatti szoveg}
+% \end{figure}
+
+% 4.4 SHAP
+% Tree-SHAP 15 használatával elemezhetjük egy-egy megfigyelés esetén a koordináták fontosságát, illetve globális összegző képet is kaphatunk egy adathalmazról. A Tree-SHAP kifejezetten döntési fa alapú modellekre optimalizált módszer, de használható Kernel SHAP is. Rassz predikció esetén halmozott oszlopdiagramon láthatjuk, hogy osztályonként (rasszonként) mely koordináták a legjelentősebbek.  Összegezve őket a LIME-hoz hasonló eredményeket kapunk.
+% % ábra 
+% \begin{figure}[ht]
+% 	\centering
+% 	\includegraphics[width=0.65\columnwidth]{figures/abra.png}
+% 	\caption{abra alatti szoveg}
+% \end{figure}
+
+% KUTATÁSI JELENTÉS
+% -----------------------------------------------------------------------------
+
+% 3 Hálózat effektus vizsgálata 
+
+% Az arclenyomat vektorok korábbi vizsgálata kapcsán beláttuk, hogy a véletlen erdő (angol szakirodalomban random forest) modell döntési fáiban kölcsönös összefüggések állhatnak fent. Az volt a megfigyelésünk, hogy ez a kölcsönös összefüggés hasonlít ahhoz, amit komplex hálózatoknál tapasztalhatóak. Az ilyen hálózatoknál egy csomópont eltávolítása nincs nagy hatással a hálózatra, hanem több csomópont együttes kivételével lehet jelentősen rontani a hálózat összefüggőségén. 
+
+% Először megnéztem, hogy az arclenyomat vektorokon betanított véletlen erdő modellt át lehet-e transzformálni egy gráf reprezentációba. Miután ez sikerült, az volt a hipotézisünk, hogy a rassz predikciós modell és az arc identifikációs modellekből létrehozott gráfok együttes elemzésével találhatunk olyan csomópontokat, amelyek szignifikánsak a rassz predikciós gráfnál, viszont nem szignifikáns az identifikációs modell esetén. Így találhatunk módot az arclenyomat vektorokban hordozott érzékeny információk védelmére. 
+
+% 3.1 Hálózat effektus vizsgálata Iris adathalmazon
+% A véletlen erdő modell több döntési fát foglal magában. A vizsgálat során alap esetben 100 fából álló modellt alkalmaztam. Egy adott arclenyomat vektor bemenet esetén az erdőben található összes döntési fa képez egy szavazatot az egyik osztályra. Mivel az arclenyomat vektorokra betanított véletlen erdő rendkívül bonyolult döntési fákból áll, melyek működése ember számára már nem igazán értelmezhető, ezért kezdetben egy jelentősen kisebb adathalmazon: az Iris dataset[ Elérhető: https://archive.ics.uci.edu/ml/datasets/Iris/ ]-en végeztem a döntési fák vizsgálatát. Ez az adathalmaz 4 feature-t (petal width (PW), petal length (PL), sepal width (SW), sepal length (SL) tartalmaz, és 3 kimeneti osztályt, ami 3 féle virágnak felel meg (setosa, versicolor, virginica). 
+
+% \begin{figure}[ht]
+% 	\centering
+% 	\includegraphics[width=0.65\columnwidth]{figures/abra.png}
+% 	\caption{Az Iris datasetre betanított véletlen erdő egyik döntési fája
+% 	vizualizálva.}
+% \end{figure}
+
+% Az általam írt algoritmus célja a random forest classifiert átalakítani egy gráf reprezentációba. Az algoritmus először végig halad az erdőben lévő döntési fákon, és egy rekurzív függvény segítségével végig lép a döntési fa egyes csomópontjain. Egy adott csomópont lehet elágazás vagy levél. Elágazás esetén vizsgálni tudjuk az elágazás feltételét, ami egy adott featureből, és egy küszöbértékből (threshold) áll. Az algoritmus működése során feltérképezi a teljes döntési fát, és kigyűjti az egyes levél csomópontokhoz tartozó feltétel rendszereket, azaz milyen feltételeknek kell teljesülnie ahhoz, hogy a döntési fa az adott levélre jusson. Feltételezésem az volt, hogy a fának azon feltételei lesznek szignifikánsak, amelyek gyakran fordulnak elő más feltételekkel együtt.  Definiáltam egy NxN-es mátrixot, ahol N a feature-ök számát jelenti, és a mátrixot 0 értékekkel inicializáltam. A fa feltérképezése során a 2 featurehöz kapcsolódó feltétel együttes megjelenéskor az NxN-es mátrix megfelelő cellájába 1-gyel növeltem az értéket. Ezt a módszert alkalmazva feltérképeztem a véletlen erdő összes döntési fáját, és a fákon belül az összes útvonalat, és feltöltöttem a mátrixot. A 2. ábrán láthatjuk az eredményt. A feature-ök sorra: SL, SW, PL, PW\@. Láthatjuk, hogy leggyakrabban a PW és PL feltételek szerepeltek leggyakrabban (1584 alkalommal) feltöltött NxN-es mátrix (N=4). 
+
+% \begin{figure}[ht]
+% 	\centering
+% 	\includegraphics[width=0.65\columnwidth]{figures/abra.png}
+% 	\caption{2. Ábra Iris dataset esetén az értékekkel}
+% \end{figure}
+
+% Ezt követően létre tudtam hozni egy olyan gráfot, aminek szomszédossági mátrixa a feltöltött NxN-es mátrix. A létrehozott gráf egy teljes gráf, aminek élei súlyozva vannak feltételek együttes megjelenésének számával. 
+
+% \begin{figure}[ht]
+% 	\centering
+% 	\includegraphics[width=0.65\columnwidth]{figures/abra.png}
+% 	\caption{3. Ábra A szomszédossági mátrix alapján létrehozott gráf. }
+% \end{figure}
+
+% 3.2 Hálózat effektus vizsgálata arclenyomat vektorokon 
+
+% Miután megírtam a fent bemutatott algoritmust az Iris datasetre és leteszteltem a működését kisebb, értelmezhető példákon, áttértem az arclenyomat vektorok vizsgálatára. Az általam használt adathalmaz több mint 10 000 arclenyomat vektort tartalmaz, hozzájuk pedig 4 címke tartozik az adott ember rasszára vonatkozóan (fehér, fekete, ázsiai, indiai). Egy arclenyomat vektor 128 feature-t tartalmaz, amelyek valós számok (többnyire (-1, 1) közötti lebegőpontos értékek). Ezen az adathalmazon tanítottam be a rassz predikciós modellt, ami egy Random Forest Classifier 100 döntési fával. A betanított modellen lefuttattam a feltérképező algoritmust, az a korábban leírt módszerek szerint végighalad az összes fa összes útvonalán, és feltöltötte a szomszédossági mátrixot (ami ebben az esetben 128x128-as méretű).  A szomszédossági mátrix alapján már létrehozható egy teljes, súlyozott gráf.
+
+% Feltételezésem az volt, hogy a gráf struktúrájából adódóan meg tudok határozni a modell számára szignifikáns feature-öket amelyeket, ha eltávolítunk az adathalmazból, a modell pontossága jelentősen romlani fog. Egy feature fontosságát úgy határoztam meg, hogy a súlyozott gráf feature-höz tartozó csomópontjának vettem a fokszámát (csomóponthoz tartozó élek súlyainak összegét).  A fokszámokat ki tudtam számolni a szomszédossági mátrix alapján. A kapott eredményeket csökkenő sorrendbe rendeztem, és összehasonlítottam a Sci-kit learn feature\_importance[ Scikit-learn feature importance függvénye: link] módszerével kapott eredménnyel. A két módszerrel nagyon hasonló eredményt kaptam, amit láthatunk a 4. ábrán. 
+
+% \begin{figure}[ht]
+% 	\centering
+% 	\includegraphics[width=0.65\columnwidth]{figures/abra.png}
+% 	\caption{A RFC legfontosabb feature-ei csökkenő sorrendben.  Bal oldalon az általam írt algoritmus eredménye, jobb oldalon a sci-kit learn feature\_imporance függvényével kapott eredmény.}
+% \end{figure}
+
+% \begin{figure}[ht]
+% 	\centering
+% 	\includegraphics[width=0.65\columnwidth]{figures/abra.png}
+% 	\caption{5. Ábra A modell pontosságának kirajzolása az eltávolított feature-ök számától függően.}
+% \end{figure}
+
+% Miután a modell számára legfontosabb feature-öket meghatároztam, megnéztem hogyan változik a RFC pontossága, ha eltávolítom a legfontosabb feature-öket. Mit láthatjuk az 5. ábrán, a modell pontossága nem romlik jelentően még akkor sem, ha feature-ök több mint felét eltávolítottuk.

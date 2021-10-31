@@ -42,14 +42,20 @@
 %--------------------------------------------------------------------------------------
 % Set up listings
 %--------------------------------------------------------------------------------------
+\definecolor{codered}{rgb}{0.82,0.18,0.17}
+\definecolor{codegreen}{rgb}{0.5,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurp}{rgb}{0.75,0.12,0.91}
+\definecolor{backcolour}{rgb}{0.97,0.97,0.97}
+
 \definecolor{lightgray}{rgb}{0.95,0.95,0.95}
 \lstset{
 	basicstyle=\scriptsize\ttfamily, % print whole listing small
-	keywordstyle=\color{black}\bfseries, % bold black keywords
+	keywordstyle=\color{codered}, % bold black keywords
 	identifierstyle=, % nothing happens
 	% default behavior: comments in italic, to change use
-	% commentstyle=\color{green}, % for e.g. green comments
-	stringstyle=\scriptsize,
+	commentstyle=\color{codegreen}, % for e.g. green comments
+	stringstyle=\color{codepurp},
 	showstringspaces=false, % no special string spaces
 	aboveskip=3pt,
 	belowskip=3pt,

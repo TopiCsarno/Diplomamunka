@@ -5,7 +5,7 @@
 %--------------------------------
 % advancement in ML, GPUs, big data
 
-Az elmúlt években a nagyméretű adathalmazok elérhetősége és a számítási kapacitás exponenciális növekedésének köszönhetően jelentősen megnövekedett az érdeklődés a gépi tanulás iránt. Manapság a gépi tanulási algoritmusokat előszeretettel alkalmazzák nagy dimenziós bemeneti adatokhoz kapcsolódó osztályozási, regressziós, klaszterezési vagy dimenziócsökkentési feladatokra. A gépi tanulási algoritmusok számos területen embert meghaladó képességekkel rendelkeznek (például képosztályozásban). A mindennapi életünkben használt okos eszközökön a kép- és beszédfelismerést, az internetes keresést, az arcfelismeréses bejelentkezést és még sok mást a gépi tanulási algoritmusok tesznek lehetővé.
+Az elmúlt években a nagyméretű adathalmazok elérhetőség, a számítási kapacitás exponenciális növekedésének és a mély tanulás területén elért áttöréseknek köszönhetően jelentősen megnövekedett az érdeklődés a gépi tanulás iránt. Manapság a gépi tanulási algoritmusokat előszeretettel alkalmazzák nagy dimenziós bemeneti adatokhoz kapcsolódó osztályozási, regressziós, klaszterezési vagy dimenziócsökkentési feladatokra. A gépi tanulási algoritmusok számos területen embert meghaladó képességekkel rendelkeznek (például képosztályozásban). A mindennapi életünkben használt okos eszközökön a kép- és beszédfelismerést, az internetes keresést, az arcfelismeréses bejelentkezést és még sok mást a gépi tanulási algoritmusok tesznek lehetővé.
 
 % In recent years, the availability of large datasets combined with the improvement in algorithms and the exponential growth in computing power led to an unparalleled surge of interest in the topic of machine learning. Nowadays, machine learning algorithms are successfully employed for classification, regression, clustering, or dimensionality reduction tasks of large sets of especially high-dimensional input data.1 In fact, machine learning has proved to have superhuman abilities in numerous fields (such as playing go,2 self driving cars,3 image classification,4 etc). As a result, huge parts of our daily life, for example, image and speech recognition,5,6 web-searches,7 fraud detection,8 email/spam filtering,9 credit scores,10 and many more are powered by machine learning algorithms.
 
@@ -13,12 +13,29 @@ A gépi tanulás nagy részben hozzájárult a tudomány és technológia fejlő
 
 % Advances in this technology have allowed for recent breakthroughs that promote faster and more efficient business intelligence, using abilities ranging from facial recognition to natural language processing.
 
+% ml -> fejlődés
+% áttörések, pl arcfelismerés, nlp
+%  ???
+% alkalmazások között van ami generálni tud adatot a bemenetből
+% 
+
 % --------------------------------
 % adatgeneráló eljárások megjelenése, motivációja (moar data)
 
 A gépi tanulás alkalmazásai között szerepelnek olyan eljárások, amelyek képesek adatot generálni a bemenetből, mint például a generatív modellek vagy a deep metric learning, de ide sorolhatóak a napjainkban egyre elterjedtebben használt gépi tanulásra épülő arcfelismerési rendszerek is.
 
-A generatív modellek, mint a GAN (Generative Adversarial Network) olyan neurális hálózatok, amelyek képesek új, szintetikus adatot előállítani. A háló bemenetén megadott véletlenszerű zaj hatására realisztikus képeket tudnak generálni. A GAN-ok elsősorban olyan szituációkban lehetnek nagyon hasznosak, amikor több tanítóadatra van szükségünk, viszont az adat gyűjtése nehezen megoldható. Sok esetben az adatgyűjtés és címkézés hosszadalmas, drága folyamat. Fontos viszont, hogy a generált szintetikus adat minősége megfelelő legyen a kívánt célra. Az új adatoknak megfelelően realisztikusnak kell lenniük ahhoz, hogy a generált adatokból szerzett ismeretek továbbra is érvényesek legyenek a valós adatokra. A generatív modellek leírják egy adathalmaz előállításának módját a valószínűségi modell alapján. Ebből a modellből mintavételezéssel új adatokat tudunk előállítani. A GAN -ok olyan struktúrát fedeznek fel az adatokban, amely lehetővé teszi számukra, hogy reális adatokat állítsanak elő.
+% ide példa...
+% példa lehet
+% egy GAN példa ide -> 
+
+A generatív modellek egyik típusa: a GAN (Generative Adversarial Network) olyan neurális hálózatok, amelyek képesek új, szintetikus adatot előállítani. A GAN egy olyan neurális háló, amelyben két alhálózat verseng egymással: a generátor és a diszkriminátor. A generátor feladata a tanító mintákhoz hasonló új minták előállítása, míg a diszkriminátor felel a valódi és a generált minták megkülönböztetéséért. A GAN tanítása során a generátor igyekszik egyre hihetőbb mintákat előállítani, hogy be tudja csapni a diszkriminátort. A GAN sikeres betanítása után, a bemenetre adott véletlenszerű zajból realisztikus képeket tudnak generálni. Például az NVIDIA által fejlesztett StyleGAN3 képes fotorealisztikus emberi arcok generálására \cite{stylegan3}.
+
+A GAN-ok elsősorban olyan szituációkban lehetnek nagyon hasznosak, amikor több tanítóadatra van szükségünk, viszont az adat gyűjtése nehezen megoldható. Sok esetben az adatgyűjtés és címkézés hosszadalmas, drága folyamat. Amennyiben be tudunk tanítani egy hálót, ami a célnak megfelelő minőségű szintetikus adatok előállítására képes, az megoldást adhat erre a problémára. Az új adatoknak megfelelően realisztikusnak kell lenniük ahhoz, hogy a generált adatokból szerzett ismeretek továbbra is érvényesek legyenek a valós adatokra. 
+
+% CUT
+% A generatív modellek leírják egy adathalmaz előállításának módját a valószínűségi modell alapján. Ebből a modellből mintavételezéssel új adatokat tudunk előállítani. A GAN -ok olyan struktúrát fedeznek fel az adatokban, amely lehetővé teszi számukra, hogy reális adatokat állítsanak elő.
+
+% A GAN egy generatív modell, amelyben két neurális háló verseng egymással.  Az első hálót generátornak nevezik. A generátor felelős új szintetikus minták előál- lításáért, amelyek hasonlítanak a tanító halmaz mintáihoz. A másik neurális hálót diszkriminátornak nevezik, aminek a feladata megkülönböztetni a valódi minták (tanító minta) illetve a generátor által létrehozott szintetikus minták között. A ge- nerátor célja becsapnia a diszkriminátort, míg a diszkriminátor megpróbál ennek ellenállni. A két háló versengéséből ered az „adversarial” elnevezés.
 
 % GAN is a type of neural network that is able to generate new data from scratch. You can feed it a little bit of random noise as input, and it can produce realistic images of bedrooms, or birds, or whatever it is trained to generate. One thing all scientists can agree on is that we need more data. GANs, which can be used to produce new data in data-limited situations, can prove to be really useful. Data can sometimes be difficult and expensive and time-consuming to generate. To be useful, though, the new data has to be realistic enough that whatever insights we obtain from the generated data still applies to real data. If you’re training a cat to hunt mice, and you’re using fake mice, you’d better make sure that the fake mice actually look like mice.
 
@@ -32,11 +49,14 @@ A generatív modellek, mint a GAN (Generative Adversarial Network) olyan neurál
 % --------------------------------
 % arcfelismerés -> egyre több kamera
 
-A gépi tanulási technikák fejlődésének köszönhetően, illetve az egyre olcsóbb okos eszközök elterjedésével egyre jobban elterjedt az arcfelismerés használata. A generatív modellekhez hasonlóan, az modern arcfelismerő rendszerek is gépi tanulásra támaszkodnak. Működésük során az emberek arcáról készült digitális képekből képesek arcot jellemző metrikákat előállítani oly módon, hogy egy emberhez tartozó arcleíró vektorok (későbbiekben arclenyomatok) távolsága kicsi legyen, míg különböző emberek között nagy. Erre a célra létrehozott neurális hálók képesek megtanulni azt a deep metrikát ami legjobban leírja az emberi arc struktúráját.
+A gépi tanulási technikák fejlődésének köszönhetően, illetve az egyre olcsóbb okos eszközök elterjedésével egyre jobban elterjedt az arcfelismerés használata. A generatív modellekhez hasonlóan, az modern arcfelismerő rendszerek is gépi tanulásra támaszkodnak. Működésük során az emberek arcáról készült digitális képekből képesek arcot jellemző metrikákat előállítani oly módon, hogy egy emberhez tartozó arcleíró vektorok (későbbiekben arclenyomatok) távolsága kicsi legyen, míg különböző emberek között minél nagyobb. Erre a célra létrehozott neurális hálók: a sziámi hálók képesek megtanulni azt a mély metrikát ami legjobban leírja az emberi arc struktúráját. Miután sikerült betanítani egy hálót ami képes digitális arcképekből arclenyomatokat származtatni, az arclenyomatok összehasonlításával már képes az arcfelismerő rendszer összevetni a keresett személy arclenyomatát a rendszer által ismert személyek arclenyomataival.
 
 % arcfelismerés és adatvédelem -> arclenyomatvektor
 
-Az ilyen módon kinyert arclenyomatokban tárolt információ ember számára nem értelmezhető, de belőlük gépi tanulási módszerekkel személyes adat származtatható a képen látható személyekről. Magukba kódolva olyan információkat is hordoznak, mint például a rassz, a nem és az arc egyéb jellemzői. Ezek az információk együttesen lehetővé teszik egy személy azonosítását.
+Az ilyen módon kinyert arclenyomatokban tárolt információ ember számára nem értelmezhető, csupán egy lebegőpontos számsornak tűnik, de belőlük gépi tanulási módszerekkel személyes adat származtatható a képen látható személyekről. Magukba kódolva olyan információkat is hordoznak, mint például a képen látható illető rassza, a neme, életkora és az arc egyéb jellemzői. Ezek az információk együttesen lehetővé teszik egy személy azonosítását. Az arclenyomatokban hordozott információk alapján lehetséges az eredeti arcképek rekonstruálása \cite{mai2018reconstruction}. Az így kapott arcképek kevésbé részletgazdagok, mint az eredeti.
+
+%CUT itt lehet vágni egyet
+
 
 % While these seem as a list of arbitrary numbers to the naked eye, they may contain personal information about the person whose photo was taken. In their recent work, Mai et al. showed that the photo itself can be reconstructible from the embedding. In authors argue that it should be an accepted fact that with good accuracy the original sample can be reconstructed from unprotected embeddings. This means that sensitive data could be derived from unprotected templates and other attacks can also be launched based on the reconstruction results. Based on this, it can also be possible to reverse engineer data from face embeddings in order to find out the original identity of the embedding
 
@@ -44,7 +64,7 @@ Az ilyen módon kinyert arclenyomatokban tárolt információ ember számára ne
 
 A dolgozatomban azt vizsgálom, hogy a gépi tanulás alapú arcfelismerés által kinyert arclenyomatok lehetővé teszik-e az embedding forrását, az eredeti alanynak a felismerését. Megvizsgálom, hogy az arclenyomatok hogyan kódolják az arc struktúráját, illetve, hogy annak mely részei hordoznak érzékeny információt az adatalanyról. Célom arclenyomatok vizsgálatát olyan módszerrel végezni, amely általánosítható lehet akár generatív modelleknél használt belső reprezentációk analízisére.
 
-A dolgozatom felépítése a következő. A \ref{sec:irodalom}. fejezetben a témámhoz kapcsolódó fontosabb témaköröket mutatom be, a 3.[REF] fejezetben az arclenyomatokhoz kapcsolódó adatvédelmi kérdésekkel foglalkozom. A 6.[REF] fejezetben azt vizsgálom, milyen információkat hordozhat egy embedding, azok miként manipulálhatóak. a 7.[REF] fejezetben javaslatot teszek az adatvédelmi kockázatok kezelésére.
+A dolgozatom felépítése a következő. A \ref{sec:irodalom}. fejezetben a témámhoz kapcsolódó fontosabb témaköröket mutatom be, a \ref{sec:4}. fejezetben az arclenyomatokhoz kapcsolódó adatvédelmi kérdésekkel foglalkozom. Az \ref{sec:5}. fejezetben azt vizsgálom, milyen információkat hordozhat egy embedding, azok miként manipulálhatóak. a \ref{sec:6}. fejezetben javaslatot teszek az adatvédelmi kockázatok kezelésére.
 
 % Ezért munkám során az elmúlt időszakban azt vizsgáltam, hogy a gépi tanulás alapú arcfelismerés által kinyert ún. embeddingek, lehetővé teszik-e az embedding forrását, az eredeti adatalanynak a felismerését, és ha igen, akkor mely részei kódolják az egyes információkat. A célom, hogy meghatározzam az arclenyomat vektorok (embeddingek) azon koordinátáit, amelyek az érzékeny információkat hordozzák, például a rasszt. Ezt különböző gépi tanulás elemzésére és értelmezésére használható eszközökkel hajtom végre. Az itt meghatározott koordinátákat módosítjuk vagy töröljük. Ezek után vizsgáljuk, hogy ennek hatására hogyan változik az érzékeny információ meghatározására alkalmas modellek pontossága.
 

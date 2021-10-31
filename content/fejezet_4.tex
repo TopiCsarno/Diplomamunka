@@ -1,12 +1,200 @@
 %----------------------------------------------------------------------------
-\section{Arclenyomatok adatvédelmi elemzése}
+\section{Arclenyomatok adatvédelmi elemzése (10-12 oldal)}
+\label{sec:4}
 %----------------------------------------------------------------------------
 
 \begin{itemize}
-	\item módszertan, támadómodell
-	\item adatgyűjtés -> vgg és imdb datasetek előállítása (2-4 oldal)
-	\item random forestek betanítása -> race, sex, age, +1 valami?
-	\item betanítás utáni eredmények -> accuracy, ROC curve
-	\item adatvédelmi elemzés -> milyen riskek vannak (munkacsoport szerint)
-	\item pl: több info kiderülése 1 emberről probléma, adatszivárgás: le tudja szűkíteni, hogy ki lehet az, singling out, vagy lehet arcot rekonstruálni az embeddingből, újraazonosítás.
+	\item módszertan, támadómodell ~1 page?
+	\item adatgyűjtés -> vgg és imdb datasetek előállítása (3-4 oldal)
+	\item random forestek betanítása -> race, sex, age, +1 valami? (1 oldal)
+	\item betanítás utáni eredmények -> accuracy, ROC curve (1 oldal)
+	\item adatvédelmi elemzés -> milyen riskek vannak (munkacsoport szerint) pl: több info kiderülése 1 emberről probléma, adatszivárgás: le tudja szűkíteni, hogy ki lehet az, singling out, vagy lehet arcot rekonstruálni az embeddingből, újraazonosítás. (1-2 oldal)
 \end{itemize}
+
+% Adathalmazról: src: kutatlási jelentés + github (4-5 odlal)
+% - mire volt szükség, meglévő datasetek bemutatása
+% - kitűzött követelmények (címkék kellettek, egy emberről több kép)
+% - hogyan lettek képekből arclenyomatok, mit használtam, miért pont dlib (src: kenéz)
+% - kód részlet
+% - dataset bemutatása, jellemzése (src: github)
+
+% egyenlőre legyen meg a VGG, az IMDB nem biztos, h belekerül
+
+%--------------------------------------------------------------------------------------------------
+% A kutatás során felhasznált adathalmaz viszonylag kis méretű, 2650 képet tartalmaz. Későbbiekben ahhoz,
+% hogy meggyőződhessünk a módszereink működéséről, szükséges egy nagyobb adathalmazon is
+% tesztelnünk. Ehhez olyan adathalmazra van szükségünk, ami:
+% •
+% •
+% •
+% •
+% Legalább 8-10000 képből áll
+% 2-3 demográfiai adattal, illetve identifikációs címkével ellátott
+% Személyenként legalább 30 képet tartalmaz
+% Szabadon használható, publikusan elérhető
+% 8.1 VGGFace2 adathalmaz
+% Nehéz olyan adathalmazt találni, amiben mindhárom, számunkra fontos demográfiai adat szerepel. A
+% FairFace 18 adathalmaz ígéretesnek tűnt, de nem tartalmaz azonosító címkéket. Az egyik legnagyobb
+% arcfelismeréshez készült adathalmaz a VGGFace2 19 . Több mint 9000 személyről tartalmaz, összesen 3,3
+% millió képet. Az adatok forrása a Google Image Search. Alapból a címkék csak a személy nemét
+% tartalmazzák, de ezt ki lehet egészíteni a VMER 20 rassz címkéivel is. Az adathalmaz kiegyensúlyozatlan a
+% rasszra és nemre tekintettel, de minták eltávolításával elérhető, hogy kiegyensúlyozott legyen, és
+% továbbra is jelentős méretű maradjon közel 750000 mintával.
+% Az adathalmaz 3,3 millió képet tartalmaz, amiből ki kell nyernünk az arclenyomat vektorokat. Erre a célra
+% készítettünk egy Python scriptet, amit a felhő alapú Google Colab szolgáltatáson futtattuk. Az arclenyomat
+% vektorok generálásához a Face_recognition 21 könyvtárat alkalmaztuk az alábbi módon.
+% def get_encoding(filepath):
+% image = face_recognition.load_image_file(filepath) #kép beolvasása
+% face_locations = face_recognition.face_locations(image,
+% number_of_times_to_upsample=1, model="cnn") #arcok detektálása
+% if (len(face_locations) == 1): #arclenyomat vektor
+% return np.array(face_recognition.face_encodings(image,face_locations))[0]
+% return None
+% 8.2 IMDB adathalmaz
+% Mivel a VGGFace2 nem tartalmaz életkor címkét, ezért tovább folytattuk a keresést. Választásunk az
+% IMDB-WIKI 22 adathalmazra esett. Ez az egyik legnagyobb, nyilvánosan elérhető arckép adathalmaz, ami
+% tartalmaz azonosító címkét, nemet és életkort is. Az adathalmaz két részből áll, IMDB filmekről és
+% filmszínészekből álló adatbázisból kinyert fotókból, illetve a Wikipédiáról szerzett fotókból. Sajnos a
+% Wikipédiáról szerzett képekhez nem tartozik azonosító címke, így csak az IMDB-ről szerzett fotókat
+% használtuk fel.
+
+
+
+
+
+% Az életkor az adott képen látható személy születési dátumából, és a kép keletkezésének dátuma alapján
+% lehet kiszámolni. A képek jelentős része csoportkép, azaz több arc is látható rajtuk. A képek közül csak
+% azokat használtuk fel, ahol pontosan egy arcot tudtunk detektálni. Továbbá, kiválasztottuk azokat az
+% azonosítókat, amihez legalább 30 fotó tartozik. Az arcokhoz tartozó képeket a VGGFace2-nél bemutatott
+% módszerrel alakítottuk át arclenyomat vektorokká.
+% Azt tapasztaltuk, hogy néhány fotón nem a címke szerinti személy szerepelt. A hibásan címkézett képek
+% kiszűréséhez a, már feldolgozott arclenyomat vektorokat használtuk fel. Egy személyhez tartozó
+% arclenyomat vektorok alapján kiszámítottuk az adathalmaz súlypontját (centroid), és ehhez mért
+% Euklideszi távolságok alapján szűrtük ki a kiugró értékeket. Azt a határt, ami alatt elfogadjuk az
+% arclenyomat vektor értékét 0,5-re állítottuk be. Ez az érték viszonylag szigorúnak számít, a
+% face_recognition könyvtár arcfelismeréshez 0,6-os határt használ.
+% Feldolgozás után közel 90000 arclenyomat vektort kaptunk eredményül.
+
+% def filter(df, cutoff=0.5):
+% encodings = df.iloc[:,4:].values #Személyhez tartozó arclenyomatok
+% centroid = np.mean(encodings, axis=0) #Súlypont számítás
+% distance = np.linalg.norm(encodings - centroid, axis=1) #Euklédeszi távolság
+% return df.index[distance > cutoff]
+
+% KUTATÁSI JELENTÉS
+%--------------------------------------------------------------------------------------------------
+
+% Az adathalmaz előállítása
+% Az adathalmaz letölthető az alábbi linken: LINK. Az elmúlt pár héten valamiért nem elérhető az oldal. Nálam le vannak töltve a képek, illetve a metadata ha szükség lenne rá. Összesen 3,3M kép ~36GB-ot foglal.
+
+% A képfeldolgozó notebookot Parse_images.ipynb Google Colaban érdemes futtatni, mert sokáig tart a 3,3M kép feldolgozása. Egy Google Colab session ~8 óra után automatikusan megszakad, ezért a script az eredményeket folyamatosan kimenti Google Drive-ra. A képek ID szerint mappába vannak csoportosítva (pl. n000001 néven). Egy mappa feldolgozása után automatikusan elmenti az embeddingeket egy .pkl fileba, és feltölti azt a megadott Google Drive mappába. A feldolgozáshoz a képeket több részletben érdemes feltölteni és feldolgozni, mert 8 óra után ha megszakad a kapcsolat akkor az összes file automatikusan törlődik.
+
+% Miután valamennyi ID fel lett dolgozva, a Unite_dfs.ipynb notebook segítségével egyesíthetőek az egyesével kimentett pickle adatbázisok.
+
+% Lehetőség van az embeddingek szűrésére hasolóan mint az IMDB adathalmaznál. Bár tapasztalatom szerint ez az adathalmaz letisztultabb, kevesebb benne az oda nem illő kép.
+
+% Kiegyensúlyozott adathalmaz
+% balance.ipynb
+
+% Mivel az adathalmazban jelentős többségben vannak a fehér emberek, ezért készítettem egy kiegyensúlyozott adathalmazt is, ami ugyanannyi férfit és nőt tartalmaz, illetve az egyes rasszok is azonos arányban vannak.
+
+% Az adathalmaz kiegyensúlyozása embeddingek eltávolításával érhető el. Legkevesebb kép az afroamerikai nőkről van az adathalmazban, ezért ehhez mérten szűkítettem a többi csoportot. Az embeddingek kivételénél fontos volt, hogy továbbra is legalább 50 kép maradjon minden személyről, ezért nem véletlenszerűen vettem ki a képeket, hanem ID-k alapján csoportosítva. Az egyes demográfiai csoportoknál kilistáztam az oda tartozó ID-kat, és egyes ID-khoz tartozó képek számát. Az ID-kat képszám szerint csökkenő sorrendben távolítottam el, amíg a csoport meg nem közelítette a szükséges méretet.
+
+% GITHUB VGG RÉSZE
+
+% %--------------------------------------------------------------------------------------------------
+% Az adathalmaz előállítása
+% Metadata
+% Erről a weboldalról letölthetőek a képek és a hozzájuk tartozó információk
+
+% Az IMDB-WIKI adathalmaz két részből: Az IMDB-ről szerzett, színészekről készült képekből illetve a Wikipédiáról kigyűjtött képekből áll. Sajnos a Wikipédiás képeknél nincs ID címke, így csak az IMDB-ről szerzett képek használhatóak számunkra.
+
+% A metadata matlab fileként elérhető, ami a következőket tartalmazza:
+
+% dob: date of birth (Matlab serial date number)
+% photo_taken: year when the photo was taken
+% full_path: path to file
+% gender: 0 for female and 1 for male, NaN if unknown
+% name: name of the celebrity
+% face_location: location of the face. To crop the face in Matlab run
+% img(face_location(2):face_location(4),face_location(1):face_location(3),:))
+% face_score: detector score (the higher the better). Inf implies that no face was found in the image and the face_location then just returns the entire image
+% second_face_score: detector score of the face with the second highest score. This is useful to ignore images with more than one face. second_face_score is NaN if no second face was detected.
+% celeb_names (IMDB only): list of all celebrity names
+% celeb_id (IMDB only): index of celebrity name
+% Metadata feldolgozása
+% prepare_df.ipynb
+
+% A letölthető metadata információk feldolgozásat a prepare_df.ipynb notebookkal végezhető. A notebook első lépésként átalakítja az adatot .mat formátumról pandas.DataFrame formátumra. Ez után kitörli azokat a képeket, ahol a face_score étéke negatív (ezeken a képeken nem detektálható arc).
+
+% A dob és a photo_taken információk alapján meghatározható egy adott személy életkora. A címkék helyenként hibásak, ezért előfordul a képek kis részénél, hogy negatív érték jön ki az életkorra. Ezeket a képeket is eltávolítja a script.
+
+% Leszűkítettem az adathalmazt úgy, hogy csak olyan személyeket tartalmazzon, akikről legalább 30 kép található.
+
+% A kapott adathalmazt egy imdb_empty.pkl nevű fileba menti ki, amire szükséges lesz a képek feldolgozásánál.
+
+% Képek feldolgozása
+% encoding.ipynb - futtatható Google Colab-on
+
+% A képfeldolgozó notebookot érdemes Google Colab-en futtatni, hogy ne kelljen lokálisan letölteni a képeket. Ehhez szükséges Google Drive-a feltöteni az encoding.ipynb notebookot és az imdb_empty.pkl dataframe-t
+
+% A weboldalról letölthetőek az eredeti, teljes méretű képek, illetve a már megvágott csak arcokat tartalmazó képek is. A képeken az arcok középre vannak rendezve 40%-os ráhagyással. A képek feldolgozásánál ezért levágtam ezt a 40%-ot, így gyorsabb a feldolgozás és jelentősen több képen sikerült arcot detektálni.
+
+% alt alt
+
+% A notebook a képek beolvasását az imdb_empty.pkl adathalmazban található 'path' értéke alapján végzi, majd a fent említett módon megvágja a képet. Az arclenyomat vektorok kinyerését a face_recognition könyvtárral hajtja végre. A vektorokat átmenetileg egy listában tárolja, majd a script végén hozzáadja az adathalmazhoz.
+
+% Embeddingek szűrése távolságmérés alapján
+% Azt tapasztaltam, hogy vannak rosszul címkézett képek az adathalmazban, ahol a képen nem a megfelelő személy arca látható. A hibásan címkézett képek kiszűrése használhatóak az embeddingek. Meghatározható az azonos id-hoz tartozó embeddingek centroidja, és az egyes embeddingek centroidtól vett Euklideszi távolsága. A hibás képek esetén a távolság kiugróan nagy, így azok eltávolíthatóak. Nagy távolságnak számít a 0.9-1.0+ körüli érték, hasonló arcok esetén a távolság 0.6-0.7 körüli. Kísérletezés után az elfogadás határát 0.5-re vettem.
+
+% GITHUB IMDB
+%-------------------------------------------------------------------------------------------------- 
+% As building your own dataset can be difficult, time consuming and legally challenging, we have decided to select a dataset from prior works. The proper dataset for this work needed to meet the following criteria:
+
+% Should have been created for facial recognition research,
+% preferably prepared for such tasks (e.g. one subject per
+% image, face is cut and aligned).
+% 2. It should be large enough in order to enable us to gener-
+% alize the results.
+% 3. Each subject should have multiple images for training
+% classifiers to identify subjects.
+% 4. Images need to be labeled with their demographics. In-
+% spired by prior work in [15], we were looking for datasets
+% labeled for sex, age and race.
+% There are no datasets that match all these requirements.
+% There are datasets that have matching or similar demographic
+% labeling, but consist of a single image per subject [46]; others
+% have no race labeling or are not race balanced [14, 38]. There-
+% fore we have decided to work with the VGGFace2 dataset [7],
+% as it contains 2, 973, 5121 images of 9, 129 subjects that could
+% be used to derive a balanced subset for our work. Furthermore,
+% we have decided to exclude age prediction, as openly available
+% tools are generally quite inaccurate.
+% As the race of subjects were not labeled, we have used race
+% labeling from [20]. Then we have derived a balanced dataset
+% with eight equally sized sex-race classes. These included the
+% following races: African American, East Asian, Caucasian
+% Latin, Asian Indian. Each class consisting of 382 individuals,
+% half male, half female.
+% The next step was to clean the dataset by marking images
+% that are of low quality for some reason (e.g. taken from too far
+% away, wrong angle, suboptimal lighting conditions) or where
+% subjects appear quite differently than their usual appearance
+% in the dataset (e.g. mislabeled faces).
+% We did this by using only facial embeddings that we have
+% extracted by dlib [26] for the whole dataset at this point. For
+% each subject, we calculated the embedding centroid, and se-
+% lected the top 50 embeddings that were the closest to it.
+% The final dataset consisted of 1, 528 subjects and 76, 400
+% embeddings.
+
+% GG, FI publikációból
+%-------------------------------------------------------------------------------------------------- 
+
+% \begin{lstlisting}[language=python, caption=lista alatti szoveg, label=lst:Example]
+% def filter(df, cutoff=0.5):
+% 	encodings = df.iloc[:,4:].values  # Szem(*@\color{codegreen}é@*)lyhez tartoz(*@\color{codegreen}ó@*) arclenyomatok
+% 	centroid = np.mean(encodings, axis=0)  # S(*@\color{codegreen}ú@*)lypont sz(*@\color{codegreen}á@*)m(*@\color{codegreen}í@*)t(*@\color{codegreen}á@*)s
+% 	distance = np.linalg.norm(encodings - centroid, axis=1)  # Euklideszi t(*@\color{codegreen}á@*)vols(*@\color{codegreen}á@*)g
+% 	return df.index[distance > cutoff]
+% \end{lstlisting}

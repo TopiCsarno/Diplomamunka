@@ -40,7 +40,7 @@ A gépi tanulási modelleket feladatuk szerint két további alkategóriába sor
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=0.65\columnwidth]{figures/generative_discriminative.png}
-	\caption{Diszkriminatív és generatív modellek közötti eltérés.}
+	\caption{Diszkriminatív és generatív modellek közötti eltérés. (forrás: \cite{fig:generative_discriminative})}
 \end{figure}
 
 % TODO újraírni, lényeg legyen benne
@@ -73,7 +73,7 @@ A generatív modellek megértéséhez vegyünk egy példát. Tegyük fel, hogy v
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=0.9\columnwidth]{figures/generative_model_struct.png}
-	\caption{A betanított generatív modell által megtanul eloszlás $\hat{p}(x)$ jól közelíti a valódi adateloszlást $p(x)$.}
+	\caption{A betanított generatív modell által megtanul eloszlás $\hat{p}(x)$ jól közelíti a valódi adateloszlást $p(x)$. (forrás: \cite{fig:generative_model_struct})}
 	\label{fig:generative_model}
 \end{figure}
 
@@ -114,7 +114,7 @@ Matematikailag, az adathalmaz elemei $x_1, \dots, x_n$ a valódi háttéreloszl�
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=1\columnwidth]{figures/generative_model_math.png}
-	\caption{Általános generatív modell tanítása.}
+	\caption{Általános generatív modell tanítása. (forrás: \cite{fig:generative_model_math})}
 	\label{fig:data_distribution}
 \end{figure}
 
@@ -151,16 +151,16 @@ A következő részben a generatív modellek egyik fajtáját: a Boltzman gépet
 %----------------------------------------------------------------------------
 \subsubsection{Markov-lánc}
 
-A matematikában a Markov-lánc egy olyan diszkrét sztochasztikus folyamatot jelent, amely Markov-tulajdonságú. Nevét egy orosz matematikusról, Andrej Markovról kapta, aki hírnevét a tudomány ezen ágában végzett kutatásaival szerezte. Markov-tulajdonságúnak lenni röviden annyit jelent, hogy adott jelenbeli állapot mellett, a rendszer jövőbeni állapota nem függ a múltbeliektől. Másképpen megfogalmazva ez azt is jelenti, hogy a jelen leírása teljesen magába foglalja az összes olyan információt, ami befolyásolhatja a folyamat jövőbeli helyzetét. A \ref{fig:markov}. ábra mutat egy példát a Markov-láncra. A véletlenszerűen sétáló személy helyzete a $t+1$ pillanatban a $t$ aktuális állapottól függ, és nem a korábbi állapotoktól $(t-1, t-2,\dots)$. Ezt a viselkedést Markov tulajdonságnak nevezik.
+A matematikában a Markov-lánc egy olyan diszkrét sztochasztikus folyamatot jelent, amely Markov-tulajdonságú. Nevét egy orosz matematikusról, Andrej Markovról kapta, aki hírnevét a tudomány ezen ágában végzett kutatásaival szerezte. Markov-tulajdonságúnak lenni röviden annyit jelent, hogy adott jelenbeli állapot mellett, a rendszer jövőbeni állapota nem függ a múltbeliektől. Másképpen megfogalmazva ez azt is jelenti, hogy a jelen leírása teljesen magába foglalja az összes olyan információt, ami befolyásolhatja a folyamat jövőbeli helyzetét. Példa képpen: a véletlenszerűen sétáló személy helyzete a $t+1$ pillanatban a $t$ aktuális állapottól függ, és nem a korábbi állapotoktól $(t-1, t-2,\dots)$. Ezt a viselkedést Markov tulajdonságnak nevezik.
 
 % A Markov chain is a probabilistic model used to estimate a sequence of possible events in which the probability of each event depends only on the state attained in the previous event.  In a Markov chain, the future state depends only on the present state and not on the past states. An example of Markov’s process is show in figure 4.  The position of the randomly walking person at instant t+1 is dependent on the current state t and not on the previous states (t-1, t-2, …..). This behavior is referred to as Markov property.
 
-\begin{figure}[ht]
-	\centering
-	\includegraphics[width=1\columnwidth]{figures/markov_chain.png}
-	\caption{abra alatti szoveg}
-	\label{fig:markov}
-\end{figure}
+% \begin{figure}[ht]
+% 	\centering
+% 	\includegraphics[width=1\columnwidth]{figures/markov_chain.png}
+% 	\caption{abra alatti szoveg}
+% 	\label{fig:markov}
+% \end{figure}
 
 
 %----------------------------------------------------------------------------
@@ -171,7 +171,7 @@ A grafikus valószínűségi modell egy grafikus ábrázolás, amivel véletlen 
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=0.7\columnwidth]{figures/graph_example.png}
-	\caption{abra alatti szoveg}
+	\caption{Példa grafikus ábrára.}
 	\label{fig:graph}
 \end{figure}
 
@@ -200,7 +200,7 @@ A hálózat neuronjai megtanulnak sztochasztikus döntéseket hozni akkór, hogy
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=0.50\columnwidth]{figures/RBM.png}
-	\caption{A korlátozott Boltzman gép (RBM) egy kétirányú gráfon alapuló irányítatlan grafikus modell, aminek egyik részén a látható elemek vannak (v), a másik részén a rejtett elemek (h).}
+	\caption{A korlátozott Boltzman gép (RBM) egy kétirányú gráfon alapuló irányítatlan grafikus modell, aminek egyik részén a látható elemek vannak (v), a másik részén a rejtett elemek (h). (forrás: \cite{fig:RMB})}
 	\label{fig:bm}
 \end{figure}
 
@@ -263,7 +263,7 @@ Az alábbi \ref{fig:gan_struct}. ábrán látható, hogy a generátor nem talál
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=0.9\columnwidth]{figures/gan_struct.png}
-	\caption{abra alatti szoveg}
+	\caption{A GAN általános struktúrája. (forrás: \cite{fig:gan_struct})}
 	\label{fig:gan_struct}
 \end{figure}
 
@@ -294,13 +294,11 @@ A diszkriminátor háló ad visszajelzést a generátornak tanulás során, hogy
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=1\columnwidth]{figures/gan_dist.png}
-	\caption{Tanulás folyamata. Kék pontozott vonal jelöli a diszkriminátor eloszlását, zöld folytonos vonal a generált minták eloszlását, a fekete görbe pedig a tanító adat eloszlását. [REF]}
+	\caption{Tanulás folyamata. Kék pontozott vonal jelöli a diszkriminátor eloszlását, zöld folytonos vonal a generált minták eloszlását, a fekete görbe pedig a tanító adat eloszlását \cite{fig:gan_dist}.}
 	\label{fig:gan_dist}
 \end{figure}
 
 A \ref{fig:gan_dist}. ábrán láthatjuk a GAN tanulásának folyamatát. A generátor $z$ véletlen zaj értéket kap bemenetre, és azt leképezi az $x$ kimeneti értékre. Az $x$ értékeinek eloszlása sűrűbbé válik, ahova több $z$ értéket képezünk le. A diszkriminátor magas értéket ad azokon a helyeken, ahol a valódi adatok sűrűsége nagyobb, mint a generált adatoké. A generátor a háló paramétereinek változtatásával módosítani tud a leképezésen, és így eléri, hogy az eloszlása a diszkriminátor gradiens irányába változzon. Végül a generátor eloszlása megegyezik a valós minták eloszlásával. Ekkor a diszkriminátor minden mintára 0,5-ös valószinűséget ad, mivel nem tudja megkülönböztetni a valós és generált mintákat.
-
-% A generátor véletlen z zajértéket vesz fel, és leképezi x kimeneti értékre. A modell által ábrázolt x feletti valószínűségi eloszlás egyre sűrűbbé válik, ahol több z értéket leképezünk. A diszkriminátor magas értékeket ad ki mindenhol, ahol a valós adatok sűrűsége nagyobb, mint a generált adatoké. A generátor megváltoztatja az előállított mintákat, hogy felfelé haladjon a diszkriminátor által megtanult funkció mentén, és végül a generátor eloszlása megegyezik a valós adatok eloszlásával. Emiatt a diszkriminátor minden mintára 0,5 valószínűséget ad ki, mivel minden mintát ugyanolyan valószínűséggel hoz létre a valós adatkészlet, mint a generátort.
 
 % The Generator takes random noise value z and maps them to output values x. The probability distribution over x represented by the model becomes denser wherever more values of z are mapped. The Discriminator outputs high values wherever the density of real data is greater than the density of generated data. The Generator changes the samples it produces to move uphill along the function learned by the Discriminator and eventually the Generator’s distribution matches the distribution of real data. Due to this, the Discriminator outputs the probability of 0.5 for every sample because every sample is equally likely to be generated by the real data-set as it is to be generated by the Generator.
 
@@ -309,13 +307,13 @@ A \ref{fig:gan_dist}. ábrán láthatjuk a GAN tanulásának folyamatát. A gene
 A GAN-oknak annak ellenére, hogy nemrég jelentek csak meg, gyakorlati hasznuk is van. Erre pár példa:
 \begin{itemize}
 	\item \textbf{StyleGan3}: Ez egy GAN-on alapuló neurális háló, amely képes az fotorealisztikus emberi arcképeket generálni. \cite{stylegan3}
-	\item Egy 2018-as aukción egy GAN által ``festett'' kép több mint \$400 ezer dollárért kelt el [REF]
+	\item Egy 2018-as aukción egy GAN által ``festett'' kép több mint \$400 ezer dollárért kelt el \cite{AIart}. 
 \end{itemize}
 
 %----------------------------------------------------------------------------
 \subsection{Generatív Autoenkóderek}
 
-Az autoenkóderek olyan neurális hálók, ahol a kimeneti réteg mérete megegyezik a bemeneti réteg méretével. Az autoenkóder felügyelet nélküli tanulásra képes, feladata minél kisebb veszteséggel visszaállítsa a bemenetre érkező adatot, ezért replikátor neurális hálónak is nevezik. [REF]
+Az autoenkóderek olyan neurális hálók, ahol a kimeneti réteg mérete megegyezik a bemeneti réteg méretével. Az autoenkóder felügyelet nélküli tanulásra képes, feladata minél kisebb veszteséggel visszaállítsa a bemenetre érkező adatot, ezért replikátor neurális hálónak is nevezik.
 
 % Autoencoder is a type of neural network where the output layer has the same dimensionality as the input layer. In simpler words, the number of output units in the output layer is equal to the number of input units in the input layer. An autoencoder replicates the data from the input to the output in an unsupervised manner and is therefore sometimes referred to as a replicator neural network.
 
@@ -339,7 +337,7 @@ Az autoenkóderek tipikus felépítése: (látsd: \ref{fig:autoenc_struct}. ábr
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=1\columnwidth]{figures/ae.png}
-	\caption{Az autoenkóder részei: enkóder, kód (látens tér) és dekódoló}
+	\caption{Az autoenkóder részei: enkóder, kód (látens tér) és dekódoló (forrás: \cite{fig:autoenc_struct})}
 	\label{fig:autoenc_struct}
 \end{figure}
 
@@ -358,7 +356,7 @@ Az autoenkóderek évtizedek óta ismertek a neurális hálózatok világában [
 
 \subsubsection{Variációs autoenkóderek}
 
-A variációs autoenkóder (VAE) megjelenése nem túl régi, 2014-ben publikálták először [REF]. Bár mély neurális háló alapú autoenkóderek korábban is léteztek, mint generatív modell rosszul teljesítettek. Később azonban képgenerálás [REF], és megerősítéses tanulás [REF] területén is előremutató eredmények születtek.
+A variációs autoenkóder (VAE) megjelenése nem túl régi, 2013-ban publikálták először \cite{kingma2013auto}. Bár mély neurális háló alapú autoenkóderek korábban is léteztek, mint generatív modell rosszul teljesítettek. Később azonban képgenerálás [REF], és megerősítéses tanulás [REF] területén is előremutató eredmények születtek.
 
 % Az első komoly generatív tulajdonsággal rendelkező autóenkóder, a Variációs Au- tóenkóder (továbbiakban VAE) megjelenése nem túl régi: [25] [26] pulikálták elő- ször 2014-ben. Bár mély mesterséges háló alapú autóenkóderek előtte is léteztek, mint generatív modell azonban rosszul teljesítettek. Később azonban a képgenerálás, és a megerősítéses tanulás [27] területén is előremutató eredmények születtek.
 
@@ -370,7 +368,7 @@ A variációs autoenkóder annyiban tér el a standard autoenkódertől, hogy ad
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=1\columnwidth]{figures/vae.png}
-	\caption{A variációs autoenkóder részei.}
+	\caption{A variációs autoenkóder részei. (forrás: \cite{fig:autoenc_struct})}
 	\label{fig:vae}
 \end{figure}
 
