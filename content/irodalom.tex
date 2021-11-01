@@ -7,18 +7,17 @@
 
 % \subsubsection{Supervised learning}
 
-A gépi tanulási modellek csoportosíthatók a feladat típusa alapján: megkülönböztetünk felügyelt és felügyelet nélküli, illetve megerősítéses tanulást.
+A gépi tanulási modellek csoportosíthatók a feladat típusa alapján: megkülönböztetünk felügyelt, felügyelet nélküli, illetve megerősítéses tanulást.
 
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=1\columnwidth]{figures/machine_learning_types.png}
-	\caption{Gépi tanulás csoportosítása}
-\end{figure}
+% \begin{figure}[h]
+% 	\centering
+% 	\includegraphics[width=1\columnwidth]{figures/machine_learning_types.png}
+% 	\caption{Gépi tanulás csoportosítása}
+% \end{figure}
 
-% TODO ezt újraírni, mert katyvasz
-A felügyelt tanulásról akkor beszélünk, amikor ismerjük a tanító mintakészlethez tartozó elvárt kimeneteket. Az ilyen mintakészletet címkézettnek nevezzük. A felügyelt tanulás célja egy olyan funkció elsajátítása, amely az adatok mintázata és a címkék alapján a legjobban közelíti a bemenet és kimenet közötti kapcsolatot. Az ilyen modelleket címkézett adatokon tanítanak be, majd a modell által korábban nem látott új mintákra képest helyes becslést adni. A felügyelt tanulásnak két alkategóriája van, a regresszió és az osztályozás vagy más nével klasszifikáció. Osztályozás esetén a kimenetet két vagy több osztályba kell csoportosítani. Ha az algoritmus a bemenetet két különböző osztályba sorolja, akkor ezt bináris osztályozásnak nevezzük, míg a több mint két osztály közötti választást többosztályos osztályozásnak nevezzük. Ezzel szemben a regressziós algoritmusokat folytonos értékek előrejelzésére használják, mint például az ár, a fizetés és az életkor. 
+Felügyelt tanulásról akkor beszélünk, amikor a a gépi tanulási modellt címkézett mintakészleten tanítjuk be, azaz ismerjük az egyes tanítómintákhoz tartozó elvárt kimeneteket. A felügyelt tanulás célja egy olyan funkció elsajátítása, amely az adatok mintázata és a címkék alapján a legjobban közelíti a bemenet és kimenet közötti kapcsolatot. A betanítást követőn a modell képes általánosítani, azaz a modell által tanítás során nem látott, új mintákra is képes helyes becslést adni. A felügyelt tanulásnak két alkategóriája van, a regresszió és az osztályozás (vagy más névvel klasszifikáció). Osztályozásról akkor beszélünk, ha a cél a bemeneti minták egy vagy több osztályba való besorolása. Ha az háló a bemenetet két különböző osztályba sorolja, akkor ezt bináris osztályozásnak nevezzük, míg a több mint két osztály közötti választást többosztályos klasszifikációnak nevezzük. Ezzel szemben a regressziós hálókat folytonos értékek előrejelzésére használják. Ilyen folytonos adat például egy ingatlan árának becslése. 
 
-A felügyelet nélküli tanulás esetén a megfigyelésekhez nem áll rendelkezésre elvárt célérték (azaz felügyelet). Célunk, hogy az adatok belső mintázatait, összefüggéseit azonosítsunk. A tanítás itt a kérdéses mintázat/összefüggés definícióját jelenti, ami általában számos mérnöki iteráció után alakul ki. felügyelet nélküli tanulást alkalmaznak többek között klaszterezési feladatok megoldására, dimenziócsökkentésre, asszociációs feladatokra, anomália detektálásra, illetve generatív modellekhez is \cite{ghahramani2003unsupervised}.
+Felügyelet nélküli tanulás esetén a mintakészlethez nincsenek címkéink, nem ismert az egyes mintákhoz tartozó elvárt kimenet. Ekkor a modell célja az tanító adathalmaz belső mintázatainak, összefüggéseinek megtanulása. A tanítás folyamata itt a belső mintázatok meghatározását jelenti, ami általában számos iteráció után alakul ki. Felügyelet nélküli tanulást alkalmaznak többek között klaszterezési feladatok megoldására, dimenziócsökkentésre, asszociációs feladatokra, anomália detektálásra, illetve generatív modellekhez is \cite{ghahramani2003unsupervised}.
 
 % In Supervised Learning, we train the machine using data that is well “labeled”. It means the data is already tagged with the correct answer. A supervised learning algorithm learns from labeled training data and predicts outcomes for unforeseen data. There are two subcategories of supervised learning, Regression and Classification. Classification means to group the output into a class. If the algorithm tries to label input into two distinct classes, it is called binary classification. Selecting between more than two classes is referred to as multiclass classification. On the other hand, Regression Algorithms are used to predict continuous values such as price, salary, and age.
 
@@ -35,19 +34,19 @@ A felügyelet nélküli tanulás esetén a megfigyelésekhez nem áll rendelkez�
 %----------------------------------------------------------------------------
 % \subsubsection{Generative vs discriminative modeling}
 
-A gépi tanulási modelleket feladatuk szerint két további alkategóriába sorolhatjuk: generatív és diszkriminatív modellek. 
+A gépi tanulási modelleket feladatuk szerint két további alkategóriába sorolhatjuk: generatív és diszkriminatív modellek (lásd: \ref{fig:gen_disc}. ábra)
 
-\begin{figure}[h]
+\begin{figure}[ht]
 	\centering
 	\includegraphics[width=0.65\columnwidth]{figures/generative_discriminative.png}
 	\caption{Diszkriminatív és generatív modellek közötti eltérés. (forrás: \cite{fig:generative_discriminative})}
+	\label{fig:gen_disc}
 \end{figure}
 
-% TODO újraírni, lényeg legyen benne
-A diszkriminatív modellek a statisztikai osztályozásban használt modellek egy osztályába tartoznak. Ezeket főként felügyelt gépi tanulási feladatokra használnak. Az ilyen típusú modelleket feltételes modelleknek is nevezik, mivel megtanulják az osztályok vagy címkék elhatárolását egy adathalmazban. A diszkriminatív modellek (akárcsak a szó szerinti értelemben) a feltételes valószínűség modellezése helyett elkülönítik az osztályokat, és nem tesznek feltételezéseket az adatpontokról. Ezek a modellek azonban nem képesek új adatpontok előállítására. Ezért a diszkriminatív modellek végső célja az egyes osztályok elkülönítése egymástól.
+A diszkriminatív modellek a statisztikai osztályozásban használt modellek egy osztályába tartoznak, amelyeket főként felügyelt gépi tanulási feladatokra használnak. A betanított diszkriminatív modellek (nevükből adódóan) képesek megkülönböztetni az egyes osztályokhoz tartozó mintákat. Céljuk megtanulni az egyes osztályok közötti határokat. Például az \ref{fig:gen_disc}. ábrán látható mintakészleten a diszkriminatív modell képes volt megtanulni a két osztály szeparáló egyenesét. Ezek a modellek azonban nem képesek új adatpontok előállítására.
 
 %----------
-A generatív modellek a felügyelet nélküli tanulásban használatosak. Ezek a modellek képesek megtanulni a tanító minták valószínűségi eloszlását, majd tanítás után új minták generálására képesek. Ez a tulajdonság a gyakorlatban rendkívűl előnyös. A mély tanulásban használt modellek betanításához nagy mennyiségű, és megflelelő minőségű adatra van szükség, ezért az ezzel foglalkozó vállalatok rengeteg erőforrást áldoznak a tanítóminták begyűjtésére. Jellemzően manuális annotációra van szükség ami munkaigényes folyamat. Ez a megközelítés költséges, és nehezen skálázható. A jó minőségű adathoz tipikusan csak a nagyobb vállalatok képesek hozzájutni. A generatív modellek használatával több válalat képes minőségi tanítóadatot előállítani lényegesen kevesebb mintából.
+A generatív modellek a felügyelet nélküli tanulásban használatosak. Ezek a modellek képesek megtanulni a tanító minták valószínűségi eloszlását, majd tanítást követően új minták generálására képesek. Ez a tulajdonság a gyakorlatban rendkívül előnyös. A mély tanulásban használt modellek betanításához nagy mennyiségű, és megfelelő minőségű adatra van szükség, ezért az ezzel foglalkozó vállalatok rengeteg erőforrást áldoznak a tanítóminták begyűjtésére. Jellemzően manuális annotációra van szükség ami munkaigényes folyamat. Ez a megközelítés költséges, és nehezen skálázható, ezért a jó minőségű adathoz tipikusan csak a nagyobb vállalatok képesek hozzájutni. A generatív modellek használatával több vállalat képes minőségi tanítóadatot előállítani lényegesen kevesebb mintából.
 
 % ezt lehetne szövegesen kifejteni mert érdekes.
 A generatív modelleknek számos érdekes felhasználási területe van, ezek közül néhány példa:
@@ -68,20 +67,20 @@ A generatív modelleknek számos érdekes felhasználási területe van, ezek k�
 %~~~~~~~~~~ (https://www.analyticsvidhya.com/blog/2021/07/deep-understanding-of-discriminative-and-generative-models-in-machine-learning/)
 
 %~~~~~~~~~
-A generatív modellek megértéséhez vegyünk egy példát. Tegyük fel, hogy van egy adathalmazunk, amely emberi arcokról készült fényképeket tartalamz. Egy olyan gépi tanulási modellt szeretnénk betanítani az adathalmazunk alapján, amely képes egy nem létező emberekről valóságosnak tűnő arcképet generálni. Egy ilyen feladat megoldható generatív modellezéssel. A \ref{fig:generative_model}. ábra egy tipikus generatív modellezési folyamatot mutat be.
+A generatív modellek megértéséhez vegyünk egy példát. Tegyük fel, hogy van egy adathalmazunk, amely emberi arcokról készült fényképeket tartalmaz. Egy olyan gépi tanulási modellt szeretnénk betanítani az adathalmazunk alapján, amely képes egy nem létező emberekről valóságosnak tűnő arcképet generálni. Egy ilyen feladat megoldható generatív modellezéssel. A \ref{fig:generative_model}. ábra egy tipikus generatív modellezési folyamatot mutat be.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 	\centering
 	\includegraphics[width=0.9\columnwidth]{figures/generative_model_struct.png}
 	\caption{A betanított generatív modell által megtanul eloszlás $\hat{p}(x)$ jól közelíti a valódi adateloszlást $p(x)$. (forrás: \cite{fig:generative_model_struct})}
 	\label{fig:generative_model}
 \end{figure}
 
-Először is szükségünk van egy adathalmazra, amely számos mintát tartalmaz az általunk generálni kivánt dologról. Az adathalmaz egyes elemeit megfigyeléseknek (observation) is nevezik. Minden megfigyelés sok jellemzőből (feature) áll amelyek képek esetén az egyes pixelek értékeit jelentik. Célunk egy olyan modell létrehozása, amely képes olyan új megfigyeléseket generálni, amelyek jellemzői jól közelítik az eredeti adathalmazban lévő jellemzőket. Képgenerálás esetén ez egy rendkívűl nehéz feladat, mivel az egyes pixelek rengeteg lehetséges értéket vehetnek fel, és ezek közül csak relatíve kevés konfiguráció felel meg annak a képnek amit mi generálni szeretnénk.
+Először is szükségünk van egy adathalmazra, amely számos mintát tartalmaz az általunk generálni kívánt dologról. Az adathalmaz egyes elemeit megfigyeléseknek (observation) nevezzük. Minden megfigyelés sok jellemzőből (feature) áll amelyek képek esetén az egyes pixelek értékeit jelentik. Célunk egy olyan modell létrehozása, amely képes olyan új megfigyeléseket generálni, amelyek jellemzői jól közelítik az eredeti adathalmazban lévő jellemzőket. Képgenerálás esetén ez egy rendkívül nehéz feladat, mivel az egyes pixelek rengeteg lehetséges értéket vehetnek fel, és ezek közül csak relatíve kevés konfiguráció felel meg annak a képnek amit mi generálni szeretnénk.
 
-A generatív modellek sztochasztikus jellegűnek kell lennnie, nem pedig determinisztikusnak. Ha a modellünk csupán egy fixált számítást végezne, példáuk az adathalmaz minden egyes pixelének átlagát számolná, akkor a modell minden alkalommal ugyanazt a kimenetet eredményezi. Így a generatív modellek szükségszerűen tartalmaznia kell egy véletlenszerű elemet, amely befolyásolja a modell által generált mintákat.
+A generatív modellek sztochasztikus jellegűnek kell lennie, nem pedig determinisztikusnak. Ha a modellünk csupán egy fixált számítást végezne, például az adathalmaz minden egyes pixelének átlagát számolná, akkor a modell minden alkalommal ugyanazt a kimenetet eredményezi. Így a generatív modellek szükségszerűen tartalmaznia kell egy véletlenszerű elemet, amely befolyásolja a modell által generált mintákat.
 
-Más szavakkal, létezik egy ismeretlen valószínűségi eloszlás, amely leírja, hogy az egyes képek miért találhatóak a mintakészletünkban, míg más képek nem. A gyakorlatban nem ismerjük a tényleges valószínűségi eloszlást, ezért azt csak közelíteni tudjuk a megfigyelésekből. A generatív modellek célja az, hogy ezt az ismeretlen eloszlást minél jobban közelítse. A modell tanítása után a  megtanult eloszlást mintavételezve olyan megfigyeléseket kaphatunk, amelyek az eredeti adathalmaz elemeihez nagyon hasonlóak.
+Más szavakkal, létezik egy ismeretlen valószínűségi eloszlás, amely leírja, hogy az egyes képek miért találhatóak a mintakészletünkben, míg más képek nem. A gyakorlatban nem ismerjük a tényleges valószínűségi eloszlást, ezért azt csak közelíteni tudjuk a megfigyelésekből. A generatív modellek célja az, hogy ezt az ismeretlen eloszlást minél jobban közelítse. A modell tanítása után a  megtanult eloszlást mintavételezve olyan megfigyeléseket kaphatunk, amelyek az eredeti adathalmaz elemeihez nagyon hasonlóak.
 
 %------------
 % In practice, we may not be able to assess or observe all possible outcomes of a random variable due to which we generally do not know the actual density function. In such conditions, we must rely on approximating the density function from a sample of observations. Approximating a density function using a sample of observations is referred to as ‘Density estimation’.  Learning density estimate from the training samples is fundamental to generative models.
@@ -109,7 +108,7 @@ Más szavakkal, létezik egy ismeretlen valószínűségi eloszlás, amely leír
 % \subsubsection{Generative model types}
 
 
-Matematikailag, az adathalmaz elemei $x_1, \dots, x_n$ a valódi háttéreloszlásból $p(x)$ lettek mintavételezve. A \ref{fig:data_distribution}. ábrán a kék háttérrel jelölt terület azon részét mutatja, amely nagy valószínűséggel (bizonyos küszöbérték felett) valódi képeket tartalmaz, és fekete pontok jelzik adatpontjainkat (mindegyik egy kép az adatkészletünkben). Modellünk egy becsült elosztást is leír $\hat{p}_{\theta}(x)$ (zölddel jelölt az ábrán) amelyet implicit módon úgy határozunk meg, hogy pontokat veszült egy standard normális eloszlásból (pirossal jelölt), és feltérképezzük őket egy determinisztijus neurális hálón - ami a generatív modellünk (sárga). A Neurális hálózat $\theta$ paraméterekkel rendelkezik, amelyeket módosítva megváltozik a generált képek eloszlását. Célunk olyan $\theta$ paraméterek meghatározása, amelyek egy olyan eloszlást hoznak létre, amely jól közelíti a valódi adateloszlásunkat. A $\theta$ paraméterek meghatározása egy iteraív folyamat, véletlenszerű értékekkel inicializálva, majd a tanítás során a paraméterek megváltoztatásával egyre jobban közelíti a becsült eloszlás a valódi adateloszlást.
+Matematikailag, az adathalmaz elemei $x_1, \dots, x_n$ a valódi háttéreloszlásból $p(x)$ lettek mintavételezve. A \ref{fig:data_distribution}. ábrán a kék háttérrel jelölt terület azon részét mutatja, amely nagy valószínűséggel (bizonyos küszöbérték felett) valódi képeket tartalmaz, és fekete pontok jelzik adatpontjainkat (mindegyik egy kép az adatkészletünkben). Modellünk egy becsült elosztást ír le $\hat{p}_{\theta}(x)$ (zölddel jelölt az ábrán) amelyet implicit módon úgy határozunk meg, hogy pontokat veszünk egy standard normális eloszlásból (pirossal jelölt), és feltérképezzük őket egy determinisztikus neurális hálón - ami a generatív modellünk (sárga). A Neurális hálózat $\theta$ paraméterekkel rendelkezik, amelyeket módosítva megváltozik a generált képek eloszlását. Célunk olyan $\theta$ paraméterek meghatározása, amelyek egy olyan eloszlást hoznak létre, amely jól közelíti a valódi adateloszlásunkat. A $\theta$ paraméterek meghatározása egy iteraiv folyamat, véletlenszerű értékekkel inicializálva, majd a tanítás során a paraméterek megváltoztatásával egyre jobban közelíti a becsült eloszlás a valódi adateloszlást.
 
 \begin{figure}[ht]
 	\centering
@@ -122,7 +121,7 @@ Matematikailag, az adathalmaz elemei $x_1, \dots, x_n$ a valódi háttéreloszl�
 % Now, it is not always possible for our machine to learn the true distribution of the data, for this, we take the help of a powerful neural network which can help make the machine learn the approximate true distribution of the data. The neural networks we use as generative models have parameters which are smaller than the amount of data we have as training dataset. The models are forced to discover the distribution in order to generate data.
 %-------
 
-A generatív modellek általában kétféle sűrűségbecslést használnak. Explicit Sűrűségbecslés (EDE), és Implicit Sűrűségbecslés (IDE) \cite{goodfellow2016nips}. Az EDE-ben előre meghatározott sűrűségfüggvényeket használnak a megfigyelések és valószínűségeik közötti kapcsolat közelítésére. Ezek a függvények paramétereik változtatásával illeszthetőek a megfigyelésekre. Például normális eloszlás két paramétere: várható érték és szórás állításával illeszthető az adatra. Aze IDE-ben nem előre meghatározott sűrűségfüggvényeket használnak, hanem egy algoritmust használnak a valószínűségi eloszlás közelítésére. Ennek egy példája kernel sűrűségbecslés. Bár az IDE módszerek is paramétereket használnak a közelítéshez, ezeket nem lehet közvetlenül manipulálni mint az EDE esetén. A \ref{fig:gen_models_tax}. ábra a különböző generatív modellek rendszerezését mutatja be az alkalmazott sűrűségbecslés típusa szerint.
+A generatív modellek általában kétféle sűrűségbecslést használnak. Explicit Sűrűségbecslés (EDE), és Implicit Sűrűségbecslés (IDE) \cite{goodfellow2016nips}. Az EDE-ben előre meghatározott sűrűségfüggvényeket használnak a megfigyelések és valószínűségeik közötti kapcsolat közelítésére. Ezek a függvények paramétereik változtatásával illeszthetőek a megfigyelésekre. Például normális eloszlás két paramétere: várható érték és szórás állításával illeszthető az adatra. Az IDE-ben nem előre meghatározott sűrűségfüggvényeket használnak, hanem egy algoritmust használnak a valószínűségi eloszlás közelítésére. Ennek egy példája kernel sűrűségbecslés. Bár az IDE módszerek is paramétereket használnak a közelítéshez, ezeket nem lehet közvetlenül manipulálni mint az EDE esetén. A \ref{fig:gen_models_tax}. ábra a különböző generatív modellek rendszerezését mutatja be az alkalmazott sűrűségbecslés típusa szerint.
 
 % Generative Adversial Network (GAN) is an Implicit density based generative model. Variational Autoencoder (VAE) and Boltzmann Machine (BM) are the explicit density based generative models.  
 
@@ -131,7 +130,7 @@ A generatív modellek általában kétféle sűrűségbecslést használnak. Exp
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=1\columnwidth]{figures/generative_model_taxonomy.png}
-	\caption{Generatív modellek fajtái \cite{goodfellow2016nips}.}
+	\caption{A generatív modellek fajtái (forrás: \cite{goodfellow2016nips}).}
 	\label{fig:gen_models_tax}
 \end{figure}
 
@@ -140,7 +139,7 @@ A generatív modellek általában kétféle sűrűségbecslést használnak. Exp
 %----------------------------------------------------------------------------
 \subsection{Boltzman gépek}
 
-A következő részben a generatív modellek egyik fajtáját: a Boltzman gépet (BM) működését, illetve annak egyik változatát, a Restricted Boltzman gépet (RBM) mutatom be, de előtte néhány alapvető fogalmat mutatok be amik szükségesek a BM megértéséhez.
+A következő részben a generatív modellek egyik fajtáját: a Boltzman gép (BM) működését, illetve annak egyik változatát, a Restricted Boltzman gépet (RBM) mutatom be, de előtte néhány alapvető fogalmat vezetek fel, amik szükségesek a Boltzman gépek megértéséhez.
 
 % A jelenlegi cikkben a generatív modellekre fogunk összpontosítani, különösen a Boltzmann Machine (BM), népszerű változata a Restricted Boltzmann Machine (RBM), az RBM működésére és néhány alkalmazására. Mielőtt elmélyülne a BM részleteiben, megvitatunk néhány alapvető fogalmat, amelyek elengedhetetlenek a BM megértéséhez.
 
@@ -151,7 +150,7 @@ A következő részben a generatív modellek egyik fajtáját: a Boltzman gépet
 %----------------------------------------------------------------------------
 \subsubsection{Markov-lánc}
 
-A matematikában a Markov-lánc egy olyan diszkrét sztochasztikus folyamatot jelent, amely Markov-tulajdonságú. Nevét egy orosz matematikusról, Andrej Markovról kapta, aki hírnevét a tudomány ezen ágában végzett kutatásaival szerezte. Markov-tulajdonságúnak lenni röviden annyit jelent, hogy adott jelenbeli állapot mellett, a rendszer jövőbeni állapota nem függ a múltbeliektől. Másképpen megfogalmazva ez azt is jelenti, hogy a jelen leírása teljesen magába foglalja az összes olyan információt, ami befolyásolhatja a folyamat jövőbeli helyzetét. Példa képpen: a véletlenszerűen sétáló személy helyzete a $t+1$ pillanatban a $t$ aktuális állapottól függ, és nem a korábbi állapotoktól $(t-1, t-2,\dots)$. Ezt a viselkedést Markov tulajdonságnak nevezik.
+A matematikában a Markov-lánc egy olyan diszkrét sztochasztikus folyamatot jelent, amely Markov-tulajdonságú. Nevét egy orosz matematikusról, Andrej Markovról kapta, aki hírnevét a tudomány ezen ágában végzett kutatásaival szerezte. A Markov-tulajdonság röviden annyit jelent, hogy egy adott rendszer jövőbeli állapota csak a jelenlegi állapottól függ, a múltbeli állapotoktól nem. Másképpen megfogalmazva ez azt jelenti, hogy a jelen leírása teljesen magába foglalja az összes olyan információt, ami befolyásolhatja a folyamat jövőbeli helyzetét. Példaképpen: a véletlenszerűen sétáló személy helyzete a $t+1$ pillanatban a $t$ aktuális állapottól függ, és nem a korábbi állapotoktól $(t-1, t-2,\dots)$. Ezt a viselkedést Markov tulajdonságnak nevezik.
 
 % A Markov chain is a probabilistic model used to estimate a sequence of possible events in which the probability of each event depends only on the state attained in the previous event.  In a Markov chain, the future state depends only on the present state and not on the past states. An example of Markov’s process is show in figure 4.  The position of the randomly walking person at instant t+1 is dependent on the current state t and not on the previous states (t-1, t-2, …..). This behavior is referred to as Markov property.
 
@@ -185,7 +184,7 @@ A grafikus valószínűségi modell egy grafikus ábrázolás, amivel véletlen 
 
 Egy Markov tulajdonsággal rendelkező irányítatlan gráf által leírt valószínűségi változók halmazát Markov hálózatnak (Markov Random Field az angol szakirodalomban). A Boltzman gépek is a MRF-ek közé tartozik.
 
-A Boltzman gép egy probabilisztikus generatív irányítatlan gráfmodell, amely kielégíti a Markov tulajdonságot. A BM-ek megtanulják a tanító minták eloszlását, majd abból új mintákat tudnak generálni. A BM rendelkezik bemeneti réteggel (látható réteggel) és egy vagy több rejtett réteggel. Kimeneti rétege nincs. A \ref{fig:bm}. ábrán láthatunk egy tipikus egy rejtett réteget tartalmazó Boltzman gépet.
+A Boltzman gép egy probabilisztikus generatív irányítatlan gráfmodell, amely kielégíti a Markov tulajdonságot. A BM-ek megtanulják a tanító minták eloszlását, majd abból új mintákat tudnak generálni. A BM rendelkezik bemeneti réteggel (látható réteggel) és egy vagy több rejtett réteggel. Kimeneti rétege nincs. A \ref{fig:bm}. ábrán láthatunk egy általános, több rejtett réteget tartalmazó Boltzman gépet.
 
 % A Markov tulajdonsággal rendelkező és egy nem irányított gráf által leírt véletlen változók halmazát Markov Random Field (MRF) vagy Markov hálózatnak nevezzük. Más szavakkal, egy véletlen mező Markov véletlenszerű mező, ha kielégíti Markov tulajdonságát. A BM egyfajta MRF.
 
@@ -195,12 +194,12 @@ A Boltzman gép egy probabilisztikus generatív irányítatlan gráfmodell, amel
 
 % We now have a grasp on some of the fundamental concepts to understand BM. A Boltzmann Machine (BM) is a probabilistic generative undirected graph model that satisfies Markov property. BMs learn the probability density from the input data to generating new samples from the same distribution. A BM has an input or visible layer and one or several hidden layers. There is no output layer. Figure 6 shows a typical architecture of a BM with single hidden layer. 
 
-A hálózat neuronjai megtanulnak sztochasztikus döntéseket hozni akkór, hogy be vagy kikapcsoljanak a tanítás során látott mintáknak megfelelően. Így a BM-ek fel tudják fedni a tanító adatok összetett mögöttes mintázatait. Lényeges különbség a BM és az egyéb neurális hálózat architektúrák között az, hogy a BM neuronjai nemcsak más rétegek neuronjaihoz kapcsolódnak, hanem ugyanazon a rétegen belüli neuronokhoz is, minden neuron kapcsolódik a hálózat összes többi neuronhoz. Ezt azt architektúrát Korlátlan Boltzman Gépnek nevezik, aminek a tanítása rendkívűl nehézkes és e miatt kevés gyakorlati haszna van. Az azonos rétegbeli idegsejtek közötti kapcsolatok megszüntetésével egy más architektúrát kapunk amit Korlátozott Boltzman Gépnek (RMB) hív a szakirodalom. A gyakorlatban az RBM-et használják, mert a hálót könyebb tanítani. A BM és RBM közötti különbséget a \ref{fig:bm}. ábra szemlélteti.
+A hálózat neuronjai megtanulnak sztochasztikus döntéseket hozni akkor, hogy be vagy kikapcsoljanak a tanítás során látott mintáknak megfelelően. Így a BM-ek fel tudják fedni a tanító adatok összetett mögöttes mintázatait. Lényeges különbség a BM és az egyéb neurális hálózat architektúrák között az, hogy a BM neuronjai nemcsak más rétegek neuronjaihoz kapcsolódnak, hanem ugyanazon a rétegen belüli neuronokhoz is, minden neuron kapcsolódik a hálózat összes többi neuronhoz. Ezt azt architektúrát Korlátlan Boltzman Gépnek nevezik, aminek a tanítása rendkívül nehézkes és e miatt kevés gyakorlati haszna van. Az azonos rétegbeli neuronok közötti kapcsolatok megszüntetésével egy más architektúrát kapunk, amit Korlátozott Boltzman Gépnek (RMB) hív a szakirodalom. A gyakorlatban az RBM-et használják, mert ezt a struktúra könnyebben tanítható. A BM és RBM közötti különbséget a \ref{fig:bm}. ábra szemlélteti.
 
 \begin{figure}[ht]
 	\centering
-	\includegraphics[width=0.50\columnwidth]{figures/RBM.png}
-	\caption{A korlátozott Boltzman gép (RBM) egy kétirányú gráfon alapuló irányítatlan grafikus modell, aminek egyik részén a látható elemek vannak (v), a másik részén a rejtett elemek (h). (forrás: \cite{fig:RMB})}
+	\includegraphics[width=0.80\columnwidth]{figures/BM_vc_RBM.png}
+	\caption{A Boltzman gép egy kétirányú gráfon alapuló irányítatlan grafikus modell, aminek egyik részén a látható elemek vannak (visible), a másik részén a rejtett elemek (hidden). (forrás: \cite{fig:BM_vs_RBM})}
 	\label{fig:bm}
 \end{figure}
 
@@ -228,7 +227,7 @@ A hálózat neuronjai megtanulnak sztochasztikus döntéseket hozni akkór, hogy
 Az mély tanulás első napjaiban az RBM-eknek különféle feladatoknál alkalmazták, mint például dimenziócsökkentéshez, vagy ajánlórendszerekhez vagy természetes nyelv feldolgozásra. Néhány alkalmazási példa RBM-re:
 \begin{itemize}
 	\item Mintázat felismerés: Az RBM jellemzők kinyerésére (feature extraction) alkalmas mintázatfelismerési problémák esetén, például részvényárfolyam becslésnél. \cite{cai2012feature}.
-	\item Ajánlórendszerek: Az RBM-eket széles közben használják olyan feladatokra, ahol megjósolják, hogy mit érdemes ajánlani a felhasználónak ami számára hasznos lenne, és ezért szívesen használja az alkalmazást. Példa: filmajánlás, zeneajánló \cite{liu2014content}.
+	\item Ajánlórendszerek: Az RBM-eket széles közben használják olyan feladatokra, ahol megjósolják, hogy mit érdemes ajánlani a felhasználónak ami számára hasznos, érdekes lenne. Példa: filmajánlás, zeneajánló \cite{liu2014content}.
 \end{itemize}
 
 Azonban az utóbbi időkben a gyakorlatban az RBM-eket szinte teljesen felváltották a Generatív Adversarial Network-ök (GAN), vagy a Variational Autoencoderek (VAE).
@@ -243,7 +242,7 @@ Azonban az utóbbi időkben a gyakorlatban az RBM-eket szinte teljesen felválto
 \subsection{Generatív Adversarial Network}
 %----------------------------------------------------------------------------
 
-A Generatív Adversarial Network (más néven GAN) az utóbbi évek egyik innovációja a mély tanulás területén. A GAN-okat eredetiel Ian Goodfellow és Yoshua Gengio vezették be a Montreali Egyetemen, 2014-ben. A GAN-ok célja egy eloszlás megtanulása, és abból új példányok generálása.
+A Generatív Adversarial Network (más néven GAN) az utóbbi évek egyik innovációja a mély tanulás területén. A GAN-okat eredetileg Ian Goodfellow és Yoshua Gengio vezették be a Montreali Egyetemen, 2014-ben \cite{fig:gan_dist}. A GAN-ok célja egy eloszlás megtanulása, és abból új példányok generálása.
 
 A GAN egy generatív modell, amelyben két neurális háló verseng egymással. Az első hálót generátornak nevezik. A generátor felelős új szintetikus minták előállításáért, amelyek hasonlítanak a tanító halmaz mintáihoz. A másik neurális hálót diszkriminátornak nevezik, aminek a feladata megkülönböztetni a valódi minták (tanító minta) illetve a generátor által létrehozott szintetikus minták között. A generátor célja becsapnia a diszkriminátort, míg a diszkriminátor megpróbál ennek ellenállni. A két háló versengéséből ered az ``adversarial'' elnevezés.
 
@@ -269,7 +268,7 @@ Az alábbi \ref{fig:gan_struct}. ábrán látható, hogy a generátor nem talál
 
 \subsubsection{GAN tanítása}
 
-A generátor be kell tanítani, mielőtt realisztikus mintákat képes létrehozni. Tegyük fel, hogy egy újonnan inicializált hálót használunk 200 kép előállítására, minden mintánál új random zaj bemenettel. Mivel a generatív modell tanítása felügyelet nélküli, nincsenek címkéink amivel össze lehetne vetni a háló kimenetét. Honnan tudjuk mégis, hogy milyen irányba kell módosítani a háló paramétereit, hogy javuljon a generált képek minősége? Egy generált kép ``jóságát'' nem külsőleg mondjuk meg (címke segítségével), hanem az dönti el, hogy sikerült-e átverni a diszkriminátort.
+A generátor be kell tanítani, mielőtt realisztikus mintákat képes létrehozni. Tegyük fel, hogy egy újonnan inicializált hálót használunk 200 kép előállítására, minden mintánál új véletlenszerű zaj bemenettel. Mivel a generatív modell tanítása felügyelet nélküli, nincsenek címkéink amivel össze lehetne vetni a háló kimenetét. Honnan tudjuk mégis, hogy milyen irányba kell módosítani a háló paramétereit, hogy javuljon a generált képek minősége? Egy generált kép ``jóságát'' nem külsőleg mondjuk meg (címke segítségével), hanem az dönti el, hogy a generátornak sikerült-e megtéveszteni a diszkriminátort.
 
 A diszkriminátor háló ad visszajelzést a generátornak tanulás során, hogy meg tudja tanulni az adott minták eloszlását. A diszkriminátor tipikusan egy osztályozó konvolúciós neurális háló ami képes megkülönböztetni a generált mintákat a valós mintáktól. A tanítás során a diszkriminátornak az esetek felében valódi mintákat, a másik felében szintetikus mintákat lát. A valós mintákhoz 1-hez közeli valószínűséget, hamis mintákhoz pedig 0-hoz közelit rendel. A generátor e közben megtanul olyan mintákat generálni, amelyekre a diszkriminátor 1-hez közeli kimenetet produkál, és valódi mintának minősítené azt. Idővel a generátor kénytelen egyre realisztikusabb kimeneteket előállítani, hogy meg tudja téveszteni a diszkriminátort. Ezzel a módszerrel egy felügyelet nélküli tanulási feladatot sikerül visszavezetni egy felügyelt tanulási feladatra.
 
@@ -298,7 +297,7 @@ A diszkriminátor háló ad visszajelzést a generátornak tanulás során, hogy
 	\label{fig:gan_dist}
 \end{figure}
 
-A \ref{fig:gan_dist}. ábrán láthatjuk a GAN tanulásának folyamatát. A generátor $z$ véletlen zaj értéket kap bemenetre, és azt leképezi az $x$ kimeneti értékre. Az $x$ értékeinek eloszlása sűrűbbé válik, ahova több $z$ értéket képezünk le. A diszkriminátor magas értéket ad azokon a helyeken, ahol a valódi adatok sűrűsége nagyobb, mint a generált adatoké. A generátor a háló paramétereinek változtatásával módosítani tud a leképezésen, és így eléri, hogy az eloszlása a diszkriminátor gradiens irányába változzon. Végül a generátor eloszlása megegyezik a valós minták eloszlásával. Ekkor a diszkriminátor minden mintára 0,5-ös valószinűséget ad, mivel nem tudja megkülönböztetni a valós és generált mintákat.
+A \ref{fig:gan_dist}. ábrán láthatjuk a GAN tanulásának folyamatát. A generátor $z$ véletlen zaj értéket kap bemenetre, és azt leképezi az $x$ kimeneti értékre. Az $x$ értékeinek eloszlása sűrűbbé válik, ahova több $z$ értéket képezünk le. A diszkriminátor magas értéket ad azokon a helyeken, ahol a valódi adatok sűrűsége nagyobb, mint a generált adatoké. A generátor a háló paramétereinek változtatásával tud módosítani a leképezésen, és így eléri, hogy az eloszlása a diszkriminátor gradiens irányába változzon. Végül a generátor eloszlása megegyezik a valós minták eloszlásával. Ekkor a diszkriminátor minden mintára 0,5-ös valószínűséget ad, mivel nem tudja megkülönböztetni a valós és generált mintákat.
 
 % The Generator takes random noise value z and maps them to output values x. The probability distribution over x represented by the model becomes denser wherever more values of z are mapped. The Discriminator outputs high values wherever the density of real data is greater than the density of generated data. The Generator changes the samples it produces to move uphill along the function learned by the Discriminator and eventually the Generator’s distribution matches the distribution of real data. Due to this, the Discriminator outputs the probability of 0.5 for every sample because every sample is equally likely to be generated by the real data-set as it is to be generated by the Generator.
 
@@ -307,7 +306,7 @@ A \ref{fig:gan_dist}. ábrán láthatjuk a GAN tanulásának folyamatát. A gene
 A GAN-oknak annak ellenére, hogy nemrég jelentek csak meg, gyakorlati hasznuk is van. Erre pár példa:
 \begin{itemize}
 	\item \textbf{StyleGan3}: Ez egy GAN-on alapuló neurális háló, amely képes az fotorealisztikus emberi arcképeket generálni. \cite{stylegan3}
-	\item \textbf{TecoGAN}: Videófelvételek felbontásának növelésére képes GAN használatával. Az egyes képkockákat részletgazdagabbá teszi \cite{chu2020tecoGAN}.
+	\item \textbf{TecoGAN}: Videó felvételek felbontásának növelésére képes GAN használatával. Az egyes képkockákat részletgazdagabbá teszi \cite{chu2020tecoGAN}.
 	\item Egy 2018-as aukción egy GAN által ``festett'' kép több mint \$400 ezer dollárért kelt el \cite{AIart}. 
 \end{itemize}
 
@@ -324,7 +323,7 @@ Az autoenkóderek olyan neurális hálók, ahol a kimeneti réteg mérete megegy
 
 A háló tartalmaz egy $\textbf{h}$ rejtett réteget, ami a bemenet belső leképezését tárolja. A háló két részből tevődik össze: egy kódoló függvényből $\textbf{h} = f(\textbf{x})$, és egy dekódolóból, amely rekonstruálja a bemenetet $\textbf{r} = g(\textbf{h})$. Ha az autoenkóder egyszerűen megtanulná a $g(f(\textbf{x})) = \textbf{x}$ függvényt, az nem lenne túl hasznos, ezért a kódolót úgy tervezték, hogy képtelenek legyenek a bemenetet tökéletesen másolni. A kódolót úgy korlátozzák, hogy a középső rejtett réteg kevesebb neuront tartalmaz mint a bemeneti réteg. Ennek hatására a kódoló kénytelen priorizálni, hogy a bemenet mely jellemzőit érdemes másolni, így képes megtanulni az adatok hasznos tulajdonságait.
 
-Az autoenkóderek tipikus felépítése: (látsd: \ref{fig:autoenc_struct}. ábra).
+Az autoenkóderek tipikus felépítése: (lásd: \ref{fig:autoenc_struct}. ábra).
 
 % A hálózat két részből tevődik össze: egy anenkódoló függvény = f (x) és egy dekódoló, amely rekonstrukciót eredményez = g (h). Ezt az architektúrát a 14.1. Ábra mutatja be. Ha egy automatikus kódolónak sikerül egyszerűen megtanulnia a setg (f (x)) = x mindenhol, akkor ez nem különösen hasznos. Ehelyett az automatikus kódolókat úgy tervezték, hogy képtelenek legyenek megtanulni tökéletesen másolni. Általában olyan módon korlátozzák őket, amelyek lehetővé teszik számukra, hogy csak hozzávetőlegesen másoljanak, és csak olyan adatokat másoljanak be, amelyek hasonlítanak az edzési adatokhoz. Mivel a modell kénytelen priorizálni, hogy a bemenet mely aspektusait kell másolni, gyakran megtanulja az adatok hasznos tulajdonságait
 
@@ -362,7 +361,7 @@ A variációs autoenkóder (VAE) megjelenése nem túl régi, 2013-ban publikál
 %We add a constraint on the encoding network, that forces it to generate latent vectors that roughly follow a unit gaussian distribution. It is this constraint that separates a variational autoencoder from a standard one.
 
 %TODO ezt újraírni h érthető legyen
-A variációs autoenkóder annyiban tér el a standard autoenkódertől, hogy adunk egy megkötést a kódolónak, aminek hatására a generált látens változók vektora ($\textbf{h}$) közel követik a normális eloszlást. Ebben az esetben a normális eloszlás $\mathcal{N}(\mu,\sigma^2)$ várható értéke ($\mu$) és szórásnégyzete ($\sigma^2$) leírja a látens változók eloszlását. Ekkor az enkóder és dekóder nem determenisztikus hanem sztohasztikus jellegű. Ez a megkötés azért hasznos számunkra, mert normális eloszlásból könnyen tudunk mintavételezni, ami megkönnyíti az új képek generálását (látsd: \ref{fig:vae}. ábra)
+A variációs autoenkóder annyiban tér el a standard autoenkódertől, hogy adunk egy megkötést a kódolónak, aminek hatására a generált látens változók vektora ($\textbf{h}$) közel követik a normális eloszlást. Ebben az esetben a normális eloszlás $\mathcal{N}(\mu,\sigma^2)$ várható értéke ($\mu$) és szórásnégyzete ($\sigma^2$) leírja a látens változók eloszlását. Ekkor az enkóder és dekóder nem determenisztikus hanem sztochasztikus jellegű. Ez a megkötés azért hasznos számunkra, mert normális eloszlásból könnyen tudunk mintavételezni, ami megkönnyíti az új képek generálását (lásd: \ref{fig:vae}. ábra)
 
 \begin{figure}[ht]
 	\centering
@@ -379,11 +378,11 @@ A variációs autoenkóder annyiban tér el a standard autoenkódertől, hogy ad
 % Generating new images is now easy: all we need to do is sample a latent vector from the unit gaussian and pass it into the decoder. In practice, there's a tradeoff between how accurate our network can be and how close its latent variables can match the unit gaussian distribution.
 %~~~~~~~~~~~~~~ (https://kvfrans.com/variational-autoencoders-explained/)
 
-A VAE működését könyebb egy példán keresztül bemutatni. Tegyük fel, hogy van egy képünk egy emberi arcról. A betanított háló ez a kép alapján képes látens változó vektort kinyerni a képből, ami az arcot leíró fontos jellemzőkből áll. Erre mutat egy példát a \ref{fig:vae_face}.ábra.
+A VAE működését könnyebb egy példán keresztül bemutatni. Tegyük fel, hogy van egy képünk egy emberi arcról. A betanított háló ez a kép alapján képes látens változó vektort kinyerni a képből, ami az arcot leíró fontos jellemzőkből áll. Erre mutat egy példát a \ref{fig:vae_face}.ábra.
 
 % Let us understand how we are generating new data. Let’s say we have the image of a celebrity face from which our encoder model has to recognize important features mentioned below. 
 
-Mint az alábbi ábrán látjuk, minden jellemzőhöz tartozik egy valószínűségi eloszlás. Miben különböznem az arcok? Megfogalmazhatunk pár ilyen jellemzőt, mint a bőrszín, haj színe, szemek távolsága, stb. Ezen jellemzőkből álló vektor leírhat egy emberi arcot. Eltérő arcoknál a jellemzők értékei mások lesznek, de jellemzők listája ugyanaz marad. Az autoenkóderek nem feltétlenül ilyen ember által könnyen értelmezhető jellemzőket nyer ki az arcokból, hanem azok ennél a példánál absztraktabbak.
+Mint az alábbi ábrán látjuk, minden jellemzőhöz tartozik egy valószínűségi eloszlás. Miben különböznek az arcok? Megfogalmazhatunk pár ilyen jellemzőt, mint a bőrszín, haj színe, szemek távolsága, stb. Ezen jellemzőkből álló vektor leírhat egy emberi arcot. Eltérő arcoknál a jellemzők értékei mások lesznek, de jellemzők listája ugyanaz marad. Az autoenkóderek nem feltétlenül ilyen ember által könnyen értelmezhető jellemzőket nyer ki az arcokból, hanem azok ennél a példánál absztraktabbak.
 
 \begin{figure}[ht]
 	\centering
@@ -394,7 +393,7 @@ Mint az alábbi ábrán látjuk, minden jellemzőhöz tartozik egy valószínűs
 
 Célunk, hogy új képeket állítsunk elő az arcképekből álló tanító mintahalmaz alapján. Feltéve, hogy a bemeneti adataink normális eloszlást követnek, új képek létrehozásához mindössze annyit kell tennünk, hogy normális eloszlásból mintavételezünk egy látens változó vektort. Ezt megadjuk a dekódolónak, ami a vektor alapján generálni tud egy új képet.
 
-%TODO ezt kifejteni ha kell még content, ha nem akkor komment
+%ezt kifejteni ha kell még content, ha nem akkor komment
 A VEA számos területen alkalmazott, ezek közül egy példa az úgynevezett ``deepfake'' előállítása, ami lényegében abból áll, hogy egy személy arcát alakítják át úgy, hogy egy másik személy vonásait utánozza \cite{westerlund2019emergence}. 
 
 % This novel technique allows generating so-called deepfakes, which actually morph a person’s face to mimic someone else’s features, although preserving the original facial expression.
@@ -446,7 +445,7 @@ Mély metrika tanulást alkalmazzák természetes nyelvfeldolgozás (NLP) terül
 %----------------------------------------------------------------------------
 \subsubsection{Sziámi hálók}
 
-Az előző részben kifejtett deep metrikák tanulásához tipikusan sziámi hálókat alkalmaznak. A sziámi hálókat (siamese network) egy mély neurális háló architektúra, amely két vagy több azonos alhálózatot tartalmaz. Az alhálózatok teljes mértékben megegyeznek egymással, azaz azonos a paramétereik értéke. Ha tanítás során az egyik alháló súlyát megváltoztatjuk, akkor azzal egyidejűleg a többi alhálót is ugyanúgy módosítjuk, hogy azok mindíg azonos súlyokkal rendelkezzenek. Ezeket a hálókat a bemenetek hasonlóságának megállapítására használják a jellemzővektoraik összehasonlításával \cite{bromley1993siamese}. 
+Az előző részben kifejtett mély metrikák tanulásához tipikusan sziámi hálókat alkalmaznak. A sziámi hálókat (siamese network) egy mély neurális háló architektúra, amely két vagy több azonos alhálózatot tartalmaz. Az alhálózatok teljes mértékben megegyeznek egymással, azaz azonos a paramétereik értéke. Ha tanítás során az egyik alháló súlyát megváltoztatjuk, akkor azzal egyidejűleg a többi alhálót is ugyanúgy módosítjuk, hogy azok mindig azonos súlyokkal rendelkezzenek. Ezeket a hálókat a bemenetek hasonlóságának megállapítására használják a jellemzővektoraik összehasonlításával \cite{bromley1993siamese}. 
 
 A sziámi hálóknak elegendő kevesebb tanító minta, mint a tipikus mély neurális hálóknak. Ez a tulajdonsága kedvező olyan feladatoknál, ahol a tanító minták száma korlátozott, vagy nehezen begyűjthető nagy mennyiségben. A sziámi hálókat előszeretettel alkalmazzák arcfelismeréshez, illetve aláírás verifikáláshoz.
 
@@ -470,13 +469,13 @@ A sziámi hálók \textbf{előnyei}:
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=1\columnwidth]{figures/siamese.png}
-	\caption{A sziámi háló architektúra.}
+	\caption{(ideiglenes ábra).}
 	\label{fig:siamese}
 \end{figure}
 
-A \ref{fig:siamese}. ábrán láthatjuk a sziámi háló működését. A sziámi hálónak két bemenete van, az egyes bemenetekhez külön külön alháló tartozik. Az első alháló megkapja a bemenő képet, és miután az áthaladt a konvolúciós rétegeken létrehoz egy jellemzővektort (angolul feature vector vagy encoding), ami csökkentett dimenziójú a bemeneti képhez képest. A második alháló ami ugyanolyan súlyokkal dolgozik és egy különböző képet kap a bemenetén. Ezt követően a két jellemzővektorunk van, rendre $\mathbf{p} = f(\mathbf{x_1})$ és $\mathbf{q} = f(\mathbf{x_2})$. A két jellemzővektort ezután valamiyen távolság metrika szerint összevethető, ami alapján meghatározzuk a hasonlóságot. A sziámi háló célja egy olyan metrika megtanulása, amely közel azonosnak tekinthető bemeneti képekre nagy hasonlóságot ad, míg az eltérő képekre kis hasonlóságot kapunk.
+A \ref{fig:siamese}. ábrán láthatjuk a sziámi háló működését. A sziámi hálónak két bemenete van, az egyes bemenetekhez külön külön alháló tartozik. Az első alháló megkapja a bemenő képet, és miután az áthaladt a konvolúciós rétegeken létrehoz egy jellemzővektort (angolul feature vector vagy encoding), ami csökkentett dimenziójú a bemeneti képhez képest. A második alháló ami ugyanolyan súlyokkal dolgozik és egy különböző képet kap a bemenetén. Ezt követően a két jellemzővektorunk van, rendre $\mathbf{p} = f(\mathbf{x_1})$ és $\mathbf{q} = f(\mathbf{x_2})$. A két jellemzővektort ezután valamilyen távolság metrika szerint összevethető, ami alapján meghatározzuk a hasonlóságot. A sziámi háló célja egy olyan metrika megtanulása, amely közel azonosnak tekinthető bemeneti képekre nagy hasonlóságot ad, míg az eltérő képekre kis hasonlóságot kapunk.
 
-A jellemzővektorok összehasonlításához többféle távolság metrikát is használhatunk. Ezek közül leggyakrabban a használt metrika a két vektor euklideszi távolsága (ami megegyezik jellemzővektorok külömbségének $L2$ normájával), ami egyszerűen kiszámolható az alábbi módon n dimenziós esetben \cite{tabak2014geometry}:
+A jellemzővektorok összehasonlításához többféle távolság metrikát is használhatunk. Ezek közül leggyakrabban a használt metrika a két vektor euklideszi távolsága (ami megegyezik jellemzővektorok különbségének $L2$ normájával), ami egyszerűen kiszámolható az alábbi módon n dimenziós esetben \cite{tabak2014geometry}:
 
 % On the n-dimensional Euclidean space {\displaystyle \mathbb {R} ^{n},}{\displaystyle \mathbb {R} ^{n},} the intuitive notion of length of the vector x = (x1, x2, ..., xn) is captured by the formula
 
@@ -484,7 +483,7 @@ A jellemzővektorok összehasonlításához többféle távolság metrikát is h
 
 Ahol $\mathbf{p} = (p_1, p_2, \dots, p_n)$ és $\mathbf{q} = (q_1, q_2, \dots, q_n)$ 
 
-\begin{figure}[h]
+\begin{figure}[ht]
 	\centering
 	\includegraphics[width=0.65\columnwidth]{figures/euklidesz.png}
 	\caption{Két pont euklideszi távolsága 2D esetben}
@@ -520,7 +519,7 @@ Kellő mennyiségű tanító kép és megfelelően választott kép hármasok ha
 
 % When using contrastive loss we were only able to differentiate between similar % and different images but when we use triplet loss we can also find out which % image is more similar when compared with other images. In other words, the % network learns ranking when trained using triplet loss.
 
-A sziámi hálók tanítása során gyakran alkalmazzák még a konsztratív veszteségfüggvény is. Ez egy távolság alapú veszteségfüggvény, nem a becsült kimenet és az elvárt kimenet külömbségéből származtatott. A konsztratív veszteségfüggvényt főleg embeddingek tanulására használják, azzal a céllal, hogy két hasonló adatpontból származtatott embedding távolsága kicsi legyen, eltérő adatokból származtatott embeddingek távolsága pedig nagy legyen. 
+A sziámi hálók tanítása során gyakran alkalmazzák még a konsztratív veszteségfüggvény is. Ez egy távolság alapú veszteségfüggvény, nem a becsült kimenet és az elvárt kimenet különbségéből származtatott. A konsztratív veszteségfüggvényt főleg embeddingek tanulására használják, azzal a céllal, hogy két hasonló adatpontból származtatott embedding távolsága kicsi legyen, eltérő adatokból származtatott embeddingek távolsága pedig nagy legyen. 
 
 % TODO ezt double check h helyes-e
 \[ \mathcal{L}(A,B) = y \lVert f(A) - f(B)\rVert_2^2 + (1-y) max\left(0,m - \lVert f(A) - f(B) \rVert_2^2 \right) \]

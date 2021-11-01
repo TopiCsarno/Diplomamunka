@@ -1,6 +1,7 @@
 
 %----------------------------------------------------------------------------
 \section{A probléma bemutatása}
+\label{sec:problem}
 %----------------------------------------------------------------------------
 
 % Arcfelismerő rendszerek bemutatása (1-1.5 oldal?)
@@ -43,13 +44,13 @@ Az arcfelismerő rendszerek működésének kifejtése:
 \end{enumerate}
 
 %~~~~~~~~~~~~~~~~~~~~~~
-Bár az arcfeismerő rendszerek nagyon hasznosak, és használatuk gyorsan terjed, jelentős adatvédelmi kockázatokat is hordoznak magukkal. \cite{castelluccia2020impact}
+Bár az arcfelismerő rendszerek nagyon hasznosak, és használatuk gyorsan terjed, jelentős adatvédelmi kockázatokat is hordoznak magukkal. \cite{castelluccia2020impact}
 
-Más biometrikus adatokkal ellentétben (mint az újlenyomatok, genetikai minták), az arcfelismerő rendszerek egy személy tudata és beleegyezése nélkül képesek távolról, érintkezésmentesen felvételeket készíteni a személyről. Az európai általános adatvédelmi rendelet (GDPR) értelmében ez komolyan fenyegeti az emberek személyes adataik védelméhez való jogukat. Az arcfeismerő rendszerek alacsony költséggel kiépíthetőek, így tömeges megfigyelést is lehetővé tesznek. 
+Más biometrikus adatokkal ellentétben (mint az ujjlenyomatok, genetikai minták), az arcfelismerő rendszerek egy személy tudata és beleegyezése nélkül képesek távolról, érintkezés mentesen felvételeket készíteni a személyről. Az európai általános adatvédelmi rendelet (GDPR) értelmében ez komolyan fenyegeti az emberek személyes adataik védelméhez való jogukat. Az arcfelismerő rendszerek alacsony költséggel kiépíthetőek, így tömeges megfigyelést is lehetővé tesznek. 
 
 E mellett kockázatot jelent az is, hogy az arcképek már nagy mennyiségben, elérhetőek az interneten. Az állami, vagy magán cégek korábbról, más célból gyűjtött kép adathalmazokkal rendelkeznek, amiket fel tudnak hasznosítani. Másfelől a közösségi médiák világszintű elterjedésével nagy mennyiségű publikusan elérhető arcképet lehet begyűjteni. Mivel az emberi arc vonásait, jellemzőit utólag nem lehet könnyen megváltoztatni, ezért az egyszer begyűjtött arcképekről készített arclenyomatok a jövőben is alkalmasak lehet az adatalany azonosítására.
 
-Annak ellenére, hogy az utóbbi években a nagy méretű adathalmazok kihasználásának és a mély tanulás fejlődésének könyönhetően az arcfelismerő rendszerek teljesítménye sokat javult, a megbízhatóságuk még továbbra is meglehetősen korlátozott. A kép készítésének módjától függően magas lehet a téves pozitív (tévesen felismert) esetek száma. E mellett, néhány arcfelismerő rendszer jobban működik fehér embereken mint sötétebb bőrszíneken, eltérően működik férfiak és nők esetén, gyerekek és felnőttek esetén. Az ilyen elfogultságok problémákhoz vezethetnek főleg automatikus döntéshozó rendszereknél.
+Annak ellenére, hogy az utóbbi években a nagy méretű adathalmazok kihasználásának és a mély tanulás fejlődésének köszönhetően az arcfelismerő rendszerek teljesítménye sokat javult, a megbízhatóságuk még továbbra is meglehetősen korlátozott. A kép készítésének módjától függően magas lehet a téves pozitív (tévesen felismert) esetek száma. E mellett, néhány arcfelismerő rendszer jobban működik fehér embereken mint sötétebb bőrszíneken, eltérően működik férfiak és nők esetén, gyerekek és felnőttek esetén. Az ilyen elfogultságok problémákhoz vezethetnek főleg automatikus döntéshozó rendszereknél.
 
 
 % • Más biometrikus jellemzőkkel ellentétben, mint például az ujjlenyomatok vagy a genetikai adatok, az arcképek a személy tudta nélkül, távolról, érintkezés nélkül és rendkívül költséghatékony módon rögzíthetők. Valójában már most is nagy mennyiségben gyűjtik be őket, különösen a legtöbb országban telepített számos videó megfigyelő kamerán keresztül. Az arc egyben a test legláthatóbb része, a legnehezebb lejátszani.
@@ -69,11 +70,11 @@ Annak ellenére, hogy az utóbbi években a nagy méretű adathalmazok kihaszná
 %~~~~~~~~~~~~~~~~~~~~~~
 % az arclenyomat vektorhoz köthető poblémák
 
-Mint azt láthattuk a \ref{fig:fr}. ábrán, az arcfeismerő rendszerek működéséhez szükséges egy arclenyomat adatbázis, amivel össze tudja hasonlítani az azonosítatlan személy arclenyomatát. Az arclenyomatok tárolása viszont adatvédelmi kockázatokkal járhat. Számos arcfelismerési kockázat kapcsolódik ezen adatbázisok kezeléséhez, integritásához vagy titkosságához. Ha az arclenyomatok titkosítás nélkül egy nagy, centralizált adatbázisban vannak tárolva, előfordulhat, hogy ahhoz egy rosszindulatú fél hozzáférést szerez.
+Mint azt láthattuk a \ref{fig:fr}. ábrán, az arcfelismerő rendszerek működéséhez szükséges egy arclenyomat adatbázis, amivel össze tudja hasonlítani az azonosítatlan személy arclenyomatát. Az arclenyomatok tárolása viszont adatvédelmi kockázatokkal járhat. Számos arcfelismerési kockázat kapcsolódik ezen adatbázisok kezeléséhez, integritásához vagy titkosságához. Ha az arclenyomatok titkosítás nélkül egy nagy, centralizált adatbázisban vannak tárolva, előfordulhat, hogy ahhoz egy rosszindulatú fél hozzáférést szerez.
 
 Kimutatták, hogy az arclenyomatok alapján lehetséges az eredeti arcok részleges visszaállítása \cite{mai2018reconstruction}, ebből arra következtethetünk, hogy az arclenyomatok magukban érzékeny információkat hordozhatnak az adatalanyról. Ha ezeket az információkat egy rosszindulatú fél képes megbízható módon kinyerni az arclenyomatokból, akkor az is jelentős adatvédelmi kockázat lenne.
 
-A diplomamunkám során az arcfelismerő rendszerek által használt arclenyomatok viszgálatával foglalkozom. Egyik feladaom azt elemezni hogy, hogyan van kódolva a személyes adat az arclenyomatokban, illetve bemutatni az arclenyomatokhoz kapcsolódó adatvédelmi kockázatokat. Ezekkel a kérdésekkel a [REF] 4. és 5. fejezetben foglalkozom. Végül a 6. [REF] fejezetben védekezési javaslatokat teszek, milyen módszerek működhetnek az adatvédelmi kockázatok kezelésére.
+A diplomamunkám során az arcfelismerő rendszerek által használt arclenyomatok vizsgálatával foglalkozom. Egyik feladatom azt elemezni hogy, hogyan van kódolva a személyes adat az arclenyomatokban, illetve bemutatni az arclenyomatokhoz kapcsolódó adatvédelmi kockázatokat. Ezekkel a kérdésekkel a \ref{sec:4}. és \ref{sec:5}. fejezetben foglalkozom. Végül a \ref{sec:6}. fejezetben védekezési javaslatokat teszek, milyen módszerek működhetnek az adatvédelmi kockázatok kezelésére.
 
 % - they can carry sensitive information
 
