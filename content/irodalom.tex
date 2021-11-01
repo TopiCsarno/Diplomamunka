@@ -227,8 +227,8 @@ A hálózat neuronjai megtanulnak sztochasztikus döntéseket hozni akkór, hogy
 
 Az mély tanulás első napjaiban az RBM-eknek különféle feladatoknál alkalmazták, mint például dimenziócsökkentéshez, vagy ajánlórendszerekhez vagy természetes nyelv feldolgozásra. Néhány alkalmazási példa RBM-re:
 \begin{itemize}
-	\item Mintázat felismerés: Az RBM jellemzők kinyerésére (feature extraction) alkalmas mintázatfelismerési problémák esetén, amikor kézzel írott szöveg felismerése a cél. [REF]
-	\item Anánlórendszerek: Az RBM-eket széles közben használják olyan feladatokra, ahol megjósolják, hogy mit érdemes ajánlani a felhasználónak ami számára hasznos lenne, és ezért szívesen használja az alkalmazást. Példa: filmajánlás, zeneajánló. [REF]
+	\item Mintázat felismerés: Az RBM jellemzők kinyerésére (feature extraction) alkalmas mintázatfelismerési problémák esetén, például részvényárfolyam becslésnél. \cite{cai2012feature}.
+	\item Ajánlórendszerek: Az RBM-eket széles közben használják olyan feladatokra, ahol megjósolják, hogy mit érdemes ajánlani a felhasználónak ami számára hasznos lenne, és ezért szívesen használja az alkalmazást. Példa: filmajánlás, zeneajánló \cite{liu2014content}.
 \end{itemize}
 
 Azonban az utóbbi időkben a gyakorlatban az RBM-eket szinte teljesen felváltották a Generatív Adversarial Network-ök (GAN), vagy a Variational Autoencoderek (VAE).
@@ -307,6 +307,7 @@ A \ref{fig:gan_dist}. ábrán láthatjuk a GAN tanulásának folyamatát. A gene
 A GAN-oknak annak ellenére, hogy nemrég jelentek csak meg, gyakorlati hasznuk is van. Erre pár példa:
 \begin{itemize}
 	\item \textbf{StyleGan3}: Ez egy GAN-on alapuló neurális háló, amely képes az fotorealisztikus emberi arcképeket generálni. \cite{stylegan3}
+	\item \textbf{TecoGAN}: Videófelvételek felbontásának növelésére képes GAN használatával. Az egyes képkockákat részletgazdagabbá teszi \cite{chu2020tecoGAN}.
 	\item Egy 2018-as aukción egy GAN által ``festett'' kép több mint \$400 ezer dollárért kelt el \cite{AIart}. 
 \end{itemize}
 
@@ -347,16 +348,14 @@ Az autoenkóderek tipikus felépítése: (látsd: \ref{fig:autoenc_struct}. ábr
 	\item \textbf{Dekódoló}: A dekódoló a kódolóhoz hasonló struktúrájú előrecsatolt háló. Feladata kód alapján a bemenet visszaállítása.
 \end{itemize}
 
-Az autoenkóderek évtizedek óta ismertek a neurális hálózatok világában [REF]. Míg eleinte az autoenkódereket dimenziócsökkentéshez, vagy jellemző tanuláshoz használták, a közelmúltban a generatív modellezésben is előtérbe került. Az első komoly generatív tulajdonsággal rendelkező autoenkódert a variációs autoenkóder megjelenése hozta.
-
-% A modern autókódolók a determinisztikus funkciókon túli kódoló és dekódoló ötletét a sztochasztikus leképezésekre (h | x) és pdekódolókra (x | h) általánosították. Az automatikus kódolók ötlete évtizedek óta része a neurális hálózatok történelmi tájának (LeCun , 1987; Bourlard és Kamp, 1988; Hinton és Zemel, 1994). Hagyományosan az automatikus kódolókat használták a dimenziócsökkentéshez vagy a funkciók tanulásához. A közelmúltban az autokódolók és a változó modellek közötti elméleti kapcsolatok az autokódolókat a generációs modellezés előtérébe hozták.
+Az autoenkóderek évtizedek óta ismertek a neurális hálózatok világában \cite{hinton1994autoencoders}. Míg eleinte az autoenkódereket dimenziócsökkentéshez, vagy jellemző tanuláshoz használták, a közelmúltban a generatív modellezésben is előtérbe került. Az első komoly generatív tulajdonsággal rendelkező autoenkódert a variációs autoenkóder megjelenése hozta.
 
 % Modern autoencoders have generalized the idea of an encoder and a de-coder beyond deterministic functions to stochastic mappingspencoder(h | x) andpdecoder(x | h).
 % The idea of autoencoders has been part of the historical landscape of neuralnetworks for decades (LeCun, 1987; Bourlard and Kamp, 1988; Hinton and Zemel,1994). Traditionally, autoencoders were used for dimensionality reduction orfeature learning. Recently, theoretical connections between autoencoders andlatent variable models have brought autoencoders to the forefront of generativemodeling
 
 \subsubsection{Variációs autoenkóderek}
 
-A variációs autoenkóder (VAE) megjelenése nem túl régi, 2013-ban publikálták először \cite{kingma2013auto}. Bár mély neurális háló alapú autoenkóderek korábban is léteztek, mint generatív modell rosszul teljesítettek. Később azonban képgenerálás [REF], és megerősítéses tanulás [REF] területén is előremutató eredmények születtek.
+A variációs autoenkóder (VAE) megjelenése nem túl régi, 2013-ban publikálták először \cite{kingma2013auto}. Bár mély neurális háló alapú autoenkóderek korábban is léteztek, mint generatív modell rosszul teljesítettek. Később azonban több alkalmazási területen is előremutató eredmények születtek, például a képgenerálás területén \cite{razavi2019generating}, vagy felbontásnövelő alkalmazásokban \cite{ledig2017photo}. 
 
 % Az első komoly generatív tulajdonsággal rendelkező autóenkóder, a Variációs Au- tóenkóder (továbbiakban VAE) megjelenése nem túl régi: [25] [26] pulikálták elő- ször 2014-ben. Bár mély mesterséges háló alapú autóenkóderek előtte is léteztek, mint generatív modell azonban rosszul teljesítettek. Később azonban a képgenerálás, és a megerősítéses tanulás [27] területén is előremutató eredmények születtek.
 
@@ -396,7 +395,7 @@ Mint az alábbi ábrán látjuk, minden jellemzőhöz tartozik egy valószínűs
 Célunk, hogy új képeket állítsunk elő az arcképekből álló tanító mintahalmaz alapján. Feltéve, hogy a bemeneti adataink normális eloszlást követnek, új képek létrehozásához mindössze annyit kell tennünk, hogy normális eloszlásból mintavételezünk egy látens változó vektort. Ezt megadjuk a dekódolónak, ami a vektor alapján generálni tud egy új képet.
 
 %TODO ezt kifejteni ha kell még content, ha nem akkor komment
-A VEA számos területen alkalmazott, ezek közül egy példa az úgynevezett ``deepfake'' előállítása, ami lényegében abból áll, hogy egy személy arcát alakítják át úgy, hogy egy másik személy vonásait utánozza. [REF]
+A VEA számos területen alkalmazott, ezek közül egy példa az úgynevezett ``deepfake'' előállítása, ami lényegében abból áll, hogy egy személy arcát alakítják át úgy, hogy egy másik személy vonásait utánozza \cite{westerlund2019emergence}. 
 
 % This novel technique allows generating so-called deepfakes, which actually morph a person’s face to mimic someone else’s features, although preserving the original facial expression.
 
