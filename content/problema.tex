@@ -27,7 +27,7 @@ Az utóbbi időkben széles körben elterjedt az arcfelismerő rendszerek alkalm
 
 Ahhoz, hogy az arcfelismerő rendszer egy személyt sikeresen azonosítani tudjon kamerafelvétel alapján, először a rendszernek sikeresen meg kell találja az emberi arcokat a képen belül. Az arcok észlelését egy képen arcdetektálásnak nevezzük. Miután sikerült lokalizálni az arcokat, azokat szükséges lehet igazítani képtranszformációk segítségével, hogy úgy tűnjön, mintha az arcokat szemből látnánk. A harmadik lépés, az arc képekből jellemzővektorok (későbbiekben: arclenyomatok) kinyerése, ami leírja az arc főbb vonásait, jellemzőit. Az arclenyomat vektorok összehasonlításával már képes a rendszer összevetni a kameraképen látható személy arcát az adatbázisban tárolt, ismert személyekkel. Ha van találat az adatbázisban, akkor sikeresen be lett azonosítva a személy. \cite{hassan2021face}
 
-\begin{figure}[h]
+\begin{figure}[ht]
 	\centering
 	\includegraphics[width=1\columnwidth]{figures/facerecognition.png}
 	\caption{Arcfelismerő rendszer folyamatábrája. \cite{hassan2021face}}

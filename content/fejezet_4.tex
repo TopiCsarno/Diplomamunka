@@ -1,15 +1,97 @@
 %----------------------------------------------------------------------------
-\section{Arclenyomatok adatvédelmi elemzése (10-12 oldal)}
+\section{Arclenyomatok adatvédelmi elemzése}
 \label{sec:4}
-%----------------------------------------------------------------------------
 
+%--------------------------------------------------------------------------------------------------
+\subsection{Támadó modellezése}  % 1 oldal
+% - Támadómodell bemutatás (copy ábra Gábortól, lényeget leír)
+% - Jelenlegi arcfelismerő rendszerek sebezhetősége, hogyan férhet hozzá
+% - Feltételezzük, hogy a támadó interneten elérhető datasetekhez hozzájut ami alapján betanít classifiert és ezt használva tud kinyerni adatot. Következő fejezetben erre mutatunk példát hogyan lehetséges
+
+A következőkben az arcfelismerő rendszerek sebezhetőségét fogom elemezni. Az arcfelismerő rendszerek általános működését a [REF] fejezetben korábban bemutattam. Az adatvédelmi elemzéshez szükséges definiálnom egy támadó modellt. Tegyük fel, hogy egy cégnél alkalmaznak arcfelismerő rendszert a dolgozók azonosítására. Az épület számos helyisége be le van fedve CCTV térfigyelő kamerákkal, amelyek egy központi arcfelismerő rendszernek továbbítják a felvételeket. Új dolgozó regisztrációja során az arcfelismerő rendszer néhány felvétel alapján kiszámolja a dolgozó arcát lebjobban leíró arclenyomatát, amit egy központi szerveren tárol. Miután a dolgozó arclenyomata szerepel az adatbázisban, a térfigyelő kamera felvételek alapján lehetséges őt azonosítani. Egy ilyen arcfelismerő rendszernek a főbb részei: 
+
+% TODO ide lehet szoftver példákat hozni ha kell content
+% magyar szavakat kéne használni
+\begin{enumerate}
+	\item Kamera rendszer: amely a nyers képkockákat továbbítja az adatfeldolgozó egységnek
+	\item Feature extractor: amely az egyes kékkockákon végzi a gyorsan lefuttatható arcdetektálást. Ha sikeresen talál emberi arcot az egyik kékkockán, arra elvégzi az arc geometriai transzformációját, majd az arcból kinyeri az arclenyomatot.
+	\item Adatbázis: Az ismert, címkézett arclenyomatok tárolására szolgál.
+	\item Matcher: A kinyert arclenyomatot összehasonlítja az adatbázisban tárolt dolgozók arclenyomataival, majd azokon valamilyen távolság (pl: Euklideszi távolság) metrika alapján megállapítja a legvalószínűbb találatot. Ha a legkisebb távolság egy bizonyos küszöbértéknél kisebb, akkor a dolgozót sikeresen azonosította, ellentkező esetben ismeretlen személynek nyilvánítja.
+\end{enumerate}
+
+Míg az ilyen arcfelismerő rendszer több módon is támadható, a dolgozatom során azzal az esettel foglalkozom, hogy a rosszindulatú fél valamilyen módon hozzáférést nyer az arclenyomat adathalmazhoz, ami lehet egy belső alkalmazott aki kiszivárogtatja az adatbázist, vagy akár egy külső támadó, például hacker aki sikeresen feltöri rendszert. Előfordulhat, hogy a támadó az adatbázisnak egy kisebb részéhez fér hozzá, de dolgozatom során a legerősebb támadót feltételezem, aki a teljes adatbázishoz hozzáfér, illetve feltételezem, hogy az arclenyomatok titkosítás nélkül vannak tárolva a szerveren.
+
+% TODO saját ábra?
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=1\columnwidth]{figures/attacker_model.png}
+	\caption{ideiglenes ábra}
+	\label{fig:attacker}
+\end{figure}
+
+A támadó modellezését a \ref{fig:attacker}. ábra mutatja be. Miután a támadó valamilyen módon hozzáférést szerzett a központi szerverhez, amin az arclenyomatok vannak tárolva, elképzelhető, hogy képes lesz az arclenyomatokból személyes adatokat kinyerni az adatalanyokról. Személyes adatnak minősül bármilyen adat, ha közvetlenül beazonosítható általa az érintett személy (közvetlen azonosítók), vagy ha közvetetten (kvázi-azonosítók) \cite{GDPR2018}. Személyes adat lehet például a személy demográfiai adatai, mint például a személy életkora, a neme, vagy a rassza. 
+
+Feltételezhetjük, hogy a támadó a személyes adatok kinyeréséhez egy saját fejlesztésű algoritmust használ, ami lehet például egy gépi tanulási modell is. Ha a támadó képes megfelelően nagy valószínűséggel, megbízható módon kinyerni a személyes adatokat, akkor a támadó feltételezheti, hogy a kinyert adatok valósak. A sikeresen kinyert adatokat majd saját célból fel tudja használni a támadó, például újraazonosításos támadáshoz. A személyes adatok kiszivárgásának adatvédelmi kockázatait a [REF]. fejezetben fejtem ki bővebben.
+
+A kérdés az, hogy milyen eljárással lehetséges egy arclenyomatból kinyerni az adatalan érzékeny információit? A munkám során erre a kérdésre kerestem választ. Feltételezésem az volt, hogy az interneten ingyenesen, publikusan elérhető emberi arcokról készült fotókból összeállítható egy nagy méretű adathalmaz, amihez rendelkezésre állnak a fotón látható valamennyi személy demográfiai adatai, például a pontos vagy becsült életkora, neme és rassza, vagy bármilyen adat ami fotó alapján ember által megadható, és később segíthet az illető azonosításában. Ha sikerül egy ilyen adathalmazt összeállítani, akkor az arcképek alapján az arcfelismerő rendszer működéséhez hasonlóan minden arcképről generálhatunk arclenyomatokat. Ezt követően rendelkezünk az arclenyomatokkal, és a hozzájuk tartozó címkékkel.
+
+Miután megvan az arclenyomat adathalmaz, az alapján képesek vagyunk betanítani egy gépi tanulási modellt, ami az arclenyomatok és a hozzájuk tartozó címkék alapján képes tanulni. A betanítás után a modell használható arra, hogy új, nem látott arclenyomat mintákra becslést adjon. Visszatérve a támadóhoz, ha a támadó rendelkezik egy előre betanított gépi tanulási modellel, azt felhasználhatjra arra, hogy a szerverről szerzett arclenyomat adatbázisból érzékeny adatokat nyerjen ki. 
+
+A támadó sikerességének feltétele az, hogy képes hozzáférni a szerveren tárolt arclenyomatokhoz, illetve az, hogy a gépi tanulási modellje milyen megbízhatósággal képes becslést hozni a személyes adatokra. A két feltétel közül a másodikkal foglalkozom a továbbiakban. Azt vizsgáltam, hogy modern tanuló algoritmusokkal milyen eredmény érhető el.
+
+%--------------------------------------------------------------------------------------------------
+\subsection{Adathalmazok}  % 3-4 oldal
+
+Első lépésként szükségem volt egy megfelelően felcímkézett arclenyomat adathalmazra. Ezt az adathalmazt használom fel arra, hogy az alapján tanítsak be gépi tanulási modelleket, amelyek majd képesek becslést adni személyes adatokra. Egy-egy modell csak egy személyes adatra tud becslést adni, ezért több modellre van szükség. Célom az volt, hogy személyes adatok közül az illető életkorát, nemét és rasszát becsüljem meg. Ehhez szükséges tanító mintakészlet, amiben az életkor, nem és rassz meg van címkézve. Elvárás volt még az is, az arclenyomat adathalmazban minden személynek saját azonosító címkéje legyen, illetve lehetőleg minél több arclenyomat tartozzon egy-egy személyhez. Erre azért van szükség, mert az arclenyomatokon vizsgáltam az identifikációs modell teljesítőképességét is. 
+
+Mivel a feladatból adódóan az adathalmazzal szemben támasztott elvárások eléggé specifikusak, ezért szükség volt saját adathalmaz létrehozására. Azért, hogy meggyorsítsam a munkámat, kiindulásnak kerestem olyan online elérhető, arcképeket tartalmazó adathalmazt, ami már előre fel van címkézve. Ha létezik egy megflelő arckép adathalmaz, akkor a képekből egyessével kinyerhetőek az arclenyomat vektorok. 
+
+Az arckép adathalmazzal szemben az elvárások a következők:
 \begin{itemize}
-	\item módszertan, támadómodell ~1 page?
-	\item adatgyűjtés -> vgg és imdb datasetek előállítása (3-4 oldal)
-	\item random forestek betanítása -> race, sex, age, +1 valami? (1 oldal)
-	\item betanítás utáni eredmények -> accuracy, ROC curve (1 oldal)
-	\item adatvédelmi elemzés -> milyen riskek vannak (munkacsoport szerint) pl: több info kiderülése 1 emberről probléma, adatszivárgás: le tudja szűkíteni, hogy ki lehet az, singling out, vagy lehet arcot rekonstruálni az embeddingből, újraazonosítás. (1-2 oldal)
+	\item Lehetőleg kutatási célra lettek létrehozva, az enyémhez hasonló feladatra. Ennek megfelelően az arcképek már előre vannak készítve a feldolgozáshoz (pl. arc kivágása a képből).
+	\item Az adathalmaznak megfelelően nagynak kell lennie ahhoz, hogy gépi tanulási modellt sikeresen be lehessen tanítani róla.
+	\item Egy emberről lehetőleg minél több kép legyen ahhoz, hogy a generált arclenyomatok alapján identifikáció jól működjön. Minél több képünk van egy illetőről, anál biztosabban lehet meghatározni az ember arcát legjobban leíró arclenyomatot.
+	\item A képek megfelelő demográfiai adatokkal vannak címkézve. Esetemben a szükséges címkék: az életkor, nem és a rassz.
 \end{itemize}
+
+asdfsfd
+
+
+% src: GG
+% támadót utánzom -> szükség van adathalmazra
+% követelmények megfogalmazása (lista)
+% arclenyomatot nem találni, viszont sok arckép adathalmaz van
+% néhány honorable mention ami majdnem jó volt, de mégse XD
+% két fő: vgg és imdb (milyen címkék)
+
+% src: github, kutatási jelentés
+% VGG - dataset jellemzői, origin
+% képek feldolgozása hogyan történt, (dlib bemutatása, kódrészlet)
+% képek szűrése?
+% elkészült dataset jellemzői -> distributions
+% balanszírozás hogy lett megvalósítva (kódrészlet?)
+% balanced verzió ábrák
+
+% src: github, kutatási jelentés
+% IMDB dataset jellemzői, origin
+% képek feldolgozása, használt könyvtárak, metadata feldolgozás, mr bean zoom
+% hibák, rossz adatok szűrése (kód lehet referencia miket szűrtem.)
+% elkészült dataset jellemzői, age distribution
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 % Adathalmazról: src: kutatlási jelentés + github (4-5 odlal)
 % - mire volt szükség, meglévő datasetek bemutatása
@@ -18,7 +100,47 @@
 % - kód részlet
 % - dataset bemutatása, jellemzése (src: github)
 
-% egyenlőre legyen meg a VGG, az IMDB nem biztos, h belekerül
+%--------------------------------------------------------------------------------------------------
+% \subsection{Modellek betanítása, eredmények}  % 1 oldal RFC, 1-2 oldl eredmények
+% - RFCről röviden, miért ezt választottam, 
+% - Tanítás módszeréről (használt paraméterek, modell jellemzők, age hogy lett kezelve, ID hogy lett kezelve) 
+% - Betanított modellek accuracy precision, recall, F1 score, Confusion matrix, ROC curve
+
+%--------------------------------------------------------------------------------------------------
+% \subsection{Adatvédelmi elemzés}  % (1-2 oldal)
+% - Adatvédelmi elemzés -> milyen riskek vannak (munkacsoport szerint) pl: több info kiderülése 1 emberről probléma, adatszivárgás: le tudja szűkíteni, hogy ki lehet az, singling out, vagy lehet arcot rekonstruálni az embeddingből, újraazonosítás.
+
+%--------------------------------------------------------------------------------------------------
+
+
+
+% -- PASTA --
+
+
+% \begin{figure}
+%      \centering
+%      \begin{subfigure}[b]{0.45\columnwidth}
+%          \centering
+%          \includegraphics[width=1\columnwidth]{figures/mrbean.png}
+%          \caption{Eredeti kép}
+%      \end{subfigure}
+%      \begin{subfigure}[b]{0.45\columnwidth}
+%          \centering
+%          \includegraphics[width=1\columnwidth]{figures/mrbean_crop.png}
+%          \caption{Megvágott kép}
+%      \end{subfigure}
+%         \caption{Three simple graphs}
+% \end{figure}
+
+
+% \begin{lstlisting}[language=python, caption=lista alatti szoveg, label=lst:Example]
+% def filter(df, cutoff=0.5):
+% 	encodings = df.iloc[:,4:].values  # Szem(*@\color{codegreen}é@*)lyhez tartoz(*@\color{codegreen}ó@*) arclenyomatok
+% 	centroid = np.mean(encodings, axis=0)  # S(*@\color{codegreen}ú@*)lypont sz(*@\color{codegreen}á@*)m(*@\color{codegreen}í@*)t(*@\color{codegreen}á@*)s
+% 	distance = np.linalg.norm(encodings - centroid, axis=1)  # Euklideszi t(*@\color{codegreen}á@*)vols(*@\color{codegreen}á@*)g
+% 	return df.index[distance > cutoff]
+% \end{lstlisting}
+
 
 %--------------------------------------------------------------------------------------------------
 % A kutatás során felhasznált adathalmaz viszonylag kis méretű, 2650 képet tartalmaz. Későbbiekben ahhoz,
@@ -102,7 +224,7 @@
 
 % GITHUB VGG RÉSZE
 
-% %--------------------------------------------------------------------------------------------------
+% ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 % Az adathalmaz előállítása
 % Metadata
 % Erről a weboldalról letölthetőek a képek és a hozzájuk tartozó információk
