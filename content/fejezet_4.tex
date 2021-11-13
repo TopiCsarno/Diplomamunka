@@ -54,57 +54,119 @@ Az arckép adathalmazzal szemben az elvárások a következők:
 	\item A képek megfelelő demográfiai adatokkal vannak címkézve. Esetemben a szükséges címkék: az életkor, nem és a rassz.
 \end{itemize}
 
-asdfsfd
+Nehéz olyan adathalmazt találni, amiben mindhárom számunkra fontos demográfiai adat szerepel. Több arckép adathalmaz jónak tűnt elsőre, de az elvárások közül nem felelt meg egynek. Néhány ilyen adathalmaz amivel foglalkoztam: Labled Faces in the Wild \cite{labledfacesinthewild2008}, Face Image Project \cite{faceimageproject2014}, CelebA \cite{celebA2015}. A FairFace \cite{fairface2021} egy viszonylag új adathalmaz, ami nagyon igéretesnek tűnt, mert mindhárom demográfiai adatot tartalmazza, és az egyes osztályok aránya kiegyensúlyozott, viszont nem tartalmaz identifikációs címkét.
+
+Végül nem sikerült olyan adathalmazt találnom ami minden kritériumnak megfelel, ezért két külön adathalmazt használtam fel. Az egyik a VGGFace2 \cite{vggface22018} amit rassz és nem becslésére használtam fel, a másik pedig az IMDB-WIKI dataset \cite{imdbwiki2018}, amit életkor becsléshez használtam fel. A két választott arckép adathalmazt szükség volt feldolgozni ahhoz, hogy azokból gépi tanulási modellt lehessen tanítani. A feldolgozás menetét mutatom be a következő részekben.
+
+\subsubsection*{VGGFace2 adathalmaz}
+
+Jelenleg az egyik legnagyobb publikusan elérhető, kutatási célra készült arckép adathalmaz a VGGFace2. Az adathalmaz 3,31 millió arcképet tartalmaz mindössze 9131 emberről, átlagosan 362,6 kép mindenkiről. A képeket a Google képkeresőjével gyűjtötték össze. Az adathalmaz képein sokféle ember szerepel, eltérő demográfiai adatokkal és eltérő szakmával (pl. vannak színészek, sportolók, politikusok). A képeken látható emberek többféle pózban láthatóak, sokféle megvilágításban. Az összegyűjtött képeket automatikusan és manuálisan is szűrték.
+
+A VGGFace2 alapból nem tartalmaz rassz címkéket, viszont a Salernói Egyetem MIVIA kutatócsoportja manuálisan felcímkézte az adathalmazt rassz címkékkel, és a munkájukat publikusan elérhetővé tették VMER névvel \cite{vmer2020}. A VMER-rel kiegészítve a VGGFace2 címkéit, így már van rassz, nem és identifikációs címke is az összes mintához.
+
+Az arcképeket egyesével dolgozza fel egy script, ami az arcképekből kinyeri az arclenyomatokat. Ehhez a face\_recognition Python könyvtárat \cite{face_recognition} használtam fel, ami a [REF sec:problema]. fejezetben taglalt módon találja meg, és alakítja át a képen látható arcokat arclenyomattá. Az arclenyomatok kinyeréséhez a dlib-et \cite{dlib2009} használja, így a kapott arclenyomatok 128 dimenziós lebegőpontos vektorok lesznek. Az adathalmazban előfordulnak olyan képek, ahol több ember arca is látható, (például a háttérben elsétál valaki). Ez problémás, mivel ilyenkor nem egyértelmű, hogy a képen látható melyik archoz tartozik az annotáció. E miatt a scriptem csak olyan képekkel foglalkozott, ahol pontosan egy arcot sikerült azonosítani. A script-ből egy függvény látható a \ref{lst:get_encoding}. kódrészleten.
+
+\begin{lstlisting}[language=python, caption={Arclenyomat vektorok kinyerése.}, label=lst:get_encoding]
+def get_encoding(filepath):
+  # kep beolvasasa
+  image = face_recognition.load_image_file(filepath) 
+  # arcok detektalasa 
+  face_locations = face_recognition.face_locations(image,
+    number_of_times_to_upsample=1, model="cnn")
+  if (len(face_locations) == 1): 
+    # arclenyomat vektor
+    return np.array(face_recognition.face_encodings(image,face_locations))[1]
+  return None
+\end{lstlisting}
 
 
-% src: GG
-% támadót utánzom -> szükség van adathalmazra
-% követelmények megfogalmazása (lista)
-% arclenyomatot nem találni, viszont sok arckép adathalmaz van
-% néhány honorable mention ami majdnem jó volt, de mégse XD
-% két fő: vgg és imdb (milyen címkék)
+Mivel 3,3 millió arcképet kellett feldolgozni, a Python scriptet Google Colab-en futtattam, aminek az az előnye, hogy ingyenesen lehet használni korszerű GPU-kat, illetve az adathalmaz feldarabolásával párhuzamosan több session-t is lehet futtatni, jelentősen felgyorsítja a képek feldolgozását.
 
-% src: github, kutatási jelentés
-% VGG - dataset jellemzői, origin
-% képek feldolgozása hogyan történt, (dlib bemutatása, kódrészlet)
-% képek szűrése?
-% elkészült dataset jellemzői -> distributions
-% balanszírozás hogy lett megvalósítva (kódrészlet?)
-% balanced verzió ábrák
+A következő lépés az adathalmaz tisztisása volt, azaz kiszűrni azokat a képeket, amelyek valamilyen okból rossz minőségűek (például távoli fotó, rossz fényviszony vagy fura szögből készült a kép), vagy az illető a többi képhez képest nagyon eltérően néz ki. Az arclenyomatok szűréséhez minden személyhez kiszámítottam az átlagos arclenyomatot (centroid), és a centroidtól vett távolság alapján a túl nagy távolságra lévő arclenyomatokat szűrtem az adathalmazból. 
 
-% src: github, kutatási jelentés
-% IMDB dataset jellemzői, origin
-% képek feldolgozása, használt könyvtárak, metadata feldolgozás, mr bean zoom
-% hibák, rossz adatok szűrése (kód lehet referencia miket szűrtem.)
-% elkészült dataset jellemzői, age distribution
+A feldolgozás és szűrés után kapott adathalmaz közel 3 millió arclenyomatot tartalmaz. Minden arclenyomathoz tartozik egy ID címke ami azonosítja az képen látható személyt. Egy ID-hoz legalább 50 arclenyomat tartozik. E mellett van még nem címke (férfi, nő), és rassz címke (African American, East Asian, Caucasian Latin, Asian Indian). Ekkor probléma volt az, hogy az egyes osztályokhoz sokkal több minta tartozott mint más osztályokhoz. A leggyakoribb a fehér férfiak aránya volt, míg a legritkább az afroamerikai nők. Az osztályok arányát a \ref{fig:vgg_imba}. ábra mutatja be.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=1\columnwidth]{figures/VGG_imba.png}
+	\caption{Osztályok aránya az arclenyomat adathalmazban.}
+	\label{fig:vgg_imba}
+\end{figure}
+
+Az osztályok eloszlásának aránytalansága problémát jelent az osztályozó modellek tanításakor, ezért szükséges volt az adathalmazt kiegyensúlyozni. Az adathalmaz kiegyensúlyozása minták eltávolításával érhető el. Legkevesebb kép az afroamerikai nőkről van az adathalmazban, ezért ehhez mérten szűkítettem a többi csoportot. Az embeddingek kivételénél fontos volt, hogy továbbra is legalább 50 kép maradjon minden személyről, ezért nem véletlenszerűen vettem ki a képeket, hanem ID-k alapján csoportosítva. Az egyes demográfiai csoportoknál kilistáztam az oda tartozó ID-kat, és egyes ID-khoz tartozó képek számát. Az ID-kat képszám szerint csökkenő sorrendben távolítottam el, amíg a csoport meg nem közelítette a szükséges méretet. Ezzel a módszerrel sikerült elérni, hogy minden rassz-nem párhoz ugyanannyi ember tartozott. A kiegyensúlyozott után az osztályok eloszlása a \ref{fig:vgg_ba}. ábrán látható.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=1\columnwidth]{figures/VGG_balanced.png}
+	\caption{Osztályok aránya az kiegyensúlyozás után.}
+	\label{fig:vgg_ba}
+\end{figure}
+
+Az eredeti 3,3 millió képből végül 540000 arclenyomat készült, ami továbbra is nagy adathalmaznak tekinthető. Ez elegendően nagy ahhoz, hogy ez alapján osztályozó modelleket lehessen rajtuk betanítani.
+
+\subsubsection*{IMDB-WIKI adathalmaz}
+
+Mivel a VGGFace2 adathalmaz nem tartalmaz életkor címkét, ezért tovább folytattam a keresést. Választásom az IMDB-WIKI \cite{imdbwiki2018} adathalmazra esett. Ez az egyik legnagyobb, nyilvánosan elérhető arckép adathalmaz, ami tartalmaz azonosító címkét, nemet és életkort is. Az adathalmaz két részből áll: IMDB filmekről és filmszínészekből álló adatbázisból kinyert fotókból, illetve a Wikipédiáról szerzett fotókból. Sajnos a Wikipédiáról szerzett képekhez nem tartozik azonosító címke, így csak az IMDB-ről szerzett fotókat használtam fel.
+
+Az IMDB-WIKI adathalmaz képekből, és hozzájuk tartozó címkékből áll. A címkék egy metadata fileban találhatóak, ami többek között tartalmazza a képen látható személy nevét, nemét, a születési dátumát, illetve azt, hogy mikor készült a fotó. A életkort a képen látható személy születési dátumából, és a kép keletkezésének dátuma alapján lehet kiszámolni. A képek jelentős része csoportkép, azaz több arc is látható rajtuk. A képek közül csak azokat használtam fel, ahol pontosan egy arcot lehetett detektálni. Továbbá, kiválasztottam azokat az azonosítókat, amihez legalább 30 fotó tartozik.
+
+A weboldalról letölthetőek az eredeti, teljes méretű képek, illetve a már megvágott csak arcokat tartalmazó képek is. A képeken az arcok középre vannak rendezve 40\%-os ráhagyással. A képek feldolgozásánál ezért levágtam ezt a 40\%-ot, így gyorsabb a feldolgozás és jelentősen több képen sikerült arcot detektálni. Az arcokhoz tartozó képeket a VGGFace2-nél bemutatott módszerrel alakítottam át arclenyomat vektorokká.
+
+\begin{figure}[ht]
+     \centering
+     \begin{subfigure}[b]{0.45\columnwidth}
+         \centering
+         \includegraphics[width=1\columnwidth]{figures/mrbean.png}
+     \end{subfigure}
+     \begin{subfigure}[b]{0.45\columnwidth}
+         \centering
+         \includegraphics[width=1\columnwidth]{figures/mrbean_crop.png}
+     \end{subfigure}
+        \caption{Az eredeti és a megvágott kép}
+\end{figure}
 
 
+Az adathalmaz képeit vizsgálva azt tapasztaltam, hogy néhány fotón nem a címkének megfelelő személy szerepelt. A hibásan címkézett képek kiszűréséhez a már feldolgozott arclenyomat vektorokat használtam fel. Egy személyhez tartozó arclenyomat vektorok alapján kiszámítottam a vektorok súlypontját (centroidját), és ehhez mért Euklideszi távolságok alapján szűrtem ki a kiugró értékeket. Azt a határt, ami alatt elfogadta az arclenyomat vektor értékét 0,5-re állítottam be, ami viszonylag szigorúnak számít. Ezt az eljárást szemlélteti a \ref{lst:cent}. kódrészlet.
+
+% TODO itt kicsit gebasz van a page break miatt
+% \noindent
+% \begin{minipage}{\columnwidth}
+\begin{lstlisting}[language=python, caption={Arclenyomatok szűrése távolság alapján.}, label=lst:cent]
+def filter(df, cutoff=0.5):
+	encodings = df.iloc[:,4:].values  # egy szem(*@\color{codegreen}é@*)lyhez tartoz(*@\color{codegreen}ó@*) arclenyomatok
+	centroid = np.mean(encodings, axis=0)  # s(*@\color{codegreen}ú@*)lypont sz(*@\color{codegreen}á@*)m(*@\color{codegreen}í@*)t(*@\color{codegreen}á@*)s
+	distance = np.linalg.norm(encodings - centroid, axis=1)  # euklideszi t(*@\color{codegreen}á@*)vols(*@\color{codegreen}á@*)g
+	return df.index[distance > cutoff]
+\end{lstlisting}
+% \end{minipage}
+
+Feldolgozás után közel 90000 arclenyomat vektort kaptunk eredményül. Az adathalmazon belül a nemek aránya közel azonos, viszont az életkor eloszlása már kevésbé egyenletes (látsd: \ref{fig:agedist}. ábra). Mivel a képek az IMDB weboldalról lettek összegyűjtve, ezért főleg színészekről, filmrendezőkről vannak képek, akik tipikusan a 20-40-es életkor tartományba esnek. E miatt kiskorúakról és idős emberekről viszonylag kevés kép van az adathalmazban.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.7\columnwidth]{figures/IMDB_age_dist.png}
+	\caption{IMDB adathalmazban az életkor eloszlása.}
+	\label{fig:agedist}
+\end{figure}
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-% Adathalmazról: src: kutatlási jelentés + github (4-5 odlal)
-% - mire volt szükség, meglévő datasetek bemutatása
-% - kitűzött követelmények (címkék kellettek, egy emberről több kép)
-% - hogyan lettek képekből arclenyomatok, mit használtam, miért pont dlib (src: kenéz)
-% - kód részlet
-% - dataset bemutatása, jellemzése (src: github)
 
 %--------------------------------------------------------------------------------------------------
-% \subsection{Modellek betanítása, eredmények}  % 1 oldal RFC, 1-2 oldl eredmények
+\subsection{Modellek betanítása, eredmények}  % 1 oldal RFC, 1-2 oldl eredmények
 % - RFCről röviden, miért ezt választottam, 
 % - Tanítás módszeréről (használt paraméterek, modell jellemzők, age hogy lett kezelve, ID hogy lett kezelve) 
 % - Betanított modellek accuracy precision, recall, F1 score, Confusion matrix, ROC curve
+
+asdf
+
+
+
+
+
+
+
+
+
 
 %--------------------------------------------------------------------------------------------------
 % \subsection{Adatvédelmi elemzés}  % (1-2 oldal)
@@ -117,20 +179,6 @@ asdfsfd
 % -- PASTA --
 
 
-% \begin{figure}
-%      \centering
-%      \begin{subfigure}[b]{0.45\columnwidth}
-%          \centering
-%          \includegraphics[width=1\columnwidth]{figures/mrbean.png}
-%          \caption{Eredeti kép}
-%      \end{subfigure}
-%      \begin{subfigure}[b]{0.45\columnwidth}
-%          \centering
-%          \includegraphics[width=1\columnwidth]{figures/mrbean_crop.png}
-%          \caption{Megvágott kép}
-%      \end{subfigure}
-%         \caption{Three simple graphs}
-% \end{figure}
 
 
 % \begin{lstlisting}[language=python, caption=lista alatti szoveg, label=lst:Example]
