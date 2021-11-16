@@ -1,4 +1,3 @@
-% TODO Change language to en_GB (recommended) or en_US for English documents
 \documentclass[12pt,a4paper,oneside]{article}             % Single-side
 %\documentclass[11pt,a4paper,twoside,openright]{report}  % Duplex
 
@@ -27,7 +26,7 @@
 %--------------------------------------------------------------------------------------
 \begin{document}
 
-\pagenumbering{roman}
+\pagenumbering{gobble}
 \selectthesislanguage
 
 % Feladatkiírás
@@ -40,40 +39,42 @@
 
 % Table of Contents
 %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-% \tableofcontents\vfill
+\tableofcontents\vfill
 
 % Declaration and Abstract
 %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-% \include{include/declaration} %TODO Hallgatói nyilatkozat
+% \include{include/declaration}
 % \include{content/abstract}
 
+% Page reset before main content
+\clearpage
+\newcounter{romanPage}
+\setcounter{romanPage}{\value{page}}
+\stepcounter{romanPage}
+\pagenumbering{arabic}
 
 % The main part of the thesis
 %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-\pagenumbering{arabic}
-% \include{content/introduction}
-% \include{content/irodalom}
-% \include{content/problema}
-% \include{content/fejezet_4}
-% \include{content/fejezet_5}
+\include{content/introduction}
+\include{content/irodalom}
+\include{content/problema}
+\include{content/fejezet_4}
+\include{content/fejezet_5}
 \include{content/fejezet_6}
 
 % Acknowledgements
 %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 % \include{content/acknowledgement}
 
-
 % List of Figures, Tables
 %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 %\listoffigures\addcontentsline{toc}{chapter}{\listfigurename}
 %\listoftables\addcontentsline{toc}{chapter}{\listtablename}
 
-
 % Bibliography
 %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-% \bibliography{bib/mybib}
-% \addcontentsline{toc}{section}{\bibname}
-
+\addcontentsline{toc}{section}{\bibname}
+\bibliography{bib/mybib}
 
 % Appendix
 %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
