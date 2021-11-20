@@ -15,9 +15,9 @@ A gépi tanulási modellek csoportosíthatók a feladat típusa alapján: megkü
 % 	\caption{Gépi tanulás csoportosítása}
 % \end{figure}
 
-Felügyelt tanulásról akkor beszélünk, amikor a a gépi tanulási modellt címkézett mintakészleten tanítjuk be, azaz ismerjük az egyes tanítómintákhoz tartozó elvárt kimeneteket. A felügyelt tanulás célja egy olyan funkció elsajátítása, amely az adatok mintázata és a címkék alapján a legjobban közelíti a bemenet és kimenet közötti kapcsolatot. A betanítást követőn a modell képes általánosítani, azaz a modell által tanítás során nem látott, új mintákra is képes helyes becslést adni. A felügyelt tanulásnak két alkategóriája van, a regresszió és az osztályozás (vagy más névvel klasszifikáció). Osztályozásról akkor beszélünk, ha a cél a bemeneti minták egy vagy több osztályba való besorolása. Ha az háló a bemenetet két különböző osztályba sorolja, akkor ezt bináris osztályozásnak nevezzük, míg a több mint két osztály közötti választást többosztályos klasszifikációnak nevezzük. Ezzel szemben a regressziós hálókat folytonos értékek előrejelzésére használják. Ilyen folytonos adat például egy ingatlan árának becslése. 
+Felügyelt tanulásról akkor beszélünk, amikor a a gépi tanulási modellt címkézett mintakészleten tanítjuk be, azaz ismerjük az egyes tanítómintákhoz tartozó elvárt kimeneteket. A felügyelt tanulás célja egy olyan funkció elsajátítása, amely az adatok mintázata és a címkék alapján a legjobban közelíti a bemenet és kimenet közötti kapcsolatot. A betanítást követőn a modell képes általánosítani, azaz a modell által tanítás során nem látott, új mintákra is képes helyes becslést adni. A felügyelt tanulásnak két alkategóriája van, a regresszió és az osztályozás (vagy más néven klasszifikáció). Osztályozásról akkor beszélünk, ha a cél a bemeneti minták egy vagy több osztályba való besorolása. Ha a háló a bemenetet két különböző osztályba sorolja, akkor ezt bináris osztályozásnak nevezzük, míg a több mint két osztály közötti választást többosztályos osztályozásnak nevezzük. Ezzel szemben a regressziós hálókat folytonos értékek előrejelzésére használják. Ilyen folytonos adat például egy ingatlan árának becslése. 
 
-Felügyelet nélküli tanulás esetén a mintakészlethez nincsenek címkéink, nem ismert az egyes mintákhoz tartozó elvárt kimenet. Ekkor a modell célja az tanító adathalmaz belső mintázatainak, összefüggéseinek megtanulása. A tanítás folyamata itt a belső mintázatok meghatározását jelenti, ami általában számos iteráció után alakul ki. Felügyelet nélküli tanulást alkalmaznak többek között klaszterezési feladatok megoldására, dimenziócsökkentésre, asszociációs feladatokra, anomália detektálásra, illetve generatív modellekhez is \cite{ghahramani2003unsupervised}.
+Felügyelet nélküli tanulás esetén a mintakészlethez nincsenek címkéink, nem ismert az egyes mintákhoz tartozó elvárt kimenet. Ekkor a modell célja a tanító adathalmaz belső mintázatainak, összefüggéseinek megtanulása, ami tipikus számos iteráció után alakul ki. Felügyelet nélküli tanulást alkalmaznak többek között klaszterezési feladatok megoldására, dimenziócsökkentésre, asszociációs feladatokra, anomália detektálásra, illetve generatív modellekhez is \cite{ghahramani2003unsupervised}.
 
 % In Supervised Learning, we train the machine using data that is well “labeled”. It means the data is already tagged with the correct answer. A supervised learning algorithm learns from labeled training data and predicts outcomes for unforeseen data. There are two subcategories of supervised learning, Regression and Classification. Classification means to group the output into a class. If the algorithm tries to label input into two distinct classes, it is called binary classification. Selecting between more than two classes is referred to as multiclass classification. On the other hand, Regression Algorithms are used to predict continuous values such as price, salary, and age.
 
@@ -53,7 +53,7 @@ A generatív modelleknek számos érdekes felhasználási területe van, ezek k�
 \begin{itemize} 
 	\item Fotorealisztikus emberi arcképek generálására képes \cite{stylegan3}.
 	\item Egy képet leíró szöveg alapján képes képet készíteni \cite{reed2016generative}.
-	\item Az adathalmazban ritkán előforduló adatok generálását tudja, ami kiegyensúlyozhatja az adatot.
+	\item Az adathalmazban ritkán előforduló adatok generálását tudja, ami kiegyensúlyozhatja az adatot \cite{sampath2021survey}.
 	\item Realisztikusan képes utánozni az emberi hangot \cite{jia2018transfer}.
 \end{itemize}
 
@@ -167,6 +167,7 @@ A matematikában a Markov-lánc egy olyan diszkrét sztochasztikus folyamatot je
 
 A grafikus valószínűségi modell egy grafikus ábrázolás, amivel véletlen változók közötti feltételes valószínűséget lehet kifejezni. A grafikus modellnek két fő komponense van: csúcsok és élek. A csúcsok a véletlen változó állapotát jelzik, míg az élek az átalakulás irányát. Az ilyen gráfoknak két fő típusa van: irányított és irányítatlan. A \ref{fig:graph}. ábrán látható példán egy csecsemő táplálkozási szokásainak Markov folyamatának irányítatlan grafikus modelljét láthatjuk. A baba következő étkezésének kiválasztása kizárólag attól függ, hogy mit eszik most, és nem attól, amit korábban evett.
 
+% TODO ide lehetne egy jobb ábrát, ami jobban passzol ide (gábor feedback nyilazás kell?)
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=0.7\columnwidth]{figures/graph_example.png}
@@ -182,7 +183,7 @@ A grafikus valószínűségi modell egy grafikus ábrázolás, amivel véletlen 
 
 %-------
 
-Egy Markov tulajdonsággal rendelkező irányítatlan gráf által leírt valószínűségi változók halmazát Markov hálózatnak (Markov Random Field az angol szakirodalomban). A Boltzman gépek is a MRF-ek közé tartozik.
+Egy Markov tulajdonsággal rendelkező irányítatlan gráf által leírt valószínűségi változók halmazát Markov hálózatnak hívjuk (Markov Random Field az angol szakirodalomban). A Boltzman gépek is a MRF-ek közé tartoznak.
 
 A Boltzman gép egy probabilisztikus generatív irányítatlan gráfmodell, amely kielégíti a Markov tulajdonságot. A BM-ek megtanulják a tanító minták eloszlását, majd abból új mintákat tudnak generálni. A BM rendelkezik bemeneti réteggel (látható réteggel) és egy vagy több rejtett réteggel. Kimeneti rétege nincs. A \ref{fig:bm}. ábrán láthatunk egy általános, több rejtett réteget tartalmazó Boltzman gépet.
 
@@ -198,8 +199,8 @@ A hálózat neuronjai megtanulnak sztochasztikus döntéseket hozni akkor, hogy 
 
 \begin{figure}[ht]
 	\centering
-	\includegraphics[width=0.80\columnwidth]{figures/BM_vc_RBM.png}
-	\caption{A Boltzman gép egy kétirányú gráfon alapuló irányítatlan grafikus modell, aminek egyik részén a látható elemek vannak (visible), a másik részén a rejtett elemek (hidden). (forrás: \cite{fig:BM_vs_RBM})}
+	\includegraphics[width=1\columnwidth]{figures/BM_vs_RBM.png}
+	\caption{A Boltzman gép egy kétirányú gráfon alapuló irányítatlan grafikus modell, aminek egyik részén a látható elemek vannak, a másik részén a rejtett elemek. (forrás: \cite{fig:BM_vs_RBM} alapján saját)}
 	\label{fig:bm}
 \end{figure}
 
@@ -224,7 +225,10 @@ A hálózat neuronjai megtanulnak sztochasztikus döntéseket hozni akkor, hogy 
 %----------------------------------------------------------------------------
 \subsubsection{RBM alkalmazásai}
 
-Az mély tanulás első napjaiban az RBM-eknek különféle feladatoknál alkalmazták, mint például dimenziócsökkentéshez, vagy ajánlórendszerekhez vagy természetes nyelv feldolgozásra. Néhány alkalmazási példa RBM-re:
+A mély tanulás első napjaiban az RBM-eknek különféle feladatoknál alkalmazták, mint például dimenziócsökkentéshez, vagy ajánlórendszerekhez vagy természetes nyelv feldolgozásra. 
+
+\noindent
+Néhány alkalmazási példa RBM-re:
 \begin{itemize}
 	\item Mintázat felismerés: Az RBM jellemzők kinyerésére (feature extraction) alkalmas mintázatfelismerési problémák esetén, például részvényárfolyam becslésnél. \cite{cai2012feature}.
 	\item Ajánlórendszerek: Az RBM-eket széles közben használják olyan feladatokra, ahol megjósolják, hogy mit érdemes ajánlani a felhasználónak ami számára hasznos, érdekes lenne. Példa: filmajánlás, zeneajánló \cite{liu2014content}.
@@ -381,12 +385,12 @@ A VAE működését könnyebb egy példán keresztül bemutatni. Tegyük fel, ho
 
 % Let us understand how we are generating new data. Let’s say we have the image of a celebrity face from which our encoder model has to recognize important features mentioned below. 
 
-Mint az alábbi ábrán látjuk, minden jellemzőhöz tartozik egy valószínűségi eloszlás. Miben különböznek az arcok? Megfogalmazhatunk pár ilyen jellemzőt, mint a bőrszín, haj színe, szemek távolsága, stb. Ezen jellemzőkből álló vektor leírhat egy emberi arcot. Eltérő arcoknál a jellemzők értékei mások lesznek, de jellemzők listája ugyanaz marad. Az autoenkóderek nem feltétlenül ilyen, ember által könnyen értelmezhető jellemzőket nyer ki az arcokból, hanem azok ennél a példánál absztraktabbak.
+Mint az alábbi ábrán látjuk, minden jellemzőhöz tartozik egy valószínűségi eloszlás. Miben különböznek az arcok? Megfogalmazhatunk pár ilyen jellemzőt, mint a bőrszín, haj színe, szemek távolsága, stb. Ezen jellemzőkből álló vektor leírhat egy emberi arcot. Eltérő arcoknál a jellemzők értékei mások lesznek, de jellemzők listája ugyanaz marad. Az autoenkóderek nem feltétlenül ilyen, ember által könnyen értelmezhető jellemzőket nyernek ki az arcokból, hanem azok ennél a példánál absztraktabbak.
 
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=1\columnwidth]{figures/autoenc_latent.png}
-	\caption{Látens változók kinyerése a bemeneti arcképből.}
+	\caption{Látens változók kinyerése a bemeneti arcképből. (forrás: \cite{vae_latent})}
 	\label{fig:vae_face}
 \end{figure}
 
@@ -449,7 +453,7 @@ A sziámi hálóknak elegendő kevesebb tanító minta, mint a tipikus mély neu
 
 A sziámi hálók \textbf{előnyei}:
 \begin{itemize}
-	\item Ellenállóbb a tanító adat kiegyensúlyozatlanságára: A One-shot learning segítségével, osztályonként néhány kép is elegendő ahhoz, hogy a sziámi hálózatok felismerjék ezeket a képeket a jövőben.
+	\item Ellenállóbb a tanító adat kiegyensúlyozatlanságára: A One-shot learning segítségével, osztályonként egy, vagy néhány kép is elegendő ahhoz, hogy a sziámi hálózatok megfelelően rátanuljanak az adatokra, majd felismerjék ezeket a képeket a jövőben.
 	\item A sziámi hálók embeddingeket tanulnak meg, a hasonló osztályokat/fogalmakat a látens térben közelebb helyezik egymáshoz, így szemantikai hasonlóságot képesek megtanulni.
 \end{itemize}
 
@@ -483,8 +487,8 @@ Ahol $\mathbf{p} = (p_1, p_2, \dots, p_n)$ és $\mathbf{q} = (q_1, q_2, \dots, q
 
 \begin{figure}[ht]
 	\centering
-	\includegraphics[width=0.65\columnwidth]{figures/euklidesz.png}
-	\caption{Két pont euklideszi távolsága 2D esetben}
+	\includegraphics[width=0.65\columnwidth]{figures/euclidean_distance_2d.png}
+	\caption{Két pont euklideszi távolsága 2D esetben (forrás: \cite{euclidean})}
 	\label{fig:eukl}
 \end{figure}
 
@@ -517,7 +521,7 @@ Kellő mennyiségű tanító kép és megfelelően választott kép hármasok ha
 
 % When using contrastive loss we were only able to differentiate between similar % and different images but when we use triplet loss we can also find out which % image is more similar when compared with other images. In other words, the % network learns ranking when trained using triplet loss.
 
-A sziámi hálók tanítása során gyakran alkalmazzák még a konsztratív veszteségfüggvény is. Ez egy távolság alapú veszteségfüggvény, nem a becsült kimenet és az elvárt kimenet különbségéből származtatott. A konsztratív veszteségfüggvényt főleg embeddingek tanulására használják, azzal a céllal, hogy két hasonló adatpontból származtatott embedding távolsága kicsi legyen, eltérő adatokból származtatott embeddingek távolsága pedig nagy legyen. 
+A sziámi hálók tanítása során gyakran alkalmazzák még a konsztratív veszteségfüggvényt is. Ez egy távolság alapú veszteségfüggvény, nem a becsült kimenet és az elvárt kimenet különbségéből származtatott. A konsztratív veszteségfüggvényt főleg embeddingek tanulására használják, azzal a céllal, hogy két hasonló adatpontból származtatott embedding távolsága kicsi legyen, eltérő adatokból származtatott embeddingek távolsága pedig nagy legyen. 
 
 % TODO ezt double check h helyes-e
 \[ \mathcal{L}(A,B) = y \lVert f(A) - f(B)\rVert_2^2 + (1-y) max\left(0,m - \lVert f(A) - f(B) \rVert_2^2 \right) \]
