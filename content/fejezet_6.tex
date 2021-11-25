@@ -128,26 +128,82 @@ Később az adversarial attack jellegű algoritmus fejlesztésével foglalkoztam
 
 E mellett meg kell még vizsgálnom, hogy az arclenyomat vektor módosítása során mennyire romlik az arclenyomat felhasználhatósága egyéb célokra, például identifikációra? Sikerül-e reprodukálni az eredményeket más adathalmazokon betanított modelleken? További irány lehet más területeken sikeresen alkalmazott adversarial attack módszerek kipróbálása véletlen erdő modellre, és az eredmények összevetése.
 
-\subsection{Titkosítási módszerek}
+\subsection{Kriptográfiai módszerek}
 
 % 4-5 oldal
 % \begin{itemize}
-% 	\item titkosítási módszerek előnye
-% 	\item lsh
-% 	\item HE 
-% 	\item kriptográfiai hash függvények
-% 	\item random projekció
+% 	\item cancelable biometrics
+% 	\item motiváció, titkosítási módszerek előnyei (0.5 - 1 oldal)
+% 	\item klasszikus hashelés, LSH, random projekció (1 - 1,5 oldal)
+% 	\item klasszikus titkosítási, homomorfikus, hogy képzelhető el arcfelismerésnél  (1-1,5 oldal)
 % \end{itemize}
 
-% javaslat: titkosítás, lsh, random projekció %(source: MNB arcfelismerés)
+A korábban bemutatott módszerek célja az volt, hogy a [REF]. fejezetben bemutatott támadót feltételezve, egy arcfelismeréshez használt központi arclenyomat adathalmaz feltörése esetén az arclenyomatokból ne lehessen érzékeny adatokat kinyerni. Ennek érdekében olyan módszereket vizsgáltam, amelyek az arclenyomatok kis módosításával meggátolná a személyes adatok szivárgását. Ebben a fejezetben egy másik megközelítést, olyan titkosítási módszereker mutatok be, amelyek alkalmazhatóak az arcfelismerés területén.
+
+Egy arclenyomat adathalmaz feltörése azért kritikus biztonsági szempontból, mert az ember arcáról készült arclenyomatok nem változnak idővel. Míg felhasználói jelszavak kiszivárgása esetén van lehetőség a jelszó módosítására, arcfelismerő rendszerek esetén nincs lehetőség arra, hogy valaki megváltoztassa az arclenyomatát. E mellett kockázatot jelen az is, hogy ugyanaz a biometrikus azonosítót több hitelesítési rendszerben is használhatnak. Ha az egyik alkalmazás kiszivárogtatja a biometrikus azonosítót, az összes többi rendszert veszélyezteti, ami ugyanazt a biometrikus adatot használja.
+
+A titkosítási módszerek lényege az, hogy az arclenyomatokat nem eredeti formájukban tároljuk, hanem titkosított formában. A biometrikus adatokat valamilyen módszerrel áttranszformálják, majd transzformált állapotban tárolják. A transzformáció lehet invertálható, vagy nem invertálható (azaz végleges). A titkosítás módjára léteznek biometrikus sablonvédelmi módszerek \cite{patel2015cancelable}, amelyeket biometrikus adatok (pl. újlenyomat, arclenyomat) tárolására fejlesztettek ki. Ezeket mutatom be részletesebben a továbbiakban.
+
+% visszaalakítás összehasonlításhoz
+
+% kiszivárgás nem jelent problémát mert újat lehet generálni
+
+\subsubsection{Hashelési módszerek}
+
+% ezt ki lehet egészíteni azzal, hogy különböző cégek különböző hash fv-t használhatnak
+Az arclenyomatok titkosításához egy egyszerű és bevállt módszer lenne a szabványos titkosítási technikák, mint például a hash függvények alkalmazása. A hash függvények a biometrikus adatok védelmére lehet használni, mivel hesselés során az adat végleges átalakításon megy keresztül. A hash függvényeket szinte lehetetlen invertálni, így ha a hesselt arclenyomatok kiszivárognak, azokból az eredeti arclenyomatokat nem lehet visszanyerni. E mellet előnye még a módszernek az, hogy különböző applikációk eltérő hash függvényt használnának, így ha az egyik applikáció adatbázisát feltörik, az nem jelent veszélyt a többi applikációra.
+
+Egy probléma van a klasszikus hesselési eljárásokkal, hogy a hash függvény kimenete már kicsiben eltérő bemenetre is teljesen eltérő lesz. Ez azért probléma, mert a legtöbb biometrikus adat esetén, beleértve az arclenyomatokat is, a környezeti hatások befolyásolhatják az arclenyomatok pontos értékeit. Például egy személyről eltérő fényviszonyokban, vagy más szögekből készült arcképekből származtatott arclenyomatok kis mértékben eltérnek egymástól. Az egymáshoz közeli arclenyomatok hesselés során nagyban különbölő kimenetet kapnak, és emiatt nem alkalmasak összehasonlításra \cite{patel2015cancelable}. 
+
+Ez a probléma megoldható, ha egy olyan hash függvényt használunk, ami a közeli pontoknak azonos kimenetet képez. Az ilyen módszereket lokalitás érzékeny hash függvényeknek hívjuk (angol szakirodalomban locality sensitive hashing, röviden LSH) amelyeket használnak például képek hasonlóságának mérésére \cite{jing2008visualrank}. A lokalitás érzékeny hash függvények létezését a Johnson-Lindenstrauss lemma mondja ki, mi szerint több magas dimenziójú térbeli pont leképezhető alacsonyabb dimenziójú térbe oly módon, hogy bármely két pont közötti távolság közel azonos marad  \cite{johnson1984extensions}. Az LSH függvények segítségével adatpontok csoportosíthatóak, hiszen a hasonló bemeneteket nagy valószínűséggel azonos csoportba sorolja az algoritmus. A \ref{fig:lsh}. ábrán látható a különbség a klasszikus hashelés és az LSH között.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=1\columnwidth]{figures/lsh.png}
+	\caption{Bal oldalon a klasszikus hesselés látható, jobb oldalon az LSH.}
+	\label{fig:lsh}
+\end{figure}
+
+Az LSH módszerek már alkalmasak lehetnek arcfelismerő rendszerek esetén az arclenyomatok biztonságos tárolására. Az arcfelismerő rendszer tárolja a hash függvényt, illetve a személyek arclenyomatait hesselt formában. Hitelesítés során az ismeretlen személy arcképéből az arcfelismerő rendszer arclenyomatot képez, amelyet a rendszerben tárolt LSH függvénnyel hesselik, majd összevetik a tárolt hessekkel. Ha a bemeneti képből képzett hash megfelelően közel van az egyik eltárolt sablonhoz, akkor sikeres a hitelesítés.
 
 
-% A korábbi módszerek arra céloztak, hogy az arclenyomatok módosításával maszkoljuk a személyes adatokat.
-% Visszautal a támadómodellre
-% Feltételeztem, hogy az arclenyomatok titkosítás nélnül vannak tárolva.
-% Vannak biometrikus sablonvédelmi módszerek, amelyek egyéb biometrikus adatok (pl újlenyomat) tárolására fejlesztettek ki.
+% A simple approach would be to use standard encryption techniques such as hash func- tions or encryption to enhance the privacy. Hash functions have been used to protect biometric templates in which one-way func- tions are used to compute a digest. Even though these functions are almost impossible to invert, they produce a significantly differ- ent digest even with minor changes in the input. In practice, all biometric templates change with environmental conditions. For instance, face and iris biometrics are significantly affected by illu- mination variations. Therefore, these functions cannot be used directly in practice despite being theoretically very strong as they apply only to exact data.
 
-% Lényege, hogy egy biometrkius sablont áttranszformálják, majd transzformált állapotban tárolják
-% Hitelesítés során egy illető biometrikus adatát ugyanazzal a módszerrel transzformálják, majd azt összehasonlítják a tárolt sablonokkal. Ha van egyezést akkor sikerült hitelesíteni.
+\subsubsection{Titkosítási módszerek} % kripto kulcs alapú
 
-%
+% klasszikus titkosítási módszer hogy működik
+% probléma: összehasonlításhoz vissza kell állítani
+% erre megoldás a homomorfikus titkosítás
+
+% titkosító algoritmus és kulcs segítségével titkosított adat -> csak az tudja olvasni aki rendelkezik az olvasáshoz szükséges kulccsal
+
+% when data are encrypted, they need to be decrypted to carry out matching. This creates a possible attack point to get access to the decrypted templates. 
+
+A titkosítás vagy rejtjelezés olyan kriptográfiai eljárás, amellyel valamilyen adatot egy titkosító algoritmus kulcs segítségével átalakítja olyan formára, amely ember számára olvashatatlan. Az adat olvasását csak az teheti meg, aki rendelkezik az olvasáshoz szükséges kulccsal. A titkosított adatot gyakorlatban szinte feltörhetetlenek. Ennek ellenére arclenyomatok védelmére mégsem ideális a klasszikus titkosítási módszerek. 
+
+Ennek oka az, hogy az arcfelismerő rendszer működéséhez szükséges az azonosítandó személy arclenyomatát a rendszerben tárolt arclenyomatokkal összevetni valamilyen módszerrel, például az arclenyomatok közötti euklideszi távolság alapján. Ha az adatbázisban tárolt arclenyomatok titkosítva vannak, akkor azokat elősször szükséges dekódolni az összehasonlításhoz, mert a titkosított adatokon közvetlenül nem tudjuk elvégezni a szükséges műveleteket. 
+
+A titkosított adatokkal általánosságban az a probléma, hogy ahhoz, hogy műveleteket végezzünk rajtuk dekódolni kell. Dekódolássval viszont egy lehetséges támadási pont nyílik meg a rendszerben, ahol lehetséges hozzáférni az eredeti adatokhoz.
+
+Van erre a problémára egy hatékony megoldás amit homomorfikus titkosításnak hívnak. A homomorfikus titkosítás egy publikus kulcsot használ az adat titkosítására. A klasszikus titkosítási módszerektől eltérően a homomorfikus titkosítással lehetséges a titkosított adatokon matematikai műveleteket végezni. A titkosított adatokon végzett műveletek eredménye is titkosított adat lesz, amelyet dekódolva ugyanazt az eredményt kapjuk, amit a titkosítatlan adatokon elvégzett ugyanezen műveletek eredményeztek volna. Így a hitelesítési fázisban nics szükség a titkosított adatokat dekódolni, azonok közvetlenül el lehet végezni az összehasonlítást. 
+
+A homomorfikus titkosításnak három fő típusa van:
+% TODO ezt fact checkelni mert lehet nem igaz amit írok
+\begin{itemize}
+	\item \textbf{Partially homomorphic encryption}: Ebben az esetben csak bizonyos matematikai műveleteket lehet végrehajtani a titkosított adatokon.
+	\item \textbf{Somewhat homomorphic encryption}: Korlátozott számú műveletet támogat, amelyek csak meghatározott számú alkalommal hajthatóak végre.
+	\item \textbf{Fully homomorphic encryption}: A teljesen homomorfikus titkosítás (FHE) minden műveletet támogat, és a műveletek korlátlan számmal hajthatóak végre. Ez a legerősebb típusa a homomorfikus titkosításnak. 
+\end{itemize}
+
+A homomorfikus titkosításnak jelenleg az a legnagyobb hátránya, hogy magas a számításigénye az eljárásnak, ezért elég lassú, és e miatt nem praktikus még az alkalmazása. Az arcfelismerő rendszereknél alkalmazható lehet egy olyan részlegesen homomorfikus titkosítást alkalmazni, ami gyorsabb működésű mint az FHE támogatja az összeadást, így távolságméréshez euklideszi távolság helyett lehet például Manhattam távolságot használni.
+
+% A homomorf titkosítás széles körű elterjedésének legnagyobb akadálya az, hogy még mindig nagyon lassú – olyan lassú, hogy még nem praktikus sok alkalmazáshoz. azonban
+
+% Just like other forms of encryption, homomorphic encryption uses a public key to encrypt the data. Unlike other forms of encryption, it uses an algebraic system to allow functions to be performed on the data while it’s still encrypted. Then, only the individual with the matching private key can access the unencrypted data after the functions and manipulation are complete. This allows the data to be and remain secure and private even when someone is using it. 
+
+% There are three main types of homomorphic encryption: partially homomorphic encryption (keeps sensitive data secure by only allowing select mathematical functions to be performed on encrypted data); somewhat homomorphic encryption (supports limited operations that can be performed only a set number of times); fully homomorphic encryption (this is the gold standard of homomorphic encryption that keeps information secure and accessible).
+
+% The biggest barrier to widescale adoption of homomorphic encryption is that it is still very slow—so slow it’s not yet practical to use for many applications. However
+
+% A homomorf titkosításnak három fő típusa van: részlegesen homomorf titkosítás (biztonságban tartja az érzékeny adatokat azáltal, hogy titkosított adatokon csak bizonyos matematikai függvények végrehajtását engedélyezi); kissé homomorf titkosítás (korlátozott műveleteket támogat, amelyek csak meghatározott számú alkalommal hajthatók végre); teljesen homomorf titkosítás (ez a homomorf titkosítás aranystandardja, amely biztonságosan és hozzáférhetően tartja az információkat). 
+% A homomorf titkosítás széles körű elterjedésének legnagyobb akadálya az, hogy még mindig nagyon lassú – olyan lassú, hogy még nem praktikus sok alkalmazáshoz. azonban
