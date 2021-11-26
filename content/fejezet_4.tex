@@ -4,28 +4,26 @@
 
 %--------------------------------------------------------------------------------------------------
 \subsection{Támadó modellezése} % 1 oldal
+\label{sec:tamado}
 % - Támadómodell bemutatás (copy ábra Gábortól, lényeget leír)
 % - Jelenlegi arcfelismerő rendszerek sebezhetősége, hogyan férhet hozzá
 % - Feltételezzük, hogy a támadó interneten elérhető datasetekhez hozzájut ami alapján betanít classifiert és ezt használva tud kinyerni adatot. Következő fejezetben erre mutatunk példát hogyan lehetséges
 
-A következőkben az arcfelismerő rendszerek sebezhetőségét fogom elemezni. Az arcfelismerő rendszerek általános működését a \ref{sec:problem}. fejezetben korábban bemutattam. Az adatvédelmi elemzéshez szükséges definiálnom egy támadó modellt. Tegyük fel, hogy egy cégnél alkalmaznak arcfelismerő rendszert a dolgozók azonosítására. Az épület számos helyisége be le van fedve CCTV térfigyelő kamerákkal, amelyek egy központi arcfelismerő rendszernek továbbítják a felvételeket. Új dolgozó regisztrációja során az arcfelismerő rendszer néhány felvétel alapján kiszámolja a dolgozó arcát legjobban leíró arclenyomatát, amit egy központi szerveren tárol. Miután a dolgozó arclenyomata szerepel az adatbázisban, a térfigyelő kamera felvételek alapján lehetséges őt azonosítani. Egy ilyen arcfelismerő rendszernek a főbb részei: 
+A következőkben az arcfelismerő rendszerek sebezhetőségét fogom elemezni. Az arcfelismerő rendszerek általános működését a \ref{sec:problem}. fejezetben korábban bemutattam. Az adatvédelmi elemzéshez szükséges definiálnom egy támadó modellt. Tegyük fel, hogy egy cégnél alkalmaznak arcfelismerő rendszert a dolgozók azonosítására. Az épület számos helyisége le van fedve CCTV térfigyelő kamerákkal, amelyek egy központi arcfelismerő rendszernek továbbítják a felvételeket. Új dolgozó regisztrációja során az arcfelismerő rendszer néhány felvétel alapján kiszámolja a dolgozó arcát legjobban leíró arclenyomatát, amit egy központi szerveren tárol. Miután a dolgozó arclenyomata szerepel az adatbázisban, a térfigyelő kamera felvételek alapján lehetséges őt azonosítani. Egy ilyen arcfelismerő rendszernek a főbb részei: 
 
-% TODO ide lehet szoftver példákat hozni ha kell content
-% magyar szavakat kéne használni
 \begin{enumerate}
-	\item Kamera rendszer: amely a nyers képkockákat továbbítja az adatfeldolgozó egységnek
-	\item Feature extractor: amely az egyes képkockákon végzi a gyorsan lefuttatható arcdetektálást. Ha sikeresen talál emberi arcot az egyik képkockán, arra elvégzi az arc geometriai transzformációját, majd az arcból kinyeri az arclenyomatot.
-	\item Adatbázis: Az ismert, címkézett arclenyomatok tárolására szolgál.
-	\item Matcher: A kinyert arclenyomatot összehasonlítja az adatbázisban tárolt dolgozók arclenyomataival, majd azokon valamilyen távolság (pl: Euklideszi távolság) metrika alapján megállapítja a legvalószínűbb találatot. Ha a legkisebb távolság egy bizonyos küszöbértéknél kisebb, akkor a dolgozót sikeresen azonosította, ellenkező esetben ismeretlen személynek nyilvánítja.
+	\item \textbf{Kamera rendszer}: amely a nyers képkockákat továbbítja az adatfeldolgozó egységnek
+	\item \textbf{Jellemző kinyerő}: amely az egyes képkockákon végzi a gyorsan lefuttatható arcdetektálást. Ha sikeresen talál emberi arcot az egyik képkockán, arra elvégzi az arc geometriai transzformációját, majd az arcból kinyeri az arclenyomatot.
+	\item \textbf{Adatbázis}: Az ismert, címkézett arclenyomatok tárolására szolgál.
+	\item \textbf{Összevető}: A kinyert arclenyomatot összehasonlítja az adatbázisban tárolt dolgozók arclenyomataival, majd azokon valamilyen távolság (pl: Euklideszi távolság) metrika alapján megállapítja a legvalószínűbb találatot. Ha a legkisebb távolság egy bizonyos küszöbértéknél kisebb, akkor a dolgozót sikeresen azonosította, ellenkező esetben ismeretlen személynek nyilvánítja.
 \end{enumerate}
 
 Míg az ilyen arcfelismerő rendszer több módon is támadható, a dolgozatom során azzal az esettel foglalkozom, hogy a rosszindulatú fél valamilyen módon hozzáférést nyer az arclenyomat adathalmazhoz, ami lehet egy belső alkalmazott aki kiszivárogtatja az adatbázist, vagy akár egy külső támadó, például hacker aki sikeresen feltöri rendszert. Előfordulhat, hogy a támadó az adatbázisnak egy kisebb részéhez fér hozzá, de dolgozatom során a legerősebb támadót feltételezem, aki a teljes adatbázishoz hozzáfér, illetve feltételezem, hogy az arclenyomatok titkosítás nélkül vannak tárolva a szerveren.
 
-% TODO saját ábra?
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=1\columnwidth]{figures/attacker_model.png}
-	\caption{ideiglenes ábra}
+	\caption{Az arcfelismerő rendszer és a támadó modellezése.}
 	\label{fig:attacker}
 \end{figure}
 
@@ -44,9 +42,7 @@ A támadó sikerességének feltétele az, hogy képes hozzáférni a szerveren 
 
 Első lépésként szükségem volt egy megfelelően felcímkézett arclenyomat adathalmazra. Ezt az adathalmazt használom fel arra, hogy az alapján tanítsak be gépi tanulási modelleket, amelyek majd képesek becslést adni személyes adatokra. Egy-egy modell csak egy személyes adatra tud becslést adni, ezért több modellre van szükség. Célom az volt, hogy személyes adatok közül az illető életkorát, nemét és rasszát becsüljem meg. Ehhez szükséges tanító mintakészlet, amiben az életkor, nem és rassz meg van címkézve. Elvárás volt még az is, az arclenyomat adathalmazban minden személynek saját azonosító címkéje legyen, illetve lehetőleg minél több arclenyomat tartozzon egy-egy személyhez. Erre azért van szükség, mert az arclenyomatokon vizsgáltam az identifikációs modell teljesítőképességét is. 
 
-Mivel a feladatból adódóan az adathalmazzal szemben támasztott elvárások eléggé specifikusak, ezért szükség volt saját adathalmaz létrehozására. Azért, hogy meggyorsítsam a munkámat, kiindulásnak kerestem olyan online elérhető, arcképeket tartalmazó adathalmazt, ami már előre fel van címkézve. Ha létezik egy megfelelő arckép adathalmaz, akkor a képekből egyesével kinyerhetőek az arclenyomat vektorok. 
-
-Az arckép adathalmazzal szemben az elvárások a következők:
+Mivel a feladatból adódóan az adathalmazzal szemben támasztott elvárások eléggé specifikusak, ezért szükség volt saját adathalmaz létrehozására. Azért, hogy meggyorsítsam a munkámat, kiindulásnak kerestem olyan online elérhető, arcképeket tartalmazó adathalmazt, ami már előre fel van címkézve. Ha létezik egy megfelelő arckép adathalmaz, akkor a képekből egyesével kinyerhetőek az arclenyomat vektorok. Az arckép adathalmazzal szemben az elvárások a következők:
 \begin{itemize}
 	\item Lehetőleg kutatási célra lettek létrehozva, az enyémhez hasonló feladatra. Ennek megfelelően az arcképek már előre vannak készítve a feldolgozáshoz (pl. arc kivágása a képből).
 	\item Az adathalmaznak megfelelően nagynak kell lennie ahhoz, hogy gépi tanulási modellt sikeresen be lehessen tanítani róla.
@@ -59,7 +55,6 @@ Nehéz olyan adathalmazt találni, amiben mindhárom számunkra fontos demográf
 Végül nem sikerült olyan adathalmazt találnom ami minden kritériumnak megfelel, ezért két külön adathalmazt használtam fel. Az egyik a VGGFace2 \cite{vggface22018} amit rassz és nem becslésére használtam fel, a másik pedig az IMDB-WIKI dataset \cite{imdbwiki2018}, amit életkor becsléshez használtam fel. A két választott arckép adathalmazt szükség volt feldolgozni ahhoz, hogy azokból gépi tanulási modellt lehessen tanítani. A feldolgozás menetét mutatom be a következő részekben.
 
 \subsubsection*{VGGFace2 adathalmaz}
-% TODO ha van idő -> újragenerálni az ábrákat a gábor adathalmazára (szűrés utáni) mert abban nem 540 000 embedding van hanem csak 70k v mennyi.
 
 Jelenleg az egyik legnagyobb publikusan elérhető, kutatási célra készült arckép adathalmaz a VGGFace2. Az adathalmaz 3,31 millió arcképet tartalmaz mindössze 9131 emberről, átlagosan 362,6 kép mindenkiről. A képeket a Google képkeresőjével gyűjtötték össze. Az adathalmaz képein sokféle ember szerepel, eltérő demográfiai adatokkal és eltérő szakmával (pl. vannak színészek, sportolók, politikusok). A képeken látható emberek többféle pózban láthatóak, sokféle megvilágításban. Az összegyűjtött képeket automatikusan és manuálisan is szűrték.
 
@@ -103,7 +98,7 @@ Az osztályok eloszlásának aránytalansága problémát jelent az osztályozó
 	\label{fig:vgg_ba}
 \end{figure}
 
-Az eredeti 3,3 millió képből végül 540000 arclenyomat készült, ami továbbra is nagy adathalmaznak tekinthető. Ez elegendően nagy ahhoz, hogy ez alapján osztályozó modelleket lehessen rajtuk betanítani.
+Az eredeti 3,3 millió képből végül 76410 arclenyomat készült, ami továbbra megfelelő méretű adathalmaznak tekinthető. Ez elegendően nagy ahhoz, hogy ez alapján osztályozó modelleket lehessen rajtuk betanítani.
 
 \subsubsection*{IMDB-WIKI adathalmaz}
 
@@ -115,11 +110,11 @@ A weboldalról letölthetőek az eredeti, teljes méretű képek, illetve a már
 
 \begin{figure}[ht]
      \centering
-     \begin{subfigure}[b]{0.45\columnwidth}
+     \begin{subfigure}[b]{0.42\columnwidth}
          \centering
          \includegraphics[width=1\columnwidth]{figures/mrbean.png}
      \end{subfigure}
-     \begin{subfigure}[b]{0.45\columnwidth}
+     \begin{subfigure}[b]{0.42\columnwidth}
          \centering
          \includegraphics[width=1\columnwidth]{figures/mrbean_crop.png}
      \end{subfigure}
@@ -129,8 +124,6 @@ A weboldalról letölthetőek az eredeti, teljes méretű képek, illetve a már
 
 Az adathalmaz képeit vizsgálva azt tapasztaltam, hogy néhány fotón nem a címkének megfelelő személy szerepelt. A hibásan címkézett képek kiszűréséhez a már feldolgozott arclenyomat vektorokat használtam fel. Egy személyhez tartozó arclenyomat vektorok alapján kiszámítottam a vektorok súlypontját (centroidját), és ehhez mért Euklideszi távolságok alapján szűrtem ki a kiugró értékeket. Azt a határt, ami alatt elfogadta az arclenyomat vektor értékét 0,5-re állítottam be, ami viszonylag szigorúnak számít. Ezt az eljárást szemlélteti a \ref{lst:cent}. kódrészlet.
 
-% TODO itt kicsit gebasz van a page break miatt
-% \noindent
 % \begin{minipage}{\columnwidth}
 \begin{lstlisting}[language=python, caption={Arclenyomatok szűrése távolság alapján.}, label=lst:cent]
 def filter(df, cutoff=0.5):
@@ -165,9 +158,10 @@ Az egyik legalapvetőbb osztályozási algoritmus a döntési fa (angol szakirod
 \subsubsection*{Nem becslése}
 
 A nem becslő osztályozó modell tanításához a VGGFace2 arclenyomat adathalmazt használtam fel. Az arclenyomatok $N\times128$ dimenziós mátrix formában vannak, a hozzájuk tartozó címkék $N\times1$ méretű vektorban, ahol $N$ az adathalmaz mintáinak száma. A teljes mintakészletet felosztottam tanító halmazra és teszt halmazra úgy, hogy a tanító halmaz a minták 70\%-át, a teszt halmaz a minták 30\%-át tartalmazza. A minták osztályozásához 100 döntési fából álló véletlen erdő modellt használtam. A modell betanítása után a pontosságát a teszt adathalmazon ellenőriztem. A teszt halmaz kb. 23000 mintából állt, amiből a modell csak 276 mintánál tévesztett. A modell jóságát a \ref{fig:conf_sex}. ábra mutatja, ahol az osztályozó igazságmátrixa látható. 
+
 \begin{figure}[ht]
 	\centering
-	\includegraphics[width=0.55\columnwidth]{figures/conf_sex.png}
+	\includegraphics[width=0.5\columnwidth]{figures/conf_sex.png}
 	\caption{A nemet osztályozó modell igazságmátrixa és pontossági metrikái.}
 	\label{fig:conf_sex}
 \end{figure}
@@ -254,7 +248,7 @@ class IDModel:
 \subsection{Adatvédelmi elemzés} % (1-2 oldal)
 \label{sec:adatvedelmi_elemz}
 
-Az előző részben bemutattam, hogy ha a \ref{sec:problem}. fejezetben definiált támadó jó minőségű arclenyomat adathalmaz birtokában van, akkor az alapján modern gépi tanulási modelleket taníthat be, amelyek képesek további arclenyomatokból személyes adatokat kinyerni. Ebben a részben azzal a kérdéssel foglalkozom, hogy a támadó hogyan tud visszaélni az arclenyomatokból kinyert adatokkal? Egy központi arclenyomat adathalmaz kiszivárgása milyen adatvédelmi kockázatokkal jár?
+Az előző részben bemutattam, hogy ha a \ref{sec:tamado}. fejezetben definiált támadó jó minőségű arclenyomat adathalmaz birtokában van, akkor az alapján modern gépi tanulási modelleket taníthat be, amelyek képesek további arclenyomatokból személyes adatokat kinyerni. Ebben a részben azzal a kérdéssel foglalkozom, hogy a támadó hogyan tud visszaélni az arclenyomatokból kinyert adatokkal? Egy központi arclenyomat adathalmaz kiszivárgása milyen adatvédelmi kockázatokkal jár?
 
 Kiindulásnak a 29-es munkacsoport anonimizálási eljárásokról szóló véleményét vettem \cite{anon2014}, amelyben szó van az adatvédelmi kockázatok csoportjairól. A csoport véleménye alapján, kockázat elemzés során az alábbi három fő kockázattípust célszerű szem előtt tartani:
 

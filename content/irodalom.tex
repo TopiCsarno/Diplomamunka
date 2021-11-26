@@ -167,7 +167,6 @@ A matematikában a Markov-lánc egy olyan diszkrét sztochasztikus folyamatot je
 
 A grafikus valószínűségi modell egy grafikus ábrázolás, amivel véletlen változók közötti feltételes valószínűséget lehet kifejezni. A grafikus modellnek két fő komponense van: csúcsok és élek. A csúcsok a véletlen változó állapotát jelzik, míg az élek az átalakulás irányát. Az ilyen gráfoknak két fő típusa van: irányított és irányítatlan. A \ref{fig:graph}. ábrán látható példán egy csecsemő táplálkozási szokásainak Markov folyamatának irányítatlan grafikus modelljét láthatjuk. A baba következő étkezésének kiválasztása kizárólag attól függ, hogy mit eszik most, és nem attól, amit korábban evett.
 
-% TODO ide lehetne egy jobb ábrát, ami jobban passzol ide (gábor feedback nyilazás kell?)
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=0.7\columnwidth]{figures/graph_example.png}
@@ -385,7 +384,7 @@ A VAE működését könnyebb egy példán keresztül bemutatni. Tegyük fel, ho
 
 % Let us understand how we are generating new data. Let’s say we have the image of a celebrity face from which our encoder model has to recognize important features mentioned below. 
 
-Mint az alábbi ábrán látjuk, minden jellemzőhöz tartozik egy valószínűségi eloszlás. Miben különböznek az arcok? Megfogalmazhatunk pár ilyen jellemzőt, mint a bőrszín, haj színe, szemek távolsága, stb. Ezen jellemzőkből álló vektor leírhat egy emberi arcot. Eltérő arcoknál a jellemzők értékei mások lesznek, de jellemzők listája ugyanaz marad. Az autoenkóderek nem feltétlenül ilyen, ember által könnyen értelmezhető jellemzőket nyernek ki az arcokból, hanem azok ennél a példánál absztraktabbak.
+Mint az alábbi ábrán látjuk, minden jellemzőhöz tartozik egy valószínűségi eloszlás. Miben különböznek az arcok? Megfogalmazhatunk pár ilyen jellemzőt, mint a bőrszín, haj színe, szemek távolsága stb. Ezen jellemzőkből álló vektor leírhat egy emberi arcot. Eltérő arcoknál a jellemzők értékei mások lesznek, de jellemzők listája ugyanaz marad. Az autoenkóderek nem feltétlenül ilyen, ember által könnyen értelmezhető jellemzőket nyernek ki az arcokból, hanem azok ennél a példánál absztraktabbak.
 
 \begin{figure}[ht]
 	\centering
@@ -417,13 +416,10 @@ A generatív modellek után áttérnék a modern arcfelismerő rendszerek bemuta
 \subsubsection{Mély metrika tanulás}
 \label{sec:dml}
 
-% TODO mély metrika legyen végig (nem hasonlósági metrika) István anyagát belefűzni kicsit
-
 A mély metrika tanulás (angol szakirodalomban: deep metric learning) a felügyelet gépi tanulás azon területe, amelyben a cél egy hasonlósági függvény megtanulása \cite{kaya2019dmlsurvey}. Ez a függvény képes meghatározni két objektumról, hogy mennyire hasonlítanak egymáshoz és hasonlóság mértékét számszerűsíteni tudja. Magasabb hasonlósági értéket ad vissza a függvény, ha az objektumok hasonlóak, és alacsonyabb értéket ad vissza, ha az objektumok eltérőek. Ez a metrika majd használható különböző feladatokra, mint osztályozásra, vagy klaszterezésre. A mély metrika tanulásnak sok felhasználási esete van, ezek közül mutatok be pár példát.
 
 % Similarity learning is an area of supervised machine learning in which the goal is to learn a similarity function that measures how similar or related two objects are and returns a similarity value. A higher similarity score is returned when the objects are similar and a lower similarity score is returned when the objects are different. Now let us see some use cases to know why and when similarity learning is used.
 
-% TODO legyen szó arclenyomat vektorról is, István anyaga..
 Tekintsünk egy olyan példát, amelyben egy iskolában elhelyezett kamerák felvételei alapján, egy gépi tanulási modell segítségével szeretnénk felismerni az iskola tanulóit. Szeretnénk tudni, hogy mely tanulók vettek részt a tanórákon. Egyik lehetséges megoldás az lenne, ha kép klasszifikációt alkalmazunk, ahol a klasszifikáció minden osztálya egy-egy tanulónak felel meg. Ehhez szükséges minden tanulóról begyűjteni valamennyi képet, majd a képek alapján be tudunk tanítani egy klasszifikációs modellt. A modell betanítása után már minden tanulót felismerhetünk az osztályteremben. Ez az elképzelés működhet, viszont probléma adódik akkor, ha új tanuló csatlakozik az osztályhoz. Ekkor a modellünk nem fogja felismerni az új tanulót addig, amíg új tanító minták alapján azt újra nem tanítjuk. A modell újratanítása költséges idő és számításigény szempontjából, ezért tipikus képklasszifikációs modell helyett a feladat érdemes mély metrika tanulással megoldani.
 
 % Consider a problem in which we have to train a model that can recognise all the students in a class to mark their attendance. We can use Image classification as discussed in the last section, we will collect data for all the students in the class and use them to train the model. After training the model, now we can recognise each student in the class. But what if we have a new student enrolled since we did not train the model on his data, it cannot recognise the new student. We will have to collect the new data and retrain the model, but training the model is expensive in terms of time and computation power. So we can pose this problem as similarity learning problem instead of a classification problem to solve this problem in an optimal way.
@@ -451,7 +447,7 @@ Az előző részben kifejtett mély metrikák tanulásához tipikusan sziámi h�
 
 A sziámi hálóknak elegendő kevesebb tanító minta, mint a tipikus mély neurális hálóknak. Ez a tulajdonsága kedvező olyan feladatoknál, ahol a tanító minták száma korlátozott, vagy nehezen begyűjthető nagy mennyiségben. A sziámi hálókat előszeretettel alkalmazzák arcfelismeréshez, illetve aláírás verifikáláshoz.
 
-A sziámi hálók \textbf{előnyei}:
+A sziámi hálók előnyei:
 \begin{itemize}
 	\item Ellenállóbb a tanító adat kiegyensúlyozatlanságára: A One-shot learning segítségével, osztályonként egy, vagy néhány kép is elegendő ahhoz, hogy a sziámi hálózatok megfelelően rátanuljanak az adatokra, majd felismerjék ezeket a képeket a jövőben.
 	\item A sziámi hálók embeddingeket tanulnak meg, a hasonló osztályokat/fogalmakat a látens térben közelebb helyezik egymáshoz, így szemantikai hasonlóságot képesek megtanulni.
@@ -467,11 +463,10 @@ A sziámi hálók \textbf{előnyei}:
 
 % A Siamese neural network (sometimes called a twin neural network) is an artificial neural network that contains two or more identical subnetworks which means they have the same configuration with the same parameters and weights. Usually, we only train one of the subnetworks and use the same configuration for other sub-networks. These networks are used to find the similarity of the inputs by comparing their feature vectors.
 
-% TODO ide kéne egy normális ábra arcokról ami megfelel a szövegnek
 \begin{figure}[ht]
 	\centering
-	\includegraphics[width=1\columnwidth]{figures/siamese.png}
-	\caption{(ideiglenes ábra).}
+	\includegraphics[width=1\columnwidth]{figures/siamese_sajat.png}
+	\caption{A sziámi háló működése két alháló esetén.}
 	\label{fig:siamese}
 \end{figure}
 
@@ -496,7 +491,7 @@ Ahol $\mathbf{p} = (p_1, p_2, \dots, p_n)$ és $\mathbf{q} = (q_1, q_2, \dots, q
 
 Mivel a sziámi hálózatok tanítása általában páros tanulással (angolul pairwise learning) megy végbe, a keresztentropia veszteség ebben az esetben nem használható. Főként két veszteségfüggvényt használnak ezeknek a sziámi hálózatoknak a betanítására: a hármas veszteségfüggvényt (triplet loss) és a konsztratív veszteségfüggvényt (constrative loss).
 
-A hármas veszteség lényege, tanítás során három sziámi háló bemenetére három különböző képet adunk. A három képből az elsőt referenciának nevezik (anchor), a másodikat pozitív példának, amely a referenciához nagyon hasonló kép, a harmadikat pedig negatív példának, amely a referenciától jelentősen eltérő kép. A tanítás során a neurális háló paramétereit úgy módosítjuk, hogy a referencia bemenetből és a pozitív bemenetből kinyert jellemzővektorok távolsága minimalizálva legyen, míg a referencia bemenetből és a negatív bemenetből kinyert vektorok távolsága minimalizálva legyen \cite{hoffer2015triplet}.
+A hármas veszteség lényege, tanítás során három sziámi háló bemenetére három különböző képet adunk. A három képből az elsőt referenciának nevezik (anchor), a másodikat pozitív példának, amely a referenciához nagyon hasonló kép, a harmadikat pedig negatív példának, amely a referenciától jelentősen eltérő kép. A tanítás során a neurális háló paramétereit úgy módosítjuk, hogy a referencia bemenetből és a pozitív bemenetből kinyert jellemzővektorok távolsága minimalizálva legyen, míg a referencia bemenetből és a negatív bemenetből kinyert vektorok távolsága maximalizálva legyen \cite{hoffer2015triplet}.
 
 % A hármas veszteség egy veszteségfüggvény, ahol az alapvonal (horgony) bemenetét pozitív (truthy) bemenettel és negatív (hamis) bemenettel hasonlítják össze. Az alapvonali (horgony) bemenet és a pozitív (igaz) bemenet közötti távolság minimálisra csökken, az alapvonali (horgony) bemenet és a negatív (hamis) bemenet közötti távolság pedig maximalizálva van. \cite{facenet2015}
 
@@ -504,7 +499,7 @@ A hármas veszteség lényege, tanítás során három sziámi háló bemenetér
 
 \[ \mathcal{L}(A,P,N) = max \left( \lVert f(A) - f(P)) \rVert_2 - \lVert f(A) - f(N) \rVert_2 + \alpha, 0 \right) \]
 
-A fenti egyenletben szereplő $f(A), f(P), f(N)$ a jellemzővektorokat jelöli (sorra referencia, pozitív és negatív bemenetekre), míg az $\alpha$ paraméterrel ``megnyújtható'' a hasonló és eltérő párok távolsága. 
+A fenti egyenletben szereplő $f(A), f(P), f(N)$ a jellemzővektorokat jelöli (sorra referencia, pozitív és negatív bemenetekre), míg az $\alpha$ paraméterrel a hasonló és eltérő párok elvárt  távolsága növelhető. 
 
 % In the above equation, alpha is a margin term used to “stretch” the distance differences between similar and dissimilar pairs in the triplet, fa, fa, fn are the feature embeddings for the anchor, positive and negative images.
 
@@ -524,6 +519,6 @@ Kellő mennyiségű tanító kép és megfelelően választott kép hármasok ha
 A sziámi hálók tanítása során gyakran alkalmazzák még a konsztratív veszteségfüggvényt is. Ez egy távolság alapú veszteségfüggvény, nem a becsült kimenet és az elvárt kimenet különbségéből származtatott. A konsztratív veszteségfüggvényt főleg embeddingek tanulására használják, azzal a céllal, hogy két hasonló adatpontból származtatott embedding távolsága kicsi legyen, eltérő adatokból származtatott embeddingek távolsága pedig nagy legyen. 
 
 % TODO ezt double check h helyes-e
-\[ \mathcal{L}(A,B) = y \lVert f(A) - f(B)\rVert_2^2 + (1-y) max\left(0,m - \lVert f(A) - f(B) \rVert_2^2 \right) \]
+\[ \mathcal{L}(A,B) = (1-y)~\lVert f(A) - f(B)\rVert_2^2 + (y)~max\left(0,m - \lVert f(A) - f(B) \rVert_2 \right)^2 \]
 
-Abban az esetben, ha A és B két ugyanaz a kép, akkor a háló kimenete ($y$) 1 lesz, míg mikor A és B eltér, akkor a háló kimenete 0 lesz. 
+Abban az esetben, ha A és B ugyanaz a kép, akkor a kimenet 0 lesz, míg mikor A és B eltér, akkor a kimenet 1 lesz. 
