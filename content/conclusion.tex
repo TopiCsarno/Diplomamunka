@@ -1,5 +1,71 @@
 \section{Összefoglaló}
 
-lul
+% - motiváció
+% - probléma bemutatás
+% - megoldás bemutatása
+% - eredmények
+% - konklúzió, kitekintés
 
 %Dolgozattípustól függetlenül 1 oldalban foglald össze az eredményeidet. E/1-ben és múlt időben. Megterveztem, megvalósítottam, eldöntöttem, leteszteltem… stb.  Itt kaphatnak helyet további max 1 oldalban a továbbfejlesztési lehetőségek. Milyen hiányosságait látod a rendszernek, illetve milyen lehetőségeket látsz a továbbfejlesztésére?  A dolgozat zárásánál sokan zavarba jönnek, miről lehetne írni. Praktikus tanács itt, hogy foglald össze a személyes tapasztalataidat (amik itt végre bátran lehetnek akár szubjektívak is ). Mit tanultál ebből a projektből? Mi a véleményed a technológiákról, amiket alkalmaztál? Beleszerettél az Android fejlesztésbe, vagy egy életre megutáltad? Ilyen és hasonló gondolatok kellemes oldott hangulatú végszót tudnak adni a dolgozatodnak.
+% ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+% motiváció
+% - gépi tanulás elterjedése
+Az elmúlt években a egyre szélesebb körben elterjedt a gépi tanulás használata, ami a mély tanulás területén elért áttöréseknek, az interneten elérhető nagyméretű adathalmazoknak, és a videokártyák fejlődésének köszönhető. A gépi tanulást számos területen alkalmazzák, többek között a modern arcfelismerő rendszerek is erre a technológiára építenek. 
+
+Az arcfelismerő rendszereket széleskörben alkalmazzák mind az állami szektorban, illetve a magánszektorban. Az állami szektorban az arcfelismerés hasznos lehet keresett személyek és körözött bűnözők azonosítására, repülőtéri biztonsági ellenőrzésekhez, vagy akár katonai célokra fejlesztett eszközökben is. A magánszektorban is rendkívüli gyorsasággal terjed az arcfelismerés használata. 2008-ban Levono által fejlesztett laptopon jelszó helyett arcfelismeréssel lehetett belépnie a felhasználónak. Számos online cég használja az arcfelismerést szolgáltatások vagy funkciók részeként. A Facebook, az Apple és a Google arcfelismerést használ, hogy segítse a személyek megjelölését a képeken. Feltehetően a Facebook rendelkezik a világ legnagyobb kép adathalmazával. Jelentős adatvédelmi aggodalomra adhat okot az, hogy a Facebook képes kombinálni az arc biometrikus adatait a felhasználókról szóló információkkal, beleértve az életrajzi adatokat, a helyadatokat és az ismerősökkel való kapcsolattartást \cite{public_private_fr}. Bár az arcfelismerő rendszerek nagyon hasznosak, és használatuk gyorsan terjed, jelentős adatvédelmi kockázatokat is hordoznak magukkal. 
+
+A gépi tanulási eszközök, arcfelismerés és azzal járó adatvédelmi kockázatoknak az elemzése, és kezelése jelenleg is kutatott területek. Én is érdekesnek tartom ezeket a témaköröket, így ez adta a motivációt a diplomamunkámnak. 
+
+A diplomamunkámban bemutattam a generatív modellek és az arcfelismeréshez kapcsolódó elméleti hátteret, majd bemutattam a modern arcfelismerő rendszerek felépítését és működését. A modern arcfelismerő rendszerek mély metrika tanulásra támaszkodnak. Működésük során az emberi arcokról készült digitális képekből képesek az arcot jellemző metrikákat, az arclenyomatot előállítani. Az arclenyomatok az arcok jellemző vonásait az eredeti képhez képest csökkentett dimenzióban tárolják. Az arclenyomatok segítségével gyorsan azonosítható a képen látható személy.
+
+Ezt követően az arclenyomatokhoz kapcsolódó adatvédelmi kockázatok feltárásával, és azok lehetséges kezelési módszereivel foglalkoztam. A \ref{sec:4}. fejezetben bemutattam, hogy az arclenyomatok nem csak személyek azonosítására használhatóak fel, hanem olyan információkat is hordoznak a képen látható személyről, ami személyes adatnak minősül. Bemutattam még, hogy a személyes adatok kiszivárgása miért jelentős, milyen adatvédelmi kockázatokkal jár.
+
+Ehhez először létrehoztam két nagyméretű arclenyomat adathalmazt az interneten szabadon elérhető, címkézett kép adathalmazok feldolgozásával (egyik a VGGFace2, másik az IMDB-WIKI adathalmaz). A két adathalmaz feldolgozása után azokon gépi tanulási modelleket tanítottam be, amelyek a képen látható személy életkorára, nemére és rasszára tudtak becslést adni. A betanított modellek közül a nem és a rassz becslésére nagyon jó pontosságot sikerült elértem (rendre 98,8\% és 97,7\%). Az életkor becslésére kevésbé pontos (76,9\%) modellt sikerült betanítanom, ami a tanító adatok kiegyensúlyozatlanságának tudható be.
+
+Ezt követően a \ref{sec:5}. fejezetben megvizsgáltam hogyan vannak tárolva a személyes adatok az arclenyomatokban. Az arclenyomat tipikusan 128 lebegőpontos értékből álló vektornak számít. A vektor egyes értékeit jellemzőknek nevezik. Feltételezésem az volt, hogy ha az arclenyomat vektorokból eltávolítjuk azokat a jellemzőket, amelyek legtöbb információt hordozzák magukban az általam vizsgált személy személyes adatairól (életkor, nem, rassz), akkor a módosított arclenyomatokból már nem lehet kinyerni a személyes információt. Ennek igazolására több gépi tanulási modell elemző Python könyvtárral meghatároztam a modellek számára legfontosabbnak vélt jellemzőket, és eltávolítottam azokat fontosság szerinti csökkenő sorrendben. Az elvártakkal ellentétben néhány jellemző eltávolításával nem sikerült nagy kárt tenni a predikciós modellekben. A modellek rendkívül robusztusok, ellenállóak a jellemzők eltávolításával szemben. Ebből arra következtettem, hogy a jellemzők között kölcsönös összefüggések állhatnak fent.
+
+A \ref{sec:6}. fejezetben Adversarial attack módszerekkel kísérleteztem. Az adversarial módszerek lényege az, hogy ha az arclenyomat több jellemzőjét együttesen, kis mértékben módosítjuk, úgy megtéveszthető egy gépi tanulási modell, azaz téves becslést ad a módosított arclenyomatra. A módosítás mértéke kis mértékű és célzott, ezért a módosított arclenyomat nem veszít a hasznosságából, viszont a személyes adatokat már nem lehet belőlük megbízhatóan kinyerni. A módszer működésére készítettem egy programot, amivel félig manuális módszerrel sikerült példákat létrehoznom, ahol kis módosítás után a modell becslését sikerült félrevezetni. Az adversarial módszerek egyik hátránya, hogy nem nyújtanak hosszútávú védelmet a támadóval szemben, mivel a támadó a módosított arclenyomatokat felhasználva adaptálni tudja a modelljét, ami képes ellenállni a védekezési mechanizmusnak.
+
+A diplomamunkám végén olyan kriptográfiai módszereket mutattam be, amelyek alkalmazhatóak biometrikus sablonok (pl: ujjlenyomat, arclenyomat) védelmére. A kriptográfiai módszerek lényege az, hogy az arclenyomatokat nem eredeti formájukban tárolják, hanem titkosított formában. A biometrikus adatokat valamilyen módszerrel áttranszformálják, majd transzformált állapotban tárolják. Az általam ajánlott két módszer, az LSH (locality sensitive hashing), illetve a homomorfikus titkosítás. Ez a két módszer megfelelő implementálása már alkalmas lehet az arclenyomatok biztonságos tárolására.
+
+
+% - arclenyomatok vizsgálatával foglalkoztam
+
+% - (4. ch) bemutattam hogy az arclenyomatokból ki lehet nyerni érzékeny információkat
+% 	- készítettem két nagyobb adathalmazt
+% 	- rajtuk betanított modellek pontossága
+% - (5. ch) megvizsgáltam hogyan van tárolva az érzékeny adat az arclenyomatokban
+% 	- bemutattam, hogy az érzékeny adatok nem egy-egy jellemzőben vannak tárolva, hanem sok jellemző együttesen.
+%	- a modell nagyon robusztus, legfontosabbnak vélt jellemzők kivételével nem lehet meggátolni a személyes adatok kiszivárgását. A jellemzők kölcsönös összefüggéseit vizsgáltam.
+% - (6. ch) megoldásnak adversarial attack módszereket néztem, több jellemző együttes kis méretű módosításával megtéveszthető a modell, egy példában bemutattam, hogy működhet a módszer
+% 	- Az adversarial módszerek limitáltak viszont, újra lehet tanítani ellenük, ezért fegyverkezési verseny alakulhat ki
+% - Végül kriptográfiai módszereket vizsgáltam, amelyek alkalmazhatóak lehetnek arclenyomat adatbázisok védelmére. Ezekkel a módszerekkel valamennyi kockázat kezelhető.
+
+
+
+
+%  A generatív modellekhez hasonlóan, a modern arcfelismerő rendszerek is gépi tanulás- ra támaszkodnak. Működésük során az emberek arcáról készült digitális képekből képesek arcot jellemző metrikákat előállítani oly módon, hogy egy emberhez tartozó arcleíró vektorok (későbbiekben arclenyomatok) távolsága kicsi legyen, míg külön- böző emberek között minél nagyobb
+
+
+% A gépi tanulási technikák fejlődésének köszönhetően, illetve az egyre olcsóbb okos eszközök elterjedésével, egyre jobban elterjedt az arcfelismerés használata. A generatív modellekhez hasonlóan, a modern arcfelismerő rendszerek is gépi tanulásra támaszkodnak. Működésük során az emberek arcáról készült digitális képekből képesek arcot jellemző metrikákat előállítani oly módon, hogy egy emberhez tartozó arcleíró vektorok (későbbiekben arclenyomatok) távolsága kicsi legyen, míg különböző emberek között minél nagyobb. Erre a célra létrehozott neurális hálók: a sziámi hálók képesek megtanulni azt a mély metrikát, ami legjobban leírja az emberi arc struktúráját. Miután sikerült betanítani egy hálót ami képes digitális arcképekből arclenyomatokat származtatni, az arclenyomatok összehasonlításával már képes a rendszer összevetni a keresett személyt a rendszer által ismert személyekkel.
+
+% Az utóbbi időkben széles körben elterjedt az arcfelismerő rendszerek alkalmazása, mivel az arcfelismerés egy hatékony eszköze a biometrikus azonosításnak. A modern, gépi tanulás alapú arcfelismerő rendszerek működése több lépésből áll, ezt mutatja be a \ref{fig:fr}. ábra. 
+
+
+
+% arcfelismerés és adatvédelem -> arclenyomatvektor
+% Az ilyen módon kinyert arclenyomatokban tárolt információ ember számára nem értelmezhető, csupán egy lebegőpontos számsornak tűnik, de belőlük gépi tanulási módszerekkel személyes adat származtatható a képen látható személyekről. Magukba kódolva olyan információkat is hordoznak, mint például a képen látható illető rassza, a neme, életkora és az arc egyéb jellemzői. Ezek az információk együttesen lehetővé teszik egy személy azonosítását. Az arclenyomatokban hordozott információk alapján lehetséges az eredeti arcképek rekonstruálása \cite{mai2018reconstruction}. Az így kapott arcképek kevésbé részletgazdagok, mint az eredeti.
+
+
+
+
+% - adatvédelmi kockázatokat hordoznak magukban
+
+% Bár az arcfelismerő rendszerek nagyon hasznosak, és használatuk gyorsan terjed, jelentős adatvédelmi kockázatokat is hordoznak magukkal. \cite{castelluccia2020impact}
+
+% Más biometrikus adatokkal ellentétben (mint az ujjlenyomatok, genetikai minták), az arcfelismerő rendszerek egy személy tudata és beleegyezése nélkül képesek távolról, érintkezés mentesen felvételeket készíteni a személyről. Az európai általános adatvédelmi rendelet (GDPR) értelmében ez komolyan fenyegeti az emberek személyes adataik védelméhez való jogát. Az arcfelismerő rendszerek alacsony költséggel kiépíthetőek, így tömeges megfigyelést tesznek lehetővé. 
+
+
+
