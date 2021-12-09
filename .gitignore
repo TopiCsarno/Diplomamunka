@@ -1,5 +1,5 @@
 .vscode
-*.pdf
+thesis.pdf
 *.aux 
 *.dvi 
 *.thm 
