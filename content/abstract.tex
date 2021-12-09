@@ -7,22 +7,41 @@
 %----------------------------------------------------------------------------
 \section*{Kivonat}\addcontentsline{toc}{section}{Kivonat}
 
-% - motiváció
-% - probléma bemutatás
-% - megoldás bemutatása
-% - eredmények
-% - konklúzió, kitekintés
-% nem csak a kedvcsinálás a cél, hanem az is, hogy az eredmények és a kontextus is bemutatásra kerüljön
+% Motivation:
+% Why do we care about the problem and the results? If the problem isn't obviously "interesting" it might be better to put motivation first; but if your work is incremental progress on a problem that is widely recognized as important, then it is probably better to put the problem statement first to indicate which piece of the larger problem you are breaking off to work on. This section should include the importance of your work, the difficulty of the area, and the impact it might have if successful.
+% Problem statement:
+% What problem are you trying to solve? What is the scope of your work (a generalized approach, or for a specific situation)? Be careful not to use too much jargon. In some cases it is appropriate to put the problem statement before the motivation, but usually this only works if most readers already understand why the problem is important.
+% Approach:
+% How did you go about solving or making progress on the problem? Did you use simulation, analytic models, prototype construction, or analysis of field data for an actual product? What was the extent of your work (did you look at one application program or a hundred programs in twenty different programming languages?) What important variables did you control, ignore, or measure?
+% Results:
+% What's the answer? Specifically, most good computer architecture papers conclude that something is so many percent faster, cheaper, smaller, or otherwise better than something else. Put the result there, in numbers. Avoid vague, hand-waving results such as "very", "small", or "significant." If you must be vague, you are only given license to do so when you can talk about orders-of-magnitude improvement. There is a tension here in that you should not provide numbers that can be easily misinterpreted, but on the other hand you don't have room for all the caveats.
+% Conclusions:
+% What are the implications of your answer? Is it going to change the world (unlikely), be a significant "win", be a nice hack, or simply serve as a road sign indicating that this path is a waste of time (all of the previous results are useful). Are your results general, potentially generalizable, or specific to a particular case?
+%----------------------------------------------------------------------------
 
+% MOTIVACIO, KONTEXTUS
+
+A gépi tanulás területén elért áttöréseknek, és a hardverek fejlődésének köszönhetően egyre szélesebb körben alkalmaznak arcfelismerő rendszereket. Bár az arcfelismerő rendszerek számos alkalmazási területen rendkívül hasznosak, adatvédelmi kockázatokat is hordoznak magukkal. A modern arcfelismerő rendszerek a mély metrika tanulásra építenek. Működésük során a kamerafelvételeken látható arcokból képesek arclenyomatokat készíteni, amelyek az emberi arc jellemzőit kódolják magukban. Az arclenyomat segítségével könnyen beazonosítható a felvételen látható személy. 
+
+Munkám során az arclenyomatokhoz kapcsolódó adatvédelmi kockázatok feltárásával, és a kockázatok lehetséges kezelési módszereivel foglalkoztam. Sikerült bemutatnom, hogy az arclenyomatok nem csak azonosításra alkalmasak, hanem személyes adatokat is kódolnak magukban, mint például a felvételen látható személy életkorát, nemét és rasszát. A kódolt adatok jó pontossággal (97-98\%) kinyerhetőek gépi tanulási modellek segítségével, amelyek akár publikusan elérhető képadathalmazokon is betaníthatóak.
+
+Dolgozatomban elemeztem hogyan vannak tárolva a demográfiai adatok az arclenyomatokban. Azt tapasztaltam, hogy az arclenyomatokon betanított gépi tanulási modellek rendkívül robusztusok, így a modellek számára fontosnak vélt jellemzők eltávolításával nem lehet leplezni az érzékeny információkat. Egy példán keresztül demonstráltam, hogy az arclenyomatok minimális módosításával lehetséges a gépi tanulási modelleket megtéveszteni, ezzel megakadályozni a személyes adatok kiszivárgását. Végezetül bemutattam két olyan kriptográfiai módszert, a locality sensitive hashing (LSH) technikát, és a homomorfikus titkosítást, amelyek megfelelőek arclenyomatok védelmére.
+
+%---------------------------------------------------------------------------------------------
+% Advances of machine learning and hardware getting cheaper resulted in smart cameras equipped with facial recognition becoming unprecedentedly widespread worldwide.  Undeniably, this has a great potential for a wide spectrum of uses, it also bears novel risks. In our work, we consider a specific related risk, one related to face embeddings, which are machine learning created metric values describing the face of a person.  While embeddings seems arbitrary numbers to the naked eye and are hard to interpret for humans, we argue that some basic demographic attributes can be estimated from them and these values can be then used to look up the original person on social networking sites. We propose an approach for creating synthetic, life-like datasets consisting of embeddings and demographic data of several people. We show over these ground truth datasets that the aforementioned re-identifications attacks do not require expert skills in machine learning in order to be executed. We are aware of related risks, such as that embeddings can be reversed to reconstruct faces, and personal attributes (e.g. demographics) can be inferred from them, leading to privacy risks. Is it possible to selectively suppress such details?  In this paper, we analyze the structure of embeddings to gain a better understanding on how they encode details. We demonstrate this on race and sex attributes. Surprisingly, we find that there is an underlying complex network structure that encodes these features, rather than having them represented by particular locations. This makes suppressing sex and race values difficult, but we show that methods borrowed from adversarial machine learning can achieve this task efficiently. On a race-sex balanced face dataset we show that state-of-the- art adversarial example techniques can block the inference of race-sex attributes for 39\% of the individuals.
+
+% %----------------------------------------------------------------------------
+% % Abstract in English
+% %----------------------------------------------------------------------------
 \newpage
 \selectenglish
-%----------------------------------------------------------------------------
-% Abstract in English
-%----------------------------------------------------------------------------
 \section*{Abstract}\addcontentsline{toc}{section}{Abstract}
 
-English part.
+Facial recognition systems are becoming more widely used due to breakthroughs in machine learning and hardware improvements. Although facial recognition systems have great potential in many fields, they carry certain privacy risks. Modern facial recognition systems are based on deep metric learning. These systems can generate face embeddings from the human faces seen on camera images, which are later used for identification.
 
+In the course of my work, I have explored the data protection risks associated with face embeddings and the possible methods of managing the risks. I was able to show that face embeddings are not only useful for identification, but also encode personal information such as age, gender, and race of the person on the image. The encoded data can be extracted with good accuracy (97-98 \%) using machine learning models, which can even be trained on publicly available image datasets.
+
+In my thesis I analyzed how demographic data is stored in face embeddings. I found that machine learning models trained on face embeddings are extremely robust, so that sensitive information cannot be masked by removing features that are considered important to the models. Through an example, I have demonstrated that by making minimal changes to the face embeddings, it is possible to deceive machine learning models, thereby preventing the leakage of personal information. Finally, I have presented two cryptographic methods: locality sensitive hashing (LSH) technique, and homomorphic encryption, which are both suitable for protecting face embeddings.
 
 \vfill
 \selectthesislanguage

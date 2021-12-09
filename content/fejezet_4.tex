@@ -2,6 +2,8 @@
 \section{Arclenyomatok adatvédelmi elemzése}
 \label{sec:4}
 
+Az arcfelismerő rendszerek általános működését a \ref{sec:problem}. fejezetben korábban bemutattam. A következőkben az arcfelismerő rendszerek sebezhetőségét fogom elemezni.
+
 %--------------------------------------------------------------------------------------------------
 \subsection{Támadó modellezése} % 1 oldal
 \label{sec:tamado}
@@ -9,7 +11,7 @@
 % - Jelenlegi arcfelismerő rendszerek sebezhetősége, hogyan férhet hozzá
 % - Feltételezzük, hogy a támadó interneten elérhető datasetekhez hozzájut ami alapján betanít classifiert és ezt használva tud kinyerni adatot. Következő fejezetben erre mutatunk példát hogyan lehetséges
 
-A következőkben az arcfelismerő rendszerek sebezhetőségét fogom elemezni. Az arcfelismerő rendszerek általános működését a \ref{sec:problem}. fejezetben korábban bemutattam. Az adatvédelmi elemzéshez szükséges definiálnom egy támadó modellt. Tegyük fel, hogy egy cégnél alkalmaznak arcfelismerő rendszert a dolgozók azonosítására. Az épület számos helyisége le van fedve CCTV térfigyelő kamerákkal, amelyek egy központi arcfelismerő rendszernek továbbítják a felvételeket. Új dolgozó regisztrációja során az arcfelismerő rendszer néhány felvétel alapján kiszámolja a dolgozó arcát legjobban leíró arclenyomatot, amit egy központi szerveren tárol. Miután a dolgozó arclenyomata szerepel az adatbázisban, a térfigyelő kamera felvételek alapján lehetséges őt azonosítani. Egy ilyen arcfelismerő rendszernek a főbb részei: 
+Az adatvédelmi elemzéshez szükséges definiálnom egy támadó modellt. Tegyük fel, hogy egy cégnél alkalmaznak arcfelismerő rendszert a dolgozók azonosítására. Az épület számos helyisége le van fedve CCTV térfigyelő kamerákkal, amelyek egy központi arcfelismerő rendszernek továbbítják a felvételeket. Új dolgozó regisztrációja során az arcfelismerő rendszer néhány felvétel alapján kiszámolja a dolgozó arcát legjobban leíró arclenyomatot, amit egy központi szerveren tárol. Miután a dolgozó arclenyomata szerepel az adatbázisban, a térfigyelő kamera felvételek alapján lehetséges őt azonosítani. Egy ilyen arcfelismerő rendszer főbb részei (lásd: \ref{fig:attacker}. ábra): 
 
 \begin{enumerate}
 	\item \textbf{Kamera rendszer}: amely a nyers képkockákat továbbítja az adatfeldolgozó egységnek.
@@ -27,9 +29,9 @@ Míg az ilyen arcfelismerő rendszer több módon is támadható, a dolgozatom s
 	\label{fig:attacker}
 \end{figure}
 
-A támadó modellezését a \ref{fig:attacker}. ábra mutatja be. Miután a támadó valamilyen módon hozzáférést szerzett a központi szerverhez, amin az arclenyomatok vannak tárolva, elképzelhető, hogy képes lesz az arclenyomatokból személyes adatokat kinyerni az adatalanyokról. Személyes adatnak minősül bármilyen adat, ha közvetlenül beazonosítható általa az érintett személy (közvetlen azonosítók), vagy ha közvetetten (kvázi-azonosítók) \cite{GDPR2018}. Személyes adat lehet például a személy demográfiai adatai, mint például a személy életkora, a neme, vagy a rassza. 
+A támadó modellezését a \ref{fig:attacker}. ábra mutatja be. Miután a támadó valamilyen módon hozzáférést szerzett a központi szerverhez, amin az arclenyomatok vannak tárolva, elképzelhető, hogy képes lesz az arclenyomatokból személyes adatokat kinyerni az adatalanyokról. Személyes adatnak minősül bármilyen adat, ha közvetlenül beazonosítható általa az érintett személy (közvetlen azonosítók) \cite{GDPR2018}. Személyes adat lehet például a személy demográfiai adatai, mint például a személy életkora, a neme, vagy a rassza. 
 
-Feltételezhetjük, hogy a támadó a személyes adatok kinyeréséhez egy saját fejlesztésű algoritmust használ, ami lehet például egy gépi tanulási modell is. Ha a támadó képes megfelelően nagy valószínűséggel, megbízható módon kinyerni a személyes adatokat, akkor a támadó feltételezheti, hogy a kinyert adatok valósak. A sikeresen kinyert adatokat majd saját célból fel tudja használni a támadó, például újraazonosításos támadáshoz. A személyes adatok kiszivárgásának adatvédelmi kockázatait a \ref{sec:adatvedelmi_elemz}. fejezetben fejtem ki bővebben.
+Feltételezhetjük, hogy a támadó a személyes adatok kinyeréséhez egy saját fejlesztésű algoritmust használ, ami lehet például egy gépi tanulási modell is. Ha a támadó képes megfelelően nagy valószínűséggel, megbízható módon kinyerni a személyes adatokat, akkor a támadó feltételezheti, hogy a kinyert adatok helyesek. A sikeresen kinyert adatokat majd saját célból fel tudja használni a támadó, például újraazonosításos támadáshoz \cite{fabian2020anon}. A személyes adatok kiszivárgásának adatvédelmi kockázatait a \ref{sec:adatvedelmi_elemz}. fejezetben fejtem ki bővebben.
 
 A kérdés az, hogy milyen eljárással lehetséges egy arclenyomatból kinyerni az adatalany érzékeny információit? A munkám során erre a kérdésre kerestem választ. Feltételezésem az volt, hogy az interneten ingyenesen, publikusan elérhető emberi arcokról készült fotókból összeállítható egy nagy méretű adathalmaz, amihez rendelkezésre állnak a fotón látható valamennyi személy demográfiai adatai, például a pontos vagy becsült életkora, neme és rassza, vagy bármilyen adat ami fotó alapján ember által megadható, és később segíthet az illető azonosításában. Ha sikerül egy ilyen adathalmazt összeállítani, akkor az arcképek alapján az arcfelismerő rendszer működéséhez hasonlóan minden arcképről generálhatunk arclenyomatokat. Ezt követően rendelkezünk az arclenyomatokkal, és a hozzájuk tartozó címkékkel.
 
@@ -44,7 +46,7 @@ Első lépésként szükségem volt egy megfelelően felcímkézett arclenyomat 
 
 Mivel a feladatból adódóan az adathalmazzal szemben támasztott elvárások eléggé specifikusak, ezért szükség volt saját adathalmaz létrehozására. Azért, hogy meggyorsítsam a munkámat, kiindulásnak kerestem olyan online elérhető, arcképeket tartalmazó adathalmazt, ami már előre fel van címkézve. Ha létezik egy megfelelő arckép adathalmaz, akkor a képekből egyesével kinyerhetőek az arclenyomat vektorok. Az arckép adathalmazzal szemben az elvárások a következők:
 \begin{itemize}
-	\item Lehetőleg kutatási célra lettek létrehozva, az enyémhez hasonló feladatra. Ennek megfelelően az arcképek már elő vannak készítve a feldolgozáshoz (pl. arc kivágása a képből).
+	\item Lehetőleg kutatási célra lettek létrehozva, az enyémhez hasonló feladatra. Ennek megfelelően az arcképek már elő vannak készítve a feldolgozáshoz (pl. arc kivágása a képből, rossz minőségű képek szűrése).
 	\item Az adathalmaznak megfelelően nagynak kell lennie ahhoz, hogy gépi tanulási modelleket sikeresen be lehessen tanítani.
 	\item Egy emberről lehetőleg minél több kép legyen ahhoz, hogy a generált arclenyomatok alapján az azonosítás jól működjön. Minél több képünk van egy illetőről, annál biztosabban lehet meghatározni az ember arcát legjobban leíró arclenyomatot.
 	\item A képekhez megfelelő címkék tartoznak a demográfiai adatokról. Esetemben a szükséges címkék: az életkor, nem és a rassz.
@@ -60,7 +62,7 @@ Jelenleg az egyik legnagyobb publikusan elérhető, kutatási célra készült a
 
 A VGGFace2 alapból nem tartalmaz rassz címkéket, viszont a Salernói Egyetem MIVIA kutatócsoportja manuálisan felcímkézte az adathalmazt rassz címkékkel, és a munkájukat publikusan elérhetővé tették VMER néven \cite{vmer2020}. A VMER-rel kiegészítve a VGGFace2 címkéit, így már van rassz, nem és identifikációs címke is az összes mintához.
 
-Az arcképeket egyesével dolgozta fel egy általan írt Python script, ami az arcképekből kinyeri az arclenyomatokat. Ehhez a face\_recognition Python könyvtárat \cite{face_recognition} használtam fel, ami a \ref{sec:problem}. fejezetben taglalt módon találja meg, és alakítja át a képen látható arcokat arclenyomattá. Az arclenyomatok kinyeréséhez a dlib-et \cite{dlib2009} használja, így a kapott arclenyomatok 128 dimenziós lebegőpontos vektorok lesznek. Az adathalmazban előfordulnak olyan képek, ahol több ember arca is látható, (például a háttérben elsétál valaki). Ez problémás, mivel ilyenkor nem egyértelmű, hogy a képen látható emberek közül kihez tartozik az annotáció. E miatt a scriptem csak olyan képekkel foglalkozott, ahol pontosan egy arcot sikerült azonosítani. A script-ből egy függvény látható a \ref{lst:get_encoding}. kódrészleten.
+Az arcképeket egyesével dolgozta fel egy általam írt Python script, ami az arcképekből kinyeri az arclenyomatokat. Ehhez a face\_recognition Python könyvtárat \cite{face_recognition} használtam fel, ami a \ref{sec:problem}. fejezetben taglalt módon találja meg, és alakítja át a képen látható arcokat arclenyomattá. Az arclenyomatok kinyeréséhez a dlib-et \cite{dlib2009} használja, így a kapott arclenyomatok 128 dimenziós lebegőpontos vektorok lesznek. Az adathalmazban előfordulnak olyan képek, ahol több ember arca is látható, (például a háttérben elsétál valaki). Ez problémás, mivel ilyenkor nem egyértelmű, hogy a képen látható emberek közül kihez tartozik az annotáció. E miatt a scriptem csak olyan képekkel foglalkozott, ahol pontosan egy arcot sikerült azonosítani. A script-ből egy függvény látható a \ref{lst:get_encoding}. kódrészleten.
 
 \begin{lstlisting}[language=python, caption={Arclenyomat vektorok kinyerése.}, label=lst:get_encoding]
 def get_encoding(filepath):
@@ -78,9 +80,9 @@ def get_encoding(filepath):
 
 Mivel 3,3 millió arcképet kellett feldolgozni, a Python scriptet Google Colab-en futtattam, aminek az az előnye, hogy ingyenesen lehet használni korszerű GPU-kat, illetve az adathalmaz feldarabolásával egyszerre párhuzamosan több session-t is lehet futtatni, ami jelentősen felgyorsítja a képek feldolgozását.
 
-A következő lépés az adathalmaz tisztítása volt, azaz kiszűrni azokat a képeket, amelyek valamilyen okból rossz minőségűek (például távoli fotó, rossz fényviszony vagy fura szögből készült a kép), vagy az illető a többi képhez képest nagyon eltérően néz ki. Az arclenyomatok szűréséhez minden személyhez kiszámítottam az átlagos arclenyomatot (centroid), és a centroidtól vett távolság alapján a túl nagy távolságra lévő arclenyomatokat szűrtem az adathalmazból. 
+A következő lépés az adathalmaz tisztítása volt, azaz kiszűrni azokat a képeket, amelyek valamilyen okból rossz minőségűek (például távoli fotó, rossz fényviszony vagy fura szögből készült a kép), vagy az illető a többi képhez képest nagyon eltérően néz ki. Az arclenyomatok szűréséhez minden személyhez kiszámítottam az átlagos arclenyomatot (centroid), és a centroidtól vett távolság alapján a túl nagy távolságra lévő (d > 0,5) arclenyomatokat szűrtem az adathalmazból. 
 
-A feldolgozás és szűrés után kapott adathalmaz közel 3 millió arclenyomatot tartalmaz. Minden arclenyomathoz tartozik egy ID címke ami azonosítja az képen látható személyt. Egy ID-hoz legalább 50 arclenyomat tartozik. E mellett van még nem címke (férfi, nő), és rassz címke (African American, East Asian, Caucasian Latin, Asian Indian). Ekkor probléma volt az, hogy az egyes osztályokhoz sokkal több minta tartozott mint más osztályokhoz. A leggyakoribb a fehér férfiak aránya volt, míg a legritkább az afroamerikai nők. Az osztályok arányát a \ref{fig:vgg_imba}. ábra mutatja be.
+A feldolgozás és szűrés után kapott adathalmaz közel 3 millió arclenyomatot tartalmaz. Minden arclenyomathoz tartozik egy ID címke ami azonosítja a képen látható személyt. Egy ID-hoz legalább 50 arclenyomat tartozik. E mellett van még nem címke (férfi, nő), és rassz címke (African American, East Asian, Caucasian Latin, Asian Indian). Ekkor probléma volt az, hogy az egyes osztályokhoz sokkal több minta tartozott mint más osztályokhoz. A leggyakoribb a fehér férfiak aránya volt, míg a legritkább az afroamerikai nők. Az osztályok arányát a \ref{fig:vgg_imba}. ábra mutatja be.
 
 \begin{figure}[ht]
 	\centering
@@ -104,7 +106,7 @@ Az eredeti 3,3 millió képből végül 76410 arclenyomat készült, ami tovább
 
 Mivel a VGGFace2 adathalmaz nem tartalmaz életkor címkét, ezért tovább folytattam a keresést. Választásom az IMDB-WIKI \cite{imdbwiki2018} adathalmazra esett. Ez az egyik legnagyobb, nyilvánosan elérhető arckép adathalmaz, ami tartalmaz azonosító címkét, nemet és életkort is. Az adathalmaz két részből áll: IMDB filmekről és filmszínészekből álló adatbázisból kinyert fotókból, illetve a Wikipédiáról szerzett fotókból. Sajnos a Wikipédiáról szerzett képekhez nem tartozik azonosító címke, így csak az IMDB-ről szerzett fotókat használtam fel.
 
-Az IMDB-WIKI adathalmaz képekből, és hozzájuk tartozó címkékből áll. A címkék egy metadata fileban találhatóak, ami többek között tartalmazza a képen látható személy nevét, nemét, a születési dátumát, illetve azt, hogy mikor készült a fotó. A életkort a képen látható személy születési dátumából, és a kép keletkezésének dátuma alapján lehet kiszámolni. A képek jelentős része csoportkép, azaz több arc is látható rajtuk. A képek közül csak azokat használtam fel, ahol pontosan egy arcot lehetett detektálni. Továbbá, kiválasztottam azokat az azonosítókat, amelyekhez legalább 30 fotó tartozik.
+Az IMDB-WIKI adathalmaz képekből, és hozzájuk tartozó címkékből áll. A címkék egy metadata fileban találhatóak, ami többek között tartalmazza a képen látható személy nevét, nemét, a születési dátumát, illetve azt, hogy mikor készült a fotó. Az életkort a képen látható személy születési dátumából, és a kép keletkezésének dátuma alapján lehet kiszámolni. A képek jelentős része csoportkép, azaz több arc is látható rajtuk. A képek közül csak azokat használtam fel, ahol pontosan egy arcot lehetett detektálni. Továbbá, kiválasztottam azokat az azonosítókat, amelyekhez legalább 30 fotó tartozik.
 
 A weboldalról letölthetőek az eredeti, teljes méretű képek, illetve a már megvágott csak arcokat tartalmazó képek is. A képeken az arcok középre vannak rendezve 40\%-os ráhagyással. A képek feldolgozásánál ezért levágtam ezt a 40\%-ot, így gyorsabb a feldolgozás és jelentősen több képen sikerült arcot detektálni. Az arcokhoz tartozó képeket a VGGFace2-nél bemutatott módszerrel alakítottam át arclenyomat vektorokká.
 
@@ -134,7 +136,7 @@ def filter(df, cutoff=0.5):
 \end{lstlisting}
 % \end{minipage}
 
-Feldolgozás után közel 90000 arclenyomat vektort kaptam eredményül. Az adathalmazon belül a nemek aránya közel azonos, viszont az életkor eloszlása már kevésbé egyenletes (lásd: \ref{fig:agedist}. ábra). Mivel a képek az IMDB weboldalról lettek összegyűjtve, ezért főleg színészekről, filmrendezőkről vannak képek, akik tipikusan a 20-40-es életkor tartományba esnek. E miatt kiskorúakról és idős emberekről viszonylag kevés kép van az adathalmazban.
+Feldolgozás után közel 90000 arclenyomat vektort kaptam eredményül. Az adathalmazon belül a nemek aránya közel azonos, viszont az életkor eloszlása már kevésbé egyenletes (lásd: \ref{fig:agedist}. ábra). Mivel a képek az IMDB weboldalról lettek összegyűjtve, ezért főleg színészekről, filmrendezőkről vannak képek, akik tipikusan a 20-40-es életkor tartományba esnek. E miatt kiskorúakról és idős emberekről viszonylag kevés kép van az adathalmazban. Ezt az kiegyenlítettlenséget nem tudtam egyszerű módszerekkel megoldani, és később problémát is okozott.
 
 \begin{figure}[ht]
 	\centering
@@ -151,9 +153,9 @@ Feldolgozás után közel 90000 arclenyomat vektort kaptam eredményül. Az adat
 
 % mi az az RFC, röviden
 
-Az elkészült arclenyomat adathalmazok alapján már be lehet tanítani egy osztályozó tanuló algoritmust, ami az arclenyomatok alapján becslést tud adni a személy demográfiai adataira. Gyakorlatban ehhez három osztályozó modellt tanítottam be: egyet a nem predikcióhoz, egyet a rasszhoz, egyet az életkorhoz. E mellett készítettem egy identifikációs modellt is, ami az arclenyomatok alapján azonosítani tudja a személyt. A három osztályozó modellhez döntési erdő struktúrát használtam.
+Az elkészült arclenyomat adathalmazok alapján már be lehet tanítani egy osztályozó tanuló algoritmust, ami az arclenyomatok alapján becslést tud adni a személy demográfiai adataira. Gyakorlatban ehhez három osztályozó modellt tanítottam be: egyet a nem predikcióhoz, egyet a rasszhoz, egyet az életkorhoz. E mellett készítettem egy identifikációs modellt is, ami az arclenyomatok alapján azonosítani tudja a személyt. A három osztályozó modellhez véletlen erdő struktúrát használtam.
 
-Az egyik legalapvetőbb osztályozási algoritmus a döntési fa (angol szakirodalomban decision tree). A döntési fa tanítása során a tanító halmazt lépésenként két halmazra bontja szét az adatok különböző jellemzőire teljesülő vagy nem teljesülő feltétel alapján. Ezt a szétválasztó lépést majd sokszor megismétli, minden lépésnél egy-egy elágazást hoz létre. A feltételek alapján szétválogatott adatok így különböző osztályokba kerülnek. A döntési fák általánosítási képessége javítható, ha azokat egy szakértő együttes (ensemble) struktúrába rendezzük. Ekkor a tanító mintakészletre több, eltérően inicializált döntési fát tanítunk be, amik együttesen egy ``döntési erdőt'' képeznek. Ekkora egy bemeneti mintára a döntési erdő minden fája képez egy becslést, hogy melyik osztályba tartozik a minta. A döntési erdő kimenete az az osztály lesz, amelyikre a legtöbb döntési fa szavazott. Az osztályozó modellekhez a Scikit-learn Python könyvtár döntési fa implementációját használtam. Ennek a modellnek az az előnye, hogy a használata egyszerű, mivel hiperparaméterek rögzítése nélkül is jó eredményeket lehet elérni.
+Az egyik legalapvetőbb osztályozási algoritmus a döntési fa (angol szakirodalomban decision tree). A döntési fa tanítása során a tanító halmazt lépésenként két halmazra bontja szét az adatok különböző jellemzőire teljesülő vagy nem teljesülő feltétel alapján. Ezt a szétválasztó lépést majd sokszor megismétli, minden lépésnél egy-egy elágazást hoz létre. A feltételek alapján szétválogatott adatok így különböző osztályokba kerülnek. A döntési fák általánosítási képessége javítható, ha azokat egy szakértő együttes (ensemble) struktúrába rendezzük. Ekkor a tanító mintakészletre több, eltérően inicializált döntési fát tanítunk be, amik együttesen egy ``véletlen erdőt'' képeznek. Ekkora egy bemeneti mintára a véletlen erdő minden fája képez egy becslést, hogy melyik osztályba tartozik a minta. A véletlen erdő kimenete az az osztály lesz, amelyikre a legtöbb döntési fa szavazott. Az osztályozó modellekhez a Scikit-learn Python könyvtár döntési fa implementációját használtam. Ennek a modellnek az az előnye, hogy a használata egyszerű, mivel hiperparaméterek rögzítése nélkül is jó eredményeket lehet elérni.
 
 \subsubsection*{Nem becslése}
 
@@ -167,7 +169,7 @@ A nem becslő osztályozó modell tanításához a VGGFace2 arclenyomat adathalm
 \end{figure}
 
 \subsubsection*{Rassz becslése}
-A rassz osztályozó modellt a nem osztályozóhoz hasonlóan tanítottam be, azzal a különbséggel, hogy itt bináris osztályozás helyett már 4 osztályunk van, ami nehezebb feladatnak számít. A négy osztály: afro amerikaiak, kelet ázsiaiak, fehérek, és indiaiak. A VGGFace2 adathalmaz kiegyensúlyozottságának köszönhetően itt is sikerült jó pontosságot elérni. A modell igazságmátrixát a \ref{fig:conf_race}. ábra mutatja be. A többosztályos osztályozó modell pontossági metrikáinak kiszámításához ``macro'' átlagoló módszert használtam.
+A rassz osztályozó modellt a nem osztályozóhoz hasonlóan tanítottam be, azzal a különbséggel, hogy itt bináris osztályozás helyett már 4 osztályunk van, ami nehezebb feladatnak számít. A négy osztály: afro amerikaiak, kelet ázsiaiak, fehérek, és indiaiak. A VGGFace2 adathalmaz kiegyensúlyozottságának köszönhetően itt is sikerült jó pontosságot elérni. A modell igazságmátrixát a \ref{fig:conf_race}. ábra mutatja be. A többosztályos osztályozó modell pontossági metrikáinak kiszámításához ``macro'' átlagoló módszert használtam \cite{scikit_average}.
 
 \begin{figure}[ht]
 	\centering
@@ -177,7 +179,7 @@ A rassz osztályozó modellt a nem osztályozóhoz hasonlóan tanítottam be, az
 \end{figure}
 
 \subsubsection*{Életkor becslése}
-Az életkor osztályozó modell tanításához az IMDB-WIKI arclenyomat adathalmazt használtam. Mivel az adathalmazban pontosan szerepelnek az életkorok, először regressziós modellel próbálkoztam, de annak a pontossága nem lett túl jó ($R^2$ értéke 0,6 körüli volt). Ezt követően az életkorokat csoportosítottam 20 éves intervallumokon. Így négy életkor osztályt kaptam: 1-19 éves, 20-39 éves, 40-59 éves és 60 év fölöttiek csoportját. Ezzel a módszerrel már jobb eredményt értem el (ACC = 0,77), ami továbbra sem olyan jó, mint amit a korábbi modelleknél sikerült elérnem. Ez belátható annak, hogy az adathalmazban főleg fiatal - középkorú felnőttek vannak (lásd: \ref{fig:agedist}. ábra). A 20 év alattiak és 60 év fölöttiek aránya elég kicsi. A modell jóságát az alábbi \ref{fig:conf_age}. ábra mutatja.
+Az életkor osztályozó modell tanításához az IMDB-WIKI arclenyomat adathalmazt használtam. Mivel az adathalmazban pontosan szerepelnek az életkorok, először regressziós modellel próbálkoztam, de annak a pontossága nem lett túl jó ($R^2$ értéke 0,6 körüli volt). Ezt követően az életkorokat csoportosítottam 20 éves intervallumokon. Így négy életkor osztályt kaptam: 1-19 éves, 20-39 éves, 40-59 éves és 60 év fölöttiek csoportját. Ezzel a módszerrel már jobb eredményt értem el, ami továbbra sem olyan jó, mint amit a korábbi modelleknél sikerült elérnem. Ez belátható annak, hogy az adathalmazban főleg fiatal - középkorú felnőttek vannak (lásd: \ref{fig:agedist}. ábra). A 20 év alattiak és 60 év fölöttiek aránya elég kicsi. A modell jóságát az alábbi \ref{fig:conf_age}. ábra mutatja. Mint az ábrán láthatjuk a modell pontossága Acc = 0,77 ami elmarad a korábbi eredményektől. Jobb eredmény eléréséhez több tanító mintára lenne szükség az adathalmazban az 1-19 éves és 60 év feletti osztályokról.
 
 \begin{figure}[ht]
 	\centering
@@ -186,11 +188,11 @@ Az életkor osztályozó modell tanításához az IMDB-WIKI arclenyomat adathalm
 	\label{fig:conf_age}
 \end{figure}
 
-\subsubsection*{Identifikációs modell}
+\subsubsection*{Identifikációs módszer}
 
-Az identifikációs modell képes megbecsülni a bemeneti arclenyomat alapján, hogy az melyik személyhez (ID-hoz) tartozik. Erre a feladatra a korábbiaktól eltérően nem gépi tanulási modellt alkalmaztam, hanem távolságmérés alapján határoztam meg a legvalószínűbb személyt. A modellnek szüksége van arclenyomat vektorokra, és hozzájuk tartozó címkékre. Ez alapján az egyes címkékhez tartozó arclenyomatok átlagát számítja ki (amik a centroidok). Új minta becsléséhez a centroidoktól vett távolság alapján találja meg azt az ID-t ami legvalószínűbb találat. Az identifikációs modellel is jó pontosságot sikerült elérni, csak néhány esetben adott téves becslést. A modell működését a \ref{lst:idmodel}. kódrészlet mutatja be.
+Az identifikációs módszerrel meg lehet becsülni a bemeneti arclenyomat alapján, hogy az melyik személyhez (ID-hoz) tartozik. Erre a feladatra a korábbiaktól eltérően nem gépi tanulási modellt alkalmaztam, hanem távolságmérés alapján határoztam meg a legvalószínűbb személyt (a továbbiakban modellként hivatkozom erre a módszerre). Az identifikációs modellnek szüksége van arclenyomat vektorokra, és hozzájuk tartozó címkékre. Ez alapján az egyes címkékhez tartozó arclenyomatok átlagát számítja ki (amik a centroidok). Új minta becsléséhez a centroidoktól vett távolság alapján találja meg azt az ID-t ami legvalószínűbb találat. A kód kiegészíthető azzal, hogy ha a legkisebb centroid távolság egy határérték felett van, akkor eredményül ``nincs találat''-ot vagy ``None''-t adjon. Az identifikációs modellel is jó pontosságot sikerült elérni az adathalmazon, csak néhány esetben adott téves becslést. A modell működését a \ref{lst:idmodel}. kódrészlet mutatja be.
 
-\begin{lstlisting}[language=python, caption=Az identifikációs modell működése., label=lst:idmodel]
+\begin{lstlisting}[language=python, caption={Az identifikációs modell működése. Az megadott tanító minták és címkék alapján képes eldönteni egy ismeretlen arclenyomatról, hogy az melyik személyhez tartozik.}, label=lst:idmodel]
 class IDModel:
 	def __init__(self, embeddings, ids):
 		'''
@@ -199,8 +201,9 @@ class IDModel:
 		'''
 		self.embeddings = embeddings
 		self.ids = ids
-		self.unique_ids = np.unique(ids)
+		self.unique_ids = np.unique(ids)  # egyedi azonositok
 		self.centroids = np.zeros((self.unique_ids.shape[0], embeddings.shape[1]))
+		# egy azonositohoz tartozo osszes arclenyomat atlagat szamolom
 		for i in range(len(self.unique_ids)):
 			id = self.unique_ids[i]
 			idx = np.where(ids == id)[0]
@@ -211,8 +214,9 @@ class IDModel:
 		# adott arclenyomat es a centroidok tavolsagok osszevetese
 		y_hat = np.zeros(len(new_embeddings)).astype('object')
 		for i in range(len(new_embeddings)):
+			# egy adott arclenyomat tavolsaga az osszes centroidtol
 			d = np.linalg.norm(new_embeddings[i] - self.centroids, axis=1, ord=2)
-			d_min_idx = np.argmin(d)
+			d_min_idx = np.argmin(d)  # a legkisebb tavolsag kivalasztasa
 			y_hat[i] = self.unique_ids[d_min_idx]
 		return y_hat
 
@@ -240,7 +244,7 @@ class IDModel:
 		ID & 0.998 & 0.998 & 0.998 & 0.997 \\
 		\hline
 	\end{tabular}
-	\caption{Az osztályozó modellek pontossága}
+	\caption{Az osztályozó modellek pontossági metrikái. ACC a pontosságra, PREC a precizitásra, REC a visszahívásra, F1 az F1 pontszámra utal.}
 	\label{tab:pontossagok}
 \end{table}
  
@@ -258,11 +262,11 @@ Kiindulásnak a 29-es munkacsoport anonimizálási eljárásokról szóló véle
 	\item \textbf{Következtetés} (inference): ami annak a lehetőségét takarja, hogy nagy valószínűséggel új információ következtethető ki az attribútumok értékeiből.
 \end{itemize}
 
-Mivel egy ember arca tipikusan csak kicsit változik idővel, az arcról készült arclenyomat megváltozhatatlan objektumnak tekinthető. Ez azt jelenti, hogy egy személyről készült arclenyomatok különböző alkalmazásokhoz több adatbázisban is szerepelnek nagyon hasonló formában. Ebből adódóan az egyik kockázati lehetőség az, ha a támadó hozzáfér egy privát arclenyomat adathalmazhoz, majd azt egy másik publikusan elérhető adathalmazzal összekapcsolva képes lehet azon személyek újraazonosítására, akik mindkét adathalmazban szerepelnek.
+Mivel egy ember arca tipikusan csak kicsit változik idővel, az arcról készült arclenyomat megváltozhatatlan objektumnak tekinthető. Ez azt jelenti, hogy egy személyről készült arclenyomatok különböző alkalmazásokhoz több adatbázisban is szerepelnek nagyon hasonló formában. Ebből adódóan az egyik kockázati lehetőség az, ha a támadó hozzáfér egy privát arclenyomat adathalmazhoz, majd azt egy másik publikusan elérhető adathalmazzal összekapcsolva képes lehet azon személyek újraazonosítására, akik mindkét adathalmazban szerepelnek \cite{fabian2020anon}.
 
 E mellett következtetéses támadás is kockázatot jelent, mivel a támadó az arclenyomat alapján többlet információt képes kikövetkeztetni. Mint azt korábban bemutattam, az arclenyomatok demográfiai adatokat szivárogtathatnak ki. 
 
-A kiválasztás veszélye akkor állhat fent, ha a támadó egy bizonyost személyt próbál beazonosítani, és az arclenyomatokból kinyert extra információk alapján képes leszűkíteni a lehetséges személyek halmazát.
+A kiválasztás veszélye akkor állhat fent, ha a támadó egy bizonyos személyt próbál beazonosítani, és az arclenyomatokból kinyert extra információk alapján képes leszűkíteni a lehetséges személyek halmazát.
 
 Egy másik adatvédelmi kockázat lehet az arclenyomatok alapján az eredeti arckép rekonstrukciója. A \cite{mai2018reconstruction} szerzői létrehoztak egy szomszédossági dekonvolúciós neurális hálót (NbNet), amely képes visszaállítani az eredeti arcképet egy arclenyomatból. A publikációban bemutatott eredmények alapján, az NbNet magas pontossággal képes visszaállítani az arcképeket, amelyek alapján 2D-s vagy 3D-s arc modell hozható létre. A rekonstruált kép alkalmas lehet arra, hogy arcfelismerő rendszert átverje.
 
